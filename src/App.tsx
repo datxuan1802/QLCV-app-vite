@@ -1,16 +1,37 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
-import Test from "@/components/Test";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+// pages
+import { path } from "@/utils/path";
+import { Home, Login } from "./pages";
+
+// toast container
+import { ToastContainer } from "react-toastify";
+
+const queryClient = new QueryClient();
+
+const router = createBrowserRouter([
+  {
+    path: path.home,
+    element: <Home />,
+  },
+  {
+    path: path.login,
+    element: <Login />,
+  },
+]);
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <Test></Test>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} fallbackElement={<div>Loading...</div>} />
+      <ToastContainer />
+    </QueryClientProvider>
   );
 }
 
