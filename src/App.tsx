@@ -12,13 +12,15 @@ import { Home, Login } from "./pages";
 
 // toast container
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import PrivateRoute from "./route/PrivateRoute";
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
     path: path.home,
-    element: <Home />,
+    element: <PrivateRoute component={<Home />} />,
   },
   {
     path: path.login,
