@@ -1,23 +1,26 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+// import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { errorToast, successToast } from "../utils/toast";
-import { loginSchema } from "../utils/schema";
+// import { loginSchema } from "../utils/schema";
 import { path } from "../utils/path";
 import { Input, Button, Space } from "antd";
 import { post } from "@/services/axios.service";
+import { useAtom } from "jotai";
+import { userAtom } from "@/states/user.state";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("vutrung26072001@gmail.com");
   const [password, setPassword] = useState("13456");
   const navigation = useNavigate();
-
+  const [, setUser] = useAtom(userAtom);
   const [loading, setLoading] = useState(false);
   const DoLogin = async () => {
     setLoading(true);
     try {
       const res = await post("/auth/login", { email, password });
       localStorage.setItem("auth", res.access_token);
+      setUser(res.user);
       navigation(path.home);
       successToast("Đăng nhập thành công");
     } catch (error) {

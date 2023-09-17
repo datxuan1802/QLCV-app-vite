@@ -1,6 +1,5 @@
 import axios from "axios";
-import { errorToast } from "../utils/toast";
-const apiUrl = import.meta.env.VITE_API_URL || "https://localhost:5556";
+const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5556/api/v1";
 const request = axios.create({
   baseURL: apiUrl,
   timeout: 1000,
@@ -11,10 +10,10 @@ const request = axios.create({
 request.interceptors.request.use(async (config: any) => {
   const customHeaders: any = {};
   const auth: any = localStorage.getItem("auth");
-  const accessToken = JSON.parse(auth)?.token;
-  console.log({ accessToken: accessToken });
-  if (accessToken) {
-    customHeaders.authorization = `Bearer ${accessToken}`;
+  console.log(auth);
+  //   const accessToken = JSON.parse(auth);
+  if (auth) {
+    customHeaders.authorization = `Bearer ${auth}`;
   }
   console.log("run interceptor");
 
@@ -37,18 +36,19 @@ request.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-async function get(url: string, params: any) {
+async function get(url: string) {
   try {
-    const { data, status } = await request.get(url, params);
+    const { data, status } = await request.get(url);
 
-    console.log(JSON.stringify(data, null, 4));
+    // console.log(JSON.stringify(data, null, 4));
 
     // 👇️ "response status is: 200"
     console.log("response status is: ", status);
 
     return data;
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
+    throw new Error(error);
   }
 }
 async function post(url: string, params: any) {
