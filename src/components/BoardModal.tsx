@@ -2,40 +2,47 @@ import { useState } from "react";
 // antd
 import { Button, Modal, Input, Select } from "antd";
 
-import { openWorkspaceModal } from "@/states/modal.state";
+import { openBoardModal, selectWorkspaceIdAtom } from "@/states/modal.state";
 // network
 import { post } from "@/services/axios.service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { successToast } from "@/utils/toast";
+
+// navigate
 import { useNavigate } from "react-router-dom";
+import { path } from "@/utils/path";
+import { useBoard } from "@/hooks/board.hook";
 import { queryKey } from "@/utils/queryKey";
 
-const WorkspaceModal: React.FC = () => {
-  const [open, setOpen] = useAtom(openWorkspaceModal);
-  const queryClient = useQueryClient();
-
+const BoardModal: React.FC = () => {
+  const [open, setOpen] = useAtom(openBoardModal);
+  const [workspaceId] = useAtom(selectWorkspaceIdAtom);
   //   input field
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [type, setType] = useState("private");
+
+  const queryClient = useQueryClient();
 
   //   navigation
   const navigation = useNavigate();
 
-  const { isLoading, isError, mutate } = useMutation({
+  const { setBoards } = useBoard();
+
+  const { data, isLoading, isError, mutate } = useMutation({
     mutationFn: () => {
-      return post(`/workspaces/create`, {
+      return post(`/board/create?workspaceId=${workspaceId}`, {
         name,
         description,
-        type,
       });
     },
-
     onSuccess: (data) => {
+      // setRefresh(true);
+      console.log(data);
       queryClient.invalidateQueries({ queryKey: [queryKey.workspace] });
-      successToast("Tạo workspace mới thành công");
-      // navigation(path.home);
+      setBoards((preBoards: any) => [...preBoards, data]);
+      successToast("Tạo Board mới thành công");
+      //   navigation(path.home);
     },
   });
 
@@ -81,7 +88,7 @@ const WorkspaceModal: React.FC = () => {
               htmlFor="name"
               className="block mb-2 text-sm font-medium w-32 text-gray-900 "
             >
-              Tên workspace
+              Tên board
             </label>
             <Input
               placeholder="Tên workspace"
@@ -96,7 +103,7 @@ const WorkspaceModal: React.FC = () => {
               htmlFor="description"
               className="block mb-2 text-sm font-medium w-32 text-gray-900 "
             >
-              Mô tả workspace
+              Mô tả board
             </label>
             <Input
               placeholder="Tên workspace"
@@ -105,28 +112,10 @@ const WorkspaceModal: React.FC = () => {
               size="small"
             />
           </div>
-          {/* input field */}
-          <div className="flex flex-row">
-            <label
-              htmlFor="name"
-              className="block mb-2 text-sm font-medium w-32 text-gray-900 "
-            >
-              Loại workspace
-            </label>
-            <Select
-              defaultValue="private"
-              style={{ width: 120 }}
-              onChange={(val: string) => setType(val)}
-              options={[
-                { value: "private", label: "private" },
-                { value: "public", label: "public" },
-              ]}
-            />
-          </div>
         </div>
       </Modal>
     </>
   );
 };
 
-export default WorkspaceModal;
+export default BoardModal;

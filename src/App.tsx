@@ -8,7 +8,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // pages
 import { path } from "@/utils/path";
-import { Home, Login } from "./pages";
+import { BoardPage, Home, Login, Workspace } from "./pages";
 
 // toast container
 import { ToastContainer } from "react-toastify";
@@ -21,6 +21,14 @@ const router = createBrowserRouter([
   {
     path: path.home,
     element: <PrivateRoute component={<Home />} />,
+  },
+  {
+    path: path.workspace,
+    element: <PrivateRoute component={<Workspace />} />,
+  },
+  {
+    path: path.board,
+    element: <PrivateRoute component={<BoardPage />} />,
   },
   {
     path: path.login,
