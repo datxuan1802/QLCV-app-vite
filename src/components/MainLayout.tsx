@@ -1,5 +1,5 @@
 // components
-import { Layout, Menu, Avatar, Dropdown, Space, Button, Input } from "antd";
+import { Layout, Menu, Avatar, Input } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import {
   AddBoardTab,
@@ -8,6 +8,7 @@ import {
   AddWorkspaceTab,
   BoardModal,
   WorkspaceModal,
+  TaskModal,
 } from ".";
 const { Header, Content, Sider } = Layout;
 const { Search } = Input;
@@ -99,60 +100,20 @@ const MainLayout = ({ children }: any) => {
       </Header>
       <Layout hasSider>
         <Sider width={300} className="bg-slate-300">
-          <Menu mode="inline" items={[settings, ...items]} className="h-full" />
+          <Menu
+            mode="inline"
+            defaultOpenKeys={workspaces[0]?._id}
+            items={[settings, ...items]}
+            className="h-full"
+          />
         </Sider>
-        <Content>
-          <Header className="bg-slate-400 flex flex-row justify-center items-center">
-            <div className="flex-1 space-x-2 flex flex-row justify-start items-center">
-              <div>
-                <h2 className="text-2xl text-bold">Board Name</h2>
-              </div>
-              <Button className="normal-case text-xl">Trello</Button>
-            </div>
-            <div className="flex-none space-x-2 flex flex-row justify-center items-center">
-              <AvatarGroup />
-              <SmartOptionBoard />
-              <div>Filter</div>
-            </div>
-          </Header>
-          {children}
-        </Content>
+        <Content className="bg-slate-100">{children}</Content>
       </Layout>
       <BoardModal />
       <WorkspaceModal />
+      <TaskModal />
     </Layout>
   );
 };
 
 export default MainLayout;
-
-// Avatar
-const AvatarGroup = () => {
-  return (
-    <Avatar.Group>
-      <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=1" />
-      <Avatar style={{ backgroundColor: "#f56a00" }}>K</Avatar>
-      <Avatar style={{ backgroundColor: "#87d068" }}>H</Avatar>
-      <Avatar style={{ backgroundColor: "#1677ff" }}>W</Avatar>
-    </Avatar.Group>
-  );
-};
-
-const menuItem = [
-  {
-    key: "1",
-    label: "Rules to automation",
-  },
-  {
-    key: "2",
-    label: "Email report",
-  },
-];
-
-const SmartOptionBoard = () => {
-  return (
-    <Dropdown menu={{ items: menuItem }}>
-      <Space>{/* <Button>Smart options</Button> */}</Space>
-    </Dropdown>
-  );
-};

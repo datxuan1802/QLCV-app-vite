@@ -68,5 +68,22 @@ async function post(url: string, params: any) {
     throw new Error(error.message);
   }
 }
-export { get, post };
+async function patch(url: string, params: any) {
+  try {
+    const { data, status } = await request.patch(url, params);
+
+    // 👇️ "response status is: 200"
+    // console.log("response status is: ", status);
+    // 👇️ "data response"
+
+    // console.log(JSON.stringify(data, null, 4));
+
+    return data;
+  } catch (error: any) {
+    // console.log(error.message);
+    // TODO: cần kiểm tra lại
+    throw new Error(error.message);
+  }
+}
+export { get, post, patch };
 export default request;

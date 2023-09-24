@@ -1,9 +1,7 @@
 import "./App.css";
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // pages
@@ -22,10 +20,10 @@ const router = createBrowserRouter([
     path: path.home,
     element: <PrivateRoute component={<Home />} />,
   },
-  {
-    path: path.workspace,
-    element: <PrivateRoute component={<Workspace />} />,
-  },
+  // {
+  //   path: path.workspace,
+  //   element: <PrivateRoute component={<Workspace />} />,
+  // },
   {
     path: path.board,
     element: <PrivateRoute component={<BoardPage />} />,
@@ -41,6 +39,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} fallbackElement={<div>Loading...</div>} />
       <ToastContainer />
+      <ReactQueryDevtools initialIsOpen={true} />
     </QueryClientProvider>
   );
 }

@@ -11,12 +11,10 @@ export const useBoard = () => {
   const getBoards = async () =>
     get(`/board/find-by-workspace/${selectWorkspaceId}`).then((data) => {
       // console.log("in", workspace?.workspace?._id);
-      console.log(data);
       setBoards(data);
     });
   useEffect(() => {
-    console.log("run");
-    getBoards();
+    selectWorkspaceId && getBoards();
   }, [selectWorkspaceId]);
 
   return { boards, setBoards };
@@ -28,7 +26,6 @@ export const useQueryBoardByWorkspace = (workspaceId: string) => {
     queryFn: () => {
       get(`/board/find-by-workspace/${workspaceId}`).then((data) => {
         // console.log("in", workspace?.workspace?._id);
-        console.log(data);
         return data;
       });
     },
