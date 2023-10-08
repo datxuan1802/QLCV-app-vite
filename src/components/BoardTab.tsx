@@ -2,10 +2,10 @@ import { useAtom } from "jotai";
 import { openBoardModal, selectWorkspaceIdAtom } from "@/states/modal.state";
 import { useNavigate } from "react-router";
 
-export const BoardTab = ({ board }: any) => {
+export const BoardTab = ({ board, workspaceId }: any) => {
   const navigation = useNavigate();
   const GetBoard = () => {
-    navigation(`/boards/${board._id}`);
+    navigation(`/workspaces/${workspaceId}/boards/${board._id}`);
   };
   return <div onClick={GetBoard}>{board.name}</div>;
 };

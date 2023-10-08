@@ -15,15 +15,21 @@ import { EStatus } from "@/utils/type";
 import { mapStatusTask } from "@/utils/mapping";
 
 const BoardPage = () => {
-  const { boardId } = useParams();
-
+  const { boardId, workspaceId } = useParams();
   const [tasks, setTasks] = useState<any>({
     todos: [],
     inProgress: [],
     done: [],
   });
 
-  const result = useQueries({
+  useEffect(() => {
+    localStorage.setItem(
+      "defaultNavigation",
+      `/workspaces/${workspaceId}/boards/${boardId}`
+    );
+  }, [boardId, workspaceId]);
+
+  useQueries({
     queries: [
       {
         queryKey: [`task/findByBoardId/${boardId}`, EStatus.TODO],

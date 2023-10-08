@@ -11,6 +11,7 @@ import {
   TaskModal,
   BoardHeader,
 } from "./BoardPage";
+import { AddMemberModal } from "./AddMemberModal";
 export {
   WorkspaceTab,
   AddWorkspaceTab,
@@ -24,4 +25,5 @@ export {
   Task,
   TaskModal,
   BoardHeader,
+  AddMemberModal,
 };

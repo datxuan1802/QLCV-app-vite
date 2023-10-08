@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   DragDropContext,
   Droppable,
@@ -19,11 +19,11 @@ import {
   Space,
 } from "antd";
 import { ClockCircleOutlined } from "@ant-design/icons";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { post } from "@/services/axios.service";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { get, post } from "@/services/axios.service";
 import { successToast } from "@/utils/toast";
 import { useAtom } from "jotai";
-import { openTaskModal } from "@/states/modal.state";
+import { openTaskModal, selectWorkspaceIdAtom } from "@/states/modal.state";
 import { EPriority } from "@/utils/type";
 import { useParams } from "react-router";
 import dayjs from "dayjs";
@@ -309,12 +309,28 @@ export const BoardHeader = () => {
 
 // Avatar
 const AvatarGroup = () => {
+  // const [workspaceId] = useAtom(selectWorkspaceIdAtom);
+  const { workspaceId } = useParams();
+  const [avatars, setAvatars] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const DoGetAvatars = async () => {
+    setIsLoading(true);
+    const res = await get(`/workspaces/getMembers?workspaceId=${workspaceId}`);
+    setAvatars(res);
+    setIsLoading(false);
+  };
+  useEffect(() => {
+    DoGetAvatars();
+  }, [workspaceId]);
+
+  console.log(avatars);
+
+  if (isLoading) return <></>;
   return (
     <Avatar.Group>
-      <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=1" />
-      <Avatar style={{ backgroundColor: "#f56a00" }}>K</Avatar>
-      <Avatar style={{ backgroundColor: "#87d068" }}>H</Avatar>
-      <Avatar style={{ backgroundColor: "#1677ff" }}>W</Avatar>
+      {avatars?.map((item: any) => (
+        <Avatar key={item.user._id} src={item.user.avatar} />
+      ))}
     </Avatar.Group>
   );
 };

@@ -9,29 +9,38 @@ import {
   BoardModal,
   WorkspaceModal,
   TaskModal,
+  AddMemberModal,
 } from ".";
 const { Header, Content, Sider } = Layout;
 const { Search } = Input;
 
 // hooks
 import { useWorkspace } from "@/hooks/workspace.hook";
+import { useAtom } from "jotai";
+import {
+  openAddMemberModal,
+  selectWorkspaceIdAtom,
+} from "@/states/modal.state";
 
+const AddMemberButton = ({ workspaceId }: { workspaceId: string }) => {
+  const [, setOpen] = useAtom(openAddMemberModal);
+  const [, setSelectWorkspaceId] = useAtom(selectWorkspaceIdAtom);
+
+  return (
+    <div
+      onClick={() => {
+        setOpen(true);
+        setSelectWorkspaceId(workspaceId);
+      }}
+    >
+      Thêm thành viên +
+    </div>
+  );
+};
 const settings = {
   key: "2",
   label: "Some settings",
   children: [
-    {
-      key: "11",
-      label: (
-        <div
-          onClick={() => {
-            console.log("add");
-          }}
-        >
-          Add member +
-        </div>
-      ),
-    },
     {
       key: "14",
       label: <AddWorkspaceTab></AddWorkspaceTab>,
@@ -56,6 +65,14 @@ const MainLayout = ({ children }: any) => {
       label: <WorkspaceTab workspace={workspacePermission} />,
       children: [
         {
+          key: workspacePermission._id + "2",
+          label: (
+            <AddMemberButton
+              workspaceId={workspacePermission?.workspace?._id}
+            />
+          ),
+        },
+        {
           key: workspacePermission._id + "1",
           label: (
             <AddBoardTab
@@ -66,7 +83,12 @@ const MainLayout = ({ children }: any) => {
         ...workspacePermission.workspace.boards.map((board: any) => {
           return {
             key: board._id,
-            label: <BoardTab board={board}></BoardTab>,
+            label: (
+              <BoardTab
+                board={board}
+                workspaceId={workspacePermission.workspace._id}
+              ></BoardTab>
+            ),
             // label: board.name,
           };
         }),
@@ -112,6 +134,7 @@ const MainLayout = ({ children }: any) => {
       <BoardModal />
       <WorkspaceModal />
       <TaskModal />
+      <AddMemberModal />
     </Layout>
   );
 };
