@@ -23,7 +23,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { get, post } from "@/services/axios.service";
 import { successToast } from "@/utils/toast";
 import { useAtom } from "jotai";
-import { openTaskModal, selectWorkspaceIdAtom } from "@/states/modal.state";
+import {
+  openAddMemberModal,
+  openTaskModal,
+  selectWorkspaceIdAtom,
+} from "@/states/modal.state";
 import { EPriority } from "@/utils/type";
 import { useParams } from "react-router";
 import dayjs from "dayjs";
@@ -111,6 +115,22 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
               <ClockCircleOutlined className="mr-1" />
               {dayjs(item.dueDate).format("DD/MM/YYYY")}
             </div>
+            <div>
+              <Avatar.Group>
+                <Avatar
+                  className="w-6 h-6 flex items-center justify-center text-xs"
+                  style={{ backgroundColor: "#f56a00" }}
+                >
+                  K
+                </Avatar>
+                <Avatar
+                  className="w-6 h-6 flex items-center justify-center text-xs"
+                  style={{ backgroundColor: "#f56a00" }}
+                >
+                  K
+                </Avatar>
+              </Avatar.Group>
+            </div>
           </div>
         </div>
       )}
@@ -118,7 +138,7 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
   );
 };
 
-export const TaskModal = () => {
+export const TaskModal = ({ task }: any) => {
   const [open, setOpen] = useAtom(openTaskModal);
   const queryClient = useQueryClient();
 
@@ -147,7 +167,6 @@ export const TaskModal = () => {
     },
 
     onSuccess: (data) => {
-      console.log(data);
       queryClient.invalidateQueries({
         queryKey: [`task/findByBoardId/${boardId}`],
       });
@@ -284,6 +303,9 @@ export const TaskModal = () => {
 
 export const BoardHeader = () => {
   const [, setOpen] = useAtom(openTaskModal);
+  const [, setOpenAddMemberModal] = useAtom(openAddMemberModal);
+  const { workspaceId } = useParams();
+  const [, setSelectWorkspaceId] = useAtom(selectWorkspaceIdAtom);
   return (
     <Header className="bg-slate-200 flex flex-row justify-center items-center">
       <div className="flex-1 space-x-2 flex flex-row justify-start items-center">
@@ -296,6 +318,16 @@ export const BoardHeader = () => {
           type="primary"
         >
           Tạo nhiệm vụ mới
+        </Button>
+        <Button
+          className="bg-blue-500 normal-case "
+          onClick={() => {
+            setOpenAddMemberModal(true);
+            setSelectWorkspaceId(workspaceId as string);
+          }}
+          type="primary"
+        >
+          Thêm thành viên
         </Button>
       </div>
       <div className="flex-none space-x-2 flex flex-row justify-center items-center">
