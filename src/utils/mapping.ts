@@ -26,3 +26,16 @@ export const getBgPriorityColor = (priority: EPriority) => {
       return "bg-blue-500";
   }
 };
+
+export const getBgStatusTask = (status: EStatus) => {
+  switch (status) {
+    case EStatus.TODO:
+      return "bg-blue-500";
+    case EStatus.IN_PROGRESS:
+      return "bg-yellow-500";
+    case EStatus.DONE:
+      return "bg-green-500";
+    default:
+      return "bg-red-500";
+  }
+};

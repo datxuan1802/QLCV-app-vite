@@ -25,15 +25,21 @@ import { successToast } from "@/utils/toast";
 import { useAtom } from "jotai";
 import {
   openAddMemberModal,
+  openDetailTaskModal,
   openTaskModal,
+  selectTaskIdAtom,
   selectWorkspaceIdAtom,
 } from "@/states/modal.state";
 import { EPriority } from "@/utils/type";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import dayjs from "dayjs";
-import { getBgPriorityColor } from "@/utils/mapping";
+import { getBgPriorityColor, getBgStatusTask } from "@/utils/mapping";
+import { path } from "@/utils/path";
+import { AvatarCus } from "@/components/";
 
 const { Header } = Layout;
+const { TextArea } = Input;
+const { RangePicker } = DatePicker;
 
 interface KanbanLayoutProps {
   children: React.ReactNode;
@@ -90,6 +96,9 @@ interface TaskLayoutProps {
   index: number;
 }
 export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
+  const [, setOpen] = useAtom(openDetailTaskModal);
+  const [, setTaskId] = useAtom(selectTaskIdAtom);
+  console.log(item);
   return (
     <Draggable key={item} draggableId={draggableId} index={index}>
       {(provided) => (
@@ -99,7 +108,8 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           onClick={() => {
-            alert("task");
+            setTaskId(item._id);
+            setOpen(true);
           }}
         >
           <div className="space-y-1">
@@ -117,18 +127,7 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
             </div>
             <div>
               <Avatar.Group>
-                <Avatar
-                  className="w-6 h-6 flex items-center justify-center text-xs"
-                  style={{ backgroundColor: "#f56a00" }}
-                >
-                  K
-                </Avatar>
-                <Avatar
-                  className="w-6 h-6 flex items-center justify-center text-xs"
-                  style={{ backgroundColor: "#f56a00" }}
-                >
-                  K
-                </Avatar>
+                <AvatarCus user={item.assign} className="w-5 h-5" />
               </Avatar.Group>
             </div>
           </div>
@@ -138,21 +137,55 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
   );
 };
 
-export const TaskModal = ({ task }: any) => {
+export const TaskModal = () => {
   const [open, setOpen] = useAtom(openTaskModal);
   const queryClient = useQueryClient();
 
   //   input field
-  const { boardId } = useParams();
+  const { boardId, workspaceId } = useParams();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState(EPriority.HIGH);
-  const [dueDate, setDuedate] = useState(dayjs().format("YYYY-MM-DD"));
+  const [dueDate, setDueDate] = useState(dayjs().format("YYYY-MM-DD"));
+  const [startDate, setStartDate] = useState(dayjs().format("YYYY-MM-DD"));
+  const [assignIds, setAssignIds] = useState<string[]>([]);
   const [bgUrl, setBgUrl] = useState("");
 
+  const {
+    data: assignUsers,
+    isLoading: assignUsersLoading,
+    error,
+  } = useQuery({
+    queryKey: [workspaceId],
+    queryFn: () => {
+      return get(`/workspaces/getMembers?workspaceId=${workspaceId}`);
+    },
+  });
+
+  const assignOptions =
+    !assignUsersLoading &&
+    assignUsers?.map((item: any) => ({
+      label: (
+        <div className="flex flex-row items-center">
+          <AvatarCus user={item.user} />
+          <div className="ml-2">{item.user.name}</div>
+        </div>
+      ),
+      value: item.user._id,
+    }));
+  // const DoGetAvatars = async () => {
+  //   setIsLoading(true);
+  //   const res = await get(`/workspaces/getMembers?workspaceId=${workspaceId}`);
+  //   setAvatars(res);
+  //   setIsLoading(false);
+  // };
+  // useEffect(() => {
+  //   DoGetAvatars();
+  // }, [workspaceId]);
   //   navigation
-  const setDate = (date: any, dateString: any) => {
-    setDuedate(dateString);
+  const DoSetDate = (dates: any, dateStrings: any) => {
+    setStartDate(dateStrings[0]);
+    setDueDate(dateStrings[1]);
   };
 
   const { isLoading, isError, mutate } = useMutation({
@@ -162,7 +195,9 @@ export const TaskModal = ({ task }: any) => {
         description,
         priority,
         dueDate,
+        startDate,
         bg_url: bgUrl,
+        assignIds,
       });
     },
 
@@ -184,7 +219,6 @@ export const TaskModal = ({ task }: any) => {
   };
 
   if (isError) {
-    console.log(isError);
     return <div>error</div>;
   }
   return (
@@ -249,11 +283,11 @@ export const TaskModal = ({ task }: any) => {
             >
               Thời gian
             </label>
-            <DatePicker
+            <RangePicker
               className="w-full"
-              onChange={setDate}
-              // defaultValue={dayjs(dayjs(), "DD/MM/YYYY")}
-              format={"YYYY-MM-DD"}
+              format="DD/MM/YYYY"
+              defaultValue={[dayjs(), dayjs().add(1, "day")]}
+              onChange={DoSetDate}
             />
           </div>
           <div className="flex flex-row space-x-2">
@@ -294,6 +328,24 @@ export const TaskModal = ({ task }: any) => {
                 ]}
               />
             </div>
+          </div>
+          {/* input field */}
+          <div className="flex flex-row justify-start space-x-1 items-center">
+            <label
+              htmlFor="name"
+              className="block mb-2 w-24 text-sm font-medium text-gray-900 mr-5"
+            >
+              Người đảm nhiệm
+            </label>
+            <Select
+              // defaultValue={EPriority.HIGH}
+              mode="multiple"
+              allowClear
+              placeholder="Người nhận nhiệm vụ"
+              className="w-full"
+              onChange={(selectedAssignId) => setAssignIds(selectedAssignId)}
+              options={assignOptions}
+            />
           </div>
         </div>
       </Modal>
@@ -355,8 +407,6 @@ const AvatarGroup = () => {
     DoGetAvatars();
   }, [workspaceId]);
 
-  console.log(avatars);
-
   if (isLoading) return <></>;
   return (
     <Avatar.Group>
@@ -383,5 +433,97 @@ const SmartOptionBoard = () => {
     <Dropdown menu={{ items: menuItem }}>
       <Space>{/* <Button>Smart options</Button> */}</Space>
     </Dropdown>
+  );
+};
+
+export const TaskDetailModal = () => {
+  const [open, setOpen] = useAtom(openDetailTaskModal);
+  const [selectTaskId, setSelectTaskId] = useAtom(selectTaskIdAtom);
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: [selectTaskId],
+    });
+  }, [selectTaskId]);
+  const {
+    data: task,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: [selectTaskId],
+    queryFn: () => get(`task/${selectTaskId}`),
+  });
+  const [duedate, setDuedate] = useState();
+
+  const DoCancel = () => {
+    setOpen(false);
+  };
+
+  return (
+    <Modal
+      open={!isLoading && open}
+      onCancel={DoCancel}
+      footer={[
+        <Button
+          key="submit"
+          type="primary"
+          className="bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2"
+          // loading={isLoading}
+          // onClick={handleOk}
+        >
+          Tạo
+        </Button>,
+        <Button key="back" onClick={DoCancel}>
+          Quay lại
+        </Button>,
+      ]}
+    >
+      <div className="text-3xl mb-3 font-bold">{task?.name}</div>
+      <div className="space-y-6">
+        <div className="flex flex-row space-x-2 items-center">
+          <div className="text-base text-gray-400">Assign</div>
+          <div className="flex-1">Trung vip</div>
+        </div>
+        <div className="flex flex-row space-x-2 items-center">
+          <div className="text-base text-gray-400">Status</div>
+          <div className={`flex-1`}>
+            <div
+              className={`${getBgStatusTask(
+                task?.status
+              )} w-fit py-1 px-2 rounded-lg`}
+            >
+              {task?.status}
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-row space-x-2 items-center">
+          <div className="text-base text-gray-400">Due date</div>
+          <div className="flex-1">
+            <div className="w-fit px-2 py-1 rounded-md bg-slate-200">
+              {dayjs(task?.dueDate).format("DD/MM/YYYY")}
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-row space-x-2 items-center">
+          <div className="text-base text-gray-400">Priority</div>
+          <div
+            className={`${getBgPriorityColor(
+              task?.priority
+            )} py-1 px-2 rounded-md w-fit`}
+          >
+            {task?.priority}
+          </div>
+        </div>
+      </div>
+      <div className="mt-3">
+        <div className="text-xl text-black font-bold">Description</div>
+        <div>
+          <TextArea rows={4} defaultValue={task?.description} />
+        </div>
+      </div>
+      <div>
+        <div className="text-xl text-black font-bold">Comments</div>
+      </div>
+    </Modal>
   );
 };

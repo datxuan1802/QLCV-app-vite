@@ -9,6 +9,7 @@ import {
   BoardModal,
   WorkspaceModal,
   TaskModal,
+  TaskDetailModal,
   AddMemberModal,
 } from ".";
 const { Header, Content, Sider } = Layout;
@@ -134,6 +135,7 @@ const MainLayout = ({ children }: any) => {
       <BoardModal />
       <WorkspaceModal />
       <TaskModal />
+      <TaskDetailModal />
       <AddMemberModal />
     </Layout>
   );

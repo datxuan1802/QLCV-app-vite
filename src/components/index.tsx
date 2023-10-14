@@ -10,8 +10,10 @@ import {
   Task,
   TaskModal,
   BoardHeader,
+  TaskDetailModal,
 } from "./BoardPage";
 import { AddMemberModal } from "./AddMemberModal";
+import { AvatarCus } from "./Avatar";
 export {
   WorkspaceTab,
   AddWorkspaceTab,
@@ -26,4 +28,6 @@ export {
   TaskModal,
   BoardHeader,
   AddMemberModal,
+  TaskDetailModal,
+  AvatarCus,
 };
