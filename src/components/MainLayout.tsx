@@ -17,34 +17,14 @@ const { Search } = Input;
 
 // hooks
 import { useWorkspace } from "@/hooks/workspace.hook";
-import { useAtom } from "jotai";
-import {
-  openAddMemberModal,
-  selectWorkspaceIdAtom,
-} from "@/states/modal.state";
 
-const AddMemberButton = ({ workspaceId }: { workspaceId: string }) => {
-  const [, setOpen] = useAtom(openAddMemberModal);
-  const [, setSelectWorkspaceId] = useAtom(selectWorkspaceIdAtom);
-
-  return (
-    <div
-      onClick={() => {
-        setOpen(true);
-        setSelectWorkspaceId(workspaceId);
-      }}
-    >
-      Thêm thành viên +
-    </div>
-  );
-};
 const settings = {
   key: "2",
   label: "Some settings",
   children: [
     {
       key: "14",
-      label: <AddWorkspaceTab></AddWorkspaceTab>,
+      label: <AddWorkspaceTab />,
     },
     {
       key: "12",
@@ -65,14 +45,6 @@ const MainLayout = ({ children }: any) => {
       key: workspacePermission._id,
       label: <WorkspaceTab workspace={workspacePermission} />,
       children: [
-        {
-          key: workspacePermission._id + "2",
-          label: (
-            <AddMemberButton
-              workspaceId={workspacePermission?.workspace?._id}
-            />
-          ),
-        },
         {
           key: workspacePermission._id + "1",
           label: (
@@ -125,7 +97,7 @@ const MainLayout = ({ children }: any) => {
         <Sider width={300} className="bg-slate-300">
           <Menu
             mode="inline"
-            defaultOpenKeys={workspaces[0]?._id}
+            // defaultOpenKeys={workspaces[0]?._id as string}
             items={[settings, ...items]}
             className="h-full"
           />
