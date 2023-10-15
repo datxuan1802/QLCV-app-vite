@@ -9,3 +9,5 @@ export const openDetailTaskModal = atom<boolean>(false);
 export const selectWorkspaceIdAtom = atom<string>("");
 export const selectBoardIdAtom = atom<string>("");
 export const selectTaskIdAtom = atom<string>("");
+
+export const selectViewAtom = atom<string>("Board");
