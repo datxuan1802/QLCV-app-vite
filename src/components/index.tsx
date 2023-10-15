@@ -14,6 +14,7 @@ import {
 } from "./BoardPage";
 import { AddMemberModal } from "./AddMemberModal";
 import { AvatarCus } from "./Avatar";
+import { TimelineLayout } from "./TimelineView";
 export {
   WorkspaceTab,
   AddWorkspaceTab,
@@ -30,4 +31,5 @@ export {
   AddMemberModal,
   TaskDetailModal,
   AvatarCus,
+  TimelineLayout,
 };

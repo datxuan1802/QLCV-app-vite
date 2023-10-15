@@ -5,6 +5,7 @@ import {
   MainLayout,
   Task,
   BoardHeader,
+  TimelineLayout,
 } from "@/components";
 import { useParams } from "react-router";
 // import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -13,6 +14,8 @@ import { get, patch } from "@/services/axios.service";
 
 import { EStatus } from "@/utils/type";
 import { mapStatusTask } from "@/utils/mapping";
+import { useAtom } from "jotai";
+import { selectViewAtom } from "@/states/modal.state";
 
 const BoardPage = () => {
   const { boardId, workspaceId } = useParams();
@@ -21,6 +24,8 @@ const BoardPage = () => {
     inProgress: [],
     done: [],
   });
+
+  const [selectView] = useAtom(selectViewAtom);
 
   useEffect(() => {
     localStorage.setItem(
@@ -97,7 +102,6 @@ const BoardPage = () => {
     const sourceTodos = tasks[source.droppableId];
     const task = sourceTodos[source.index];
 
-    console.log(task);
     //NOTE: Drag and drop within the same column
     if (
       source.droppableId === destination.droppableId &&
@@ -131,45 +135,52 @@ const BoardPage = () => {
   return (
     <MainLayout>
       <BoardHeader />
-      <KanbanLayout handleOnDragEnd={handleOnDragEnd}>
-        <Column droppableId={"todos"} columnName="To Do" className="bg-red-500">
-          {tasks.todos &&
-            tasks.todos?.map((task: any, index: number) => (
-              <Task
-                key={task._id}
-                item={task}
-                index={index}
-                draggableId={task._id}
-              />
-            ))}
-        </Column>
-        <Column
-          droppableId={"inProgress"}
-          columnName="In Progress"
-          className="bg-red-500"
-        >
-          {tasks.inProgress &&
-            tasks.inProgress?.map((task: any, index: number) => (
-              <Task
-                key={task._id}
-                item={task}
-                index={index}
-                draggableId={task._id}
-              />
-            ))}
-        </Column>
-        <Column droppableId={"done"} columnName="Done" className="bg-red-500">
-          {tasks.done &&
-            tasks.done?.map((task: any, index: number) => (
-              <Task
-                key={task._id}
-                item={task}
-                index={index}
-                draggableId={task._id}
-              />
-            ))}
-        </Column>
-      </KanbanLayout>
+      {selectView === "Board" && (
+        <KanbanLayout handleOnDragEnd={handleOnDragEnd}>
+          <Column
+            droppableId={"todos"}
+            columnName="To Do"
+            className="bg-red-500"
+          >
+            {tasks.todos &&
+              tasks.todos?.map((task: any, index: number) => (
+                <Task
+                  key={task._id}
+                  item={task}
+                  index={index}
+                  draggableId={task._id}
+                />
+              ))}
+          </Column>
+          <Column
+            droppableId={"inProgress"}
+            columnName="In Progress"
+            className="bg-red-500"
+          >
+            {tasks.inProgress &&
+              tasks.inProgress?.map((task: any, index: number) => (
+                <Task
+                  key={task._id}
+                  item={task}
+                  index={index}
+                  draggableId={task._id}
+                />
+              ))}
+          </Column>
+          <Column droppableId={"done"} columnName="Done" className="bg-red-500">
+            {tasks.done &&
+              tasks.done?.map((task: any, index: number) => (
+                <Task
+                  key={task._id}
+                  item={task}
+                  index={index}
+                  draggableId={task._id}
+                />
+              ))}
+          </Column>
+        </KanbanLayout>
+      )}
+      {selectView === "Timeline" && <TimelineLayout />}
     </MainLayout>
   );
 };

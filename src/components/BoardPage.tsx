@@ -11,7 +11,6 @@ import {
   Modal,
   Select,
   DatePicker,
-  DatePickerProps,
   Layout,
   Avatar,
   Image,
@@ -28,13 +27,13 @@ import {
   openDetailTaskModal,
   openTaskModal,
   selectTaskIdAtom,
+  selectViewAtom,
   selectWorkspaceIdAtom,
 } from "@/states/modal.state";
 import { EPriority } from "@/utils/type";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import dayjs from "dayjs";
 import { getBgPriorityColor, getBgStatusTask } from "@/utils/mapping";
-import { path } from "@/utils/path";
 import { AvatarCus } from "@/components/";
 
 const { Header } = Layout;
@@ -98,7 +97,6 @@ interface TaskLayoutProps {
 export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
   const [, setOpen] = useAtom(openDetailTaskModal);
   const [, setTaskId] = useAtom(selectTaskIdAtom);
-  console.log(item);
   return (
     <Draggable key={item} draggableId={draggableId} index={index}>
       {(provided) => (
@@ -173,19 +171,14 @@ export const TaskModal = () => {
       ),
       value: item.user._id,
     }));
-  // const DoGetAvatars = async () => {
-  //   setIsLoading(true);
-  //   const res = await get(`/workspaces/getMembers?workspaceId=${workspaceId}`);
-  //   setAvatars(res);
-  //   setIsLoading(false);
-  // };
-  // useEffect(() => {
-  //   DoGetAvatars();
-  // }, [workspaceId]);
-  //   navigation
+
+  const getTimeFormat = (str: string) => {
+    const parts = str.split("/");
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+  };
   const DoSetDate = (dates: any, dateStrings: any) => {
-    setStartDate(dateStrings[0]);
-    setDueDate(dateStrings[1]);
+    setStartDate(getTimeFormat(dateStrings[0]));
+    setDueDate(getTimeFormat(dateStrings[1]));
   };
 
   const { isLoading, isError, mutate } = useMutation({
@@ -358,6 +351,7 @@ export const BoardHeader = () => {
   const [, setOpenAddMemberModal] = useAtom(openAddMemberModal);
   const { workspaceId } = useParams();
   const [, setSelectWorkspaceId] = useAtom(selectWorkspaceIdAtom);
+  const [, setSelectView] = useAtom(selectViewAtom);
   return (
     <Header className="bg-slate-200 flex flex-row justify-center items-center">
       <div className="flex-1 space-x-2 flex flex-row justify-start items-center">
@@ -381,6 +375,16 @@ export const BoardHeader = () => {
         >
           Thêm thành viên
         </Button>
+        <Select
+          defaultValue="Board"
+          style={{ width: 120 }}
+          onChange={(value: string) => setSelectView(value)}
+          options={[
+            { value: "Board", label: "Board" },
+            { value: "Timeline", label: "Timeline" },
+            // { value: "Calendar", label: "Calender" },
+          ]}
+        />
       </div>
       <div className="flex-none space-x-2 flex flex-row justify-center items-center">
         <AvatarGroup />
@@ -438,7 +442,7 @@ const SmartOptionBoard = () => {
 
 export const TaskDetailModal = () => {
   const [open, setOpen] = useAtom(openDetailTaskModal);
-  const [selectTaskId, setSelectTaskId] = useAtom(selectTaskIdAtom);
+  const [selectTaskId] = useAtom(selectTaskIdAtom);
   const queryClient = useQueryClient();
   useEffect(() => {
     queryClient.invalidateQueries({
@@ -453,7 +457,6 @@ export const TaskDetailModal = () => {
     queryKey: [selectTaskId],
     queryFn: () => get(`task/${selectTaskId}`),
   });
-  const [duedate, setDuedate] = useState();
 
   const DoCancel = () => {
     setOpen(false);

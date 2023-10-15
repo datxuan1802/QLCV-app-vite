@@ -1,3 +1,4 @@
+import moment from "moment";
 import { EPriority, EStatus } from "./type";
 
 // mapping when send to server
@@ -38,4 +39,25 @@ export const getBgStatusTask = (status: EStatus) => {
     default:
       return "bg-red-500";
   }
+};
+
+export const getTimelineGroup = (task: any): ITimelineGroup => {
+  return {
+    id: task._id,
+    title: task.name,
+    height: 30,
+  };
+};
+
+export const getTimeLineItem = (task: any): ITimelineItem => {
+  return {
+    id: task._id,
+    group: task._id,
+    title: task.name,
+    canMove: true,
+    canResize: true,
+    start_time: moment(task.startDate).startOf("day"),
+    end_time: moment(task.dueDate).endOf("day"),
+    useResizeHandle: true,
+  };
 };
