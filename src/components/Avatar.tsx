@@ -1,4 +1,3 @@
-import React from "react";
 import { Avatar } from "antd";
 interface AvatarProps {
   user: User;
@@ -13,5 +12,9 @@ export const AvatarCus = ({ user, ...rest }: AvatarProps) => {
         src={user?.avatar}
       ></Avatar>
     );
-  return <Avatar className={`${rest}`}>{user?.name?.charAt(0)}</Avatar>;
+  return (
+    <Avatar className={`${rest} bg-blue-400`}>
+      {user?.name?.charAt(0).toUpperCase()}
+    </Avatar>
+  );
 };

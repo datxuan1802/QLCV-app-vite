@@ -1,30 +1,30 @@
 import { Link, useNavigate } from "react-router-dom";
-// import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { errorToast, successToast } from "../utils/toast";
-// import { loginSchema } from "../utils/schema";
 import { path } from "../utils/path";
 import { Input, Button, Space } from "antd";
 import { post } from "@/services/axios.service";
-import { useAtom } from "jotai";
-import { userAtom } from "@/states/user.state";
 
-const LoginPage = () => {
+const Register = () => {
+  const [username, setUsername] = useState("trung vu");
   const [email, setEmail] = useState("vutrung26072001@gmail.com");
   const [password, setPassword] = useState("13456");
   const navigation = useNavigate();
-  const [, setUser] = useAtom(userAtom);
   const [loading, setLoading] = useState(false);
-  const DoLogin = async () => {
+  const DoRegister = async () => {
     setLoading(true);
     try {
-      const res = await post("/auth/login", { email, password });
-      localStorage.setItem("auth", res.access_token);
-      setUser(res.user);
-      navigation(path.home);
-      successToast("Đăng nhập thành công");
+      const res = await post("/auth/register", {
+        name: username,
+        email,
+        password,
+        roles: ["Manager"],
+      });
+      //   localStorage.setItem("auth", res.access_token);
+      //   setUser(res.user);
+      navigation(path.activeAccount);
     } catch (error) {
-      errorToast("Đăng nhập thất bại");
+      errorToast("Đăng ký thất bại");
     }
     setLoading(false);
   };
@@ -84,6 +84,20 @@ const LoginPage = () => {
         </div>
 
         <div className="mb-3 gap-y-5  items-center flex flex-row space-x-2">
+          <label className="font-medium text-base w-20">Name</label>
+          {/* <Input {...register("email")} /> */}
+          {/* <label className="my-0 py-0 text-red-500">
+            {errors?.email?.message}
+          </label> */}
+          <Input
+            placeholder="Username"
+            size="large"
+            className="w-full"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <div className="mb-3 gap-y-5  items-center flex flex-row space-x-2">
           <label className="font-medium text-base w-20">Email</label>
           {/* <Input {...register("email")} /> */}
           {/* <label className="my-0 py-0 text-red-500">
@@ -109,13 +123,13 @@ const LoginPage = () => {
         </div>
 
         <Button
-          onClick={DoLogin}
+          onClick={DoRegister}
           className={"bg-blue-500 w-full text-white "}
           loading={loading}
           disabled={loading}
           size="large"
         >
-          Đăng nhập
+          Đăng ký tài khoản
         </Button>
         <span className="text-[#1952bd] text-center mt-5">
           I forgot my password
@@ -134,4 +148,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Register;

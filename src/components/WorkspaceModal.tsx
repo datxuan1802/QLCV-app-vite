@@ -49,7 +49,6 @@ const WorkspaceModal: React.FC = () => {
   };
 
   if (isError) {
-    console.log(isError);
     return <div>error</div>;
   }
   return (

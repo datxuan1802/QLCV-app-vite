@@ -6,7 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // pages
 import { path } from "@/utils/path";
-import { BoardPage, Home, Login, Workspace } from "./pages";
+import { ActiveAcc, BoardPage, Home, Login, Register } from "./pages";
 
 // toast container
 import { ToastContainer } from "react-toastify";
@@ -31,6 +31,14 @@ const router = createBrowserRouter([
   {
     path: path.login,
     element: <Login />,
+  },
+  {
+    path: path.register,
+    element: <Register />,
+  },
+  {
+    path: path.activeAccount,
+    element: <ActiveAcc />,
   },
 ]);
 

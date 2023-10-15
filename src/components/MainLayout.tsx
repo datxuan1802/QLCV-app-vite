@@ -11,12 +11,15 @@ import {
   TaskModal,
   TaskDetailModal,
   AddMemberModal,
+  AvatarCus,
 } from ".";
 const { Header, Content, Sider } = Layout;
 const { Search } = Input;
 
 // hooks
 import { useWorkspace } from "@/hooks/workspace.hook";
+import { useAtom } from "jotai";
+import { userAtom } from "@/states/user.state";
 
 const settings = {
   key: "2",
@@ -39,6 +42,7 @@ const settings = {
 
 const MainLayout = ({ children }: any) => {
   const { workspaces } = useWorkspace();
+  const [user] = useAtom(userAtom);
 
   const items = workspaces.map((workspacePermission: any) => {
     return {
@@ -72,6 +76,13 @@ const MainLayout = ({ children }: any) => {
   return (
     <Layout className="h-screen">
       <Header className="bg-green-400 flex flex-row justify-center items-start space-x-2">
+        <div className="flex items-center justify-center mt-1">
+          <img
+            src="../../../public/leadership.png"
+            alt=""
+            className="w-10 h-10"
+          />
+        </div>
         <div className="text-2xl text-bold text-center mt-3">
           Task management app
         </div>
@@ -90,6 +101,7 @@ const MainLayout = ({ children }: any) => {
               style={{ backgroundColor: "#87d068" }}
               icon={<UserOutlined />}
             />
+            {/* {user && <AvatarCus user={user} />} */}
           </div>
         </div>
       </Header>

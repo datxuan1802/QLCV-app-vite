@@ -125,7 +125,9 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
             </div>
             <div>
               <Avatar.Group>
-                <AvatarCus user={item.assign} className="w-5 h-5" />
+                {item.assignIds.map((user: any) => (
+                  <AvatarCus user={user} className="w-5 h-5" />
+                ))}
               </Avatar.Group>
             </div>
           </div>
@@ -415,7 +417,7 @@ const AvatarGroup = () => {
   return (
     <Avatar.Group>
       {avatars?.map((item: any) => (
-        <Avatar key={item.user._id} src={item.user.avatar} />
+        <AvatarCus key={item.user._id} user={item.user} />
       ))}
     </Avatar.Group>
   );
