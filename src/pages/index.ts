@@ -4,4 +4,5 @@ import Workspace from "./Workspace";
 import BoardPage from "./BoardPage";
 import Register from "./Register";
 import ActiveAcc from "./ActiveAcc";
-export { Login, Home, Workspace, BoardPage, Register, ActiveAcc };
+import Report from "./Report";
+export { Report, Login, Home, Workspace, BoardPage, Register, ActiveAcc };

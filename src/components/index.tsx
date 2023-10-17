@@ -15,6 +15,7 @@ import {
 import { AddMemberModal } from "./AddMemberModal";
 import { AvatarCus } from "./Avatar";
 import { TimelineLayout } from "./TimelineView";
+import { ReportLayout } from "./Report";
 export {
   WorkspaceTab,
   AddWorkspaceTab,
@@ -32,4 +33,5 @@ export {
   TaskDetailModal,
   AvatarCus,
   TimelineLayout,
+  ReportLayout,
 };

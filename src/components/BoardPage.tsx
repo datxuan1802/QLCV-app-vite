@@ -31,7 +31,7 @@ import {
   selectWorkspaceIdAtom,
 } from "@/states/modal.state";
 import { EPriority } from "@/utils/type";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import dayjs from "dayjs";
 import { getBgPriorityColor, getBgStatusTask } from "@/utils/mapping";
 import { AvatarCus } from "@/components/";
@@ -351,11 +351,12 @@ export const TaskModal = () => {
 export const BoardHeader = () => {
   const [, setOpen] = useAtom(openTaskModal);
   const [, setOpenAddMemberModal] = useAtom(openAddMemberModal);
-  const { workspaceId } = useParams();
+  const { workspaceId, boardId } = useParams();
   const [, setSelectWorkspaceId] = useAtom(selectWorkspaceIdAtom);
   const [, setSelectView] = useAtom(selectViewAtom);
+  const navigation = useNavigate();
   return (
-    <Header className="bg-slate-200 flex flex-row justify-center items-center">
+    <Header className="bg-white flex flex-row justify-center items-center">
       <div className="flex-1 space-x-2 flex flex-row justify-start items-center">
         <div>
           <h2 className="text-2xl text-bold">Board Name</h2>
@@ -387,6 +388,23 @@ export const BoardHeader = () => {
             // { value: "Calendar", label: "Calender" },
           ]}
         />
+        <Button
+          className="bg-blue-500 normal-case "
+          onClick={() => {
+            const url = window.location.pathname;
+            const parts = url.split("/");
+            const endpoint = parts[parts.length - 1];
+            console.log(endpoint);
+            if (endpoint === "report") {
+              navigation(`/workspaces/${workspaceId}/boards/${boardId}`);
+              return;
+            }
+            navigation(`/workspaces/${workspaceId}/boards/${boardId}/report`);
+          }}
+          type="primary"
+        >
+          Xem báo cáo
+        </Button>
       </div>
       <div className="flex-none space-x-2 flex flex-row justify-center items-center">
         <AvatarGroup />

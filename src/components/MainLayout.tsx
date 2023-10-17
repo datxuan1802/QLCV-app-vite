@@ -12,6 +12,7 @@ import {
   TaskDetailModal,
   AddMemberModal,
   AvatarCus,
+  ReportLayout,
 } from ".";
 const { Header, Content, Sider } = Layout;
 const { Search } = Input;
