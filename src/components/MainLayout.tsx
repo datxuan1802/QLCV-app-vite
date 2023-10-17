@@ -75,7 +75,7 @@ const MainLayout = ({ children }: any) => {
 
   return (
     <Layout className="h-screen">
-      <Header className="bg-green-400 flex flex-row justify-center items-start space-x-2">
+      <Header className="bg-blue-400 flex flex-row justify-center items-start space-x-2">
         <div className="flex items-center justify-center mt-1">
           <img
             src="../../../public/leadership.png"
@@ -84,7 +84,7 @@ const MainLayout = ({ children }: any) => {
           />
         </div>
         <div className="text-2xl text-bold text-center mt-3">
-          Task management app
+          Task management
         </div>
         <div>Workspace</div>
         <div>template</div>
@@ -114,7 +114,7 @@ const MainLayout = ({ children }: any) => {
             className="h-full"
           />
         </Sider>
-        <Content className="bg-slate-100">{children}</Content>
+        <Content className="bg-slate-200">{children}</Content>
       </Layout>
       <BoardModal />
       <WorkspaceModal />

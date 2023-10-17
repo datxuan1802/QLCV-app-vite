@@ -51,7 +51,7 @@ export const KanbanLayout = ({
 }: KanbanLayoutProps) => {
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
-      <div className="flex flex-row justify-between mt-4 mx-2">{children}</div>
+      <div className="flex flex-row justify-between mt-4 mx-2 ">{children}</div>
     </DragDropContext>
   );
 };
@@ -76,7 +76,7 @@ export const Column = ({
           {...provided.droppableProps}
           ref={provided.innerRef}
           className={`space-y-1 
-          w-72 p-2 rounded-lg bg-slate-200 h-fit
+          w-72 p-2 rounded-lg bg-slate-100 h-fit
           ${snapshot.isDraggingOver ? "bg-red-200" : ""}
             `}
         >
@@ -101,7 +101,7 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
     <Draggable key={item} draggableId={draggableId} index={index}>
       {(provided) => (
         <div
-          className="bg-slate-300 rounded-lg shadow-sm p-2"
+          className="bg-white rounded-lg shadow-sm p-2"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -111,16 +111,16 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
           }}
         >
           <div className="space-y-1">
-            <div className="py-2 px-1 bg-slate-200 rounded-md">{item.name}</div>
+            <div className="py-2 px-1 font-bold">{item.name.toUpperCase()}</div>
             <div
               className={`${getBgPriorityColor(
                 item.priority
-              )} py-1 px-2 rounded-md w-fit`}
+              )} py-1 px-2 rounded-md w-fit font-semibold`}
             >
               {item.priority}
             </div>
             <div className="p-1 rounded-md bg-blue-500 w-fit flex flex-row items-center ">
-              <ClockCircleOutlined className="mr-1" />
+              <ClockCircleOutlined className="pr-2" />
               {dayjs(item.dueDate).format("DD/MM/YYYY")}
             </div>
             <div>

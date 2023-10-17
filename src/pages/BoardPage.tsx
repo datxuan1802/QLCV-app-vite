@@ -137,11 +137,7 @@ const BoardPage = () => {
       <BoardHeader />
       {selectView === "Board" && (
         <KanbanLayout handleOnDragEnd={handleOnDragEnd}>
-          <Column
-            droppableId={"todos"}
-            columnName="To Do"
-            className="bg-red-500"
-          >
+          <Column droppableId={"todos"} columnName="To Do">
             {tasks.todos &&
               tasks.todos?.map((task: any, index: number) => (
                 <Task
@@ -155,7 +151,7 @@ const BoardPage = () => {
           <Column
             droppableId={"inProgress"}
             columnName="In Progress"
-            className="bg-red-500"
+            className="bg-red-200"
           >
             {tasks.inProgress &&
               tasks.inProgress?.map((task: any, index: number) => (

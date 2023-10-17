@@ -45,7 +45,7 @@ export const getTimelineGroup = (task: any): ITimelineGroup => {
   return {
     id: task._id,
     title: task.name,
-    height: 30,
+    height: 60,
   };
 };
 
@@ -56,8 +56,16 @@ export const getTimeLineItem = (task: any): ITimelineItem => {
     title: task.name,
     canMove: true,
     canResize: true,
-    start_time: moment(task.startDate).startOf("day"),
-    end_time: moment(task.dueDate).endOf("day"),
+    start_time: moment(task.startDate),
+    end_time: moment(task.dueDate),
     useResizeHandle: true,
+    assignIds: task.assignIds,
+    status: task.status,
+    itemProps: {
+      style: {
+        background: "rgba(255, 255, 255, 0.0)",
+        border: "rgba(255, 255, 255, 0.0)",
+      },
+    },
   };
 };
