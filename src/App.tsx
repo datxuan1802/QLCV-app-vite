@@ -6,7 +6,15 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // pages
 import { path } from "@/utils/path";
-import { ActiveAcc, BoardPage, Home, Login, Register, Report } from "./pages";
+import {
+  ActiveAcc,
+  BoardPage,
+  Home,
+  Login,
+  Register,
+  Report,
+  Settings,
+} from "./pages";
 
 // toast container
 import { ToastContainer } from "react-toastify";
@@ -31,6 +39,10 @@ const router = createBrowserRouter([
   {
     path: path.report,
     element: <PrivateRoute component={<Report />} />,
+  },
+  {
+    path: path.settings,
+    element: <PrivateRoute component={<Settings />} />,
   },
   {
     path: path.login,

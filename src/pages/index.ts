@@ -5,4 +5,14 @@ import BoardPage from "./BoardPage";
 import Register from "./Register";
 import ActiveAcc from "./ActiveAcc";
 import Report from "./Report";
-export { Report, Login, Home, Workspace, BoardPage, Register, ActiveAcc };
+import Settings from "./Settings";
+export {
+  Report,
+  Login,
+  Home,
+  Workspace,
+  BoardPage,
+  Register,
+  ActiveAcc,
+  Settings,
+};

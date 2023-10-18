@@ -6,4 +6,5 @@ export const path = {
   workspace: "/workspaces/:workspaceId",
   board: "workspaces/:workspaceId/boards/:boardId",
   report: "/workspaces/:workspaceId/boards/:boardId/report",
+  settings: "/settings",
 };

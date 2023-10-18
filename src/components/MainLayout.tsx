@@ -21,6 +21,12 @@ const { Search } = Input;
 import { useWorkspace } from "@/hooks/workspace.hook";
 import { useAtom } from "jotai";
 import { userAtom } from "@/states/user.state";
+import { useNavigate } from "react-router";
+
+const SettingsTab = () => {
+  const navigation = useNavigate();
+  return <div onClick={() => navigation("/settings")}>Settings</div>;
+};
 
 const settings = {
   key: "2",
@@ -32,7 +38,7 @@ const settings = {
     },
     {
       key: "12",
-      label: "settings",
+      label: <SettingsTab />,
     },
     {
       key: "13",
