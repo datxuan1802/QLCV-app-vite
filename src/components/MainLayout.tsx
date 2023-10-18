@@ -75,14 +75,10 @@ const MainLayout = ({ children }: any) => {
   });
 
   return (
-    <Layout className="h-screen">
+    <Layout className="min-h-screen">
       <Header className="bg-blue-400 flex flex-row justify-center items-start space-x-2">
         <div className="flex items-center justify-center mt-1">
-          <img
-            src="../../../public/leadership.png"
-            alt=""
-            className="w-10 h-10"
-          />
+          <img src="/leadership.png" alt="" className="w-10 h-10" />
         </div>
         <div className="text-2xl text-bold text-center mt-3">
           Task management
@@ -112,10 +108,10 @@ const MainLayout = ({ children }: any) => {
             mode="inline"
             // defaultOpenKeys={workspaces[0]?._id as string}
             items={[settings, ...items]}
-            className="h-full"
+            className="min-h-full"
           />
         </Sider>
-        <Content className="bg-slate-200">{children}</Content>
+        <Content className="min-h-screen bg-white">{children}</Content>
       </Layout>
       <BoardModal />
       <WorkspaceModal />

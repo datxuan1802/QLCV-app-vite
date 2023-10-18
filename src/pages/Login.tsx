@@ -36,7 +36,7 @@ const LoginPage = () => {
         className="w-[420px] rounded-lg border p-10 flex justify-center flex-col border-slate-300 bg-white mx-auto space-y-6"
       >
         <div className="flex flex-row justify-center">
-          <img src="../../public/leadership.png" alt="" className="w-32 h-32" />
+          <img src="/leadership.png" alt="" className="w-32 h-32" />
         </div>
         <div className="mx-auto text-center my-2">
           <h2 className="text-3xl font-bold">Welcome to my website</h2>
