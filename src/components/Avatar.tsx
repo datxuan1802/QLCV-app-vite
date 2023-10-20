@@ -8,7 +8,7 @@ export const AvatarCus = ({ user, ...rest }: AvatarProps) => {
   if (user?.avatar)
     return (
       <Avatar
-        className={`w-6 h-6 flex items-center justify-center text-xs ${rest}`}
+        className={`w-6 h-6 flex bg-blue-200 items-center justify-center text-xs ${rest}`}
         src={user?.avatar}
       ></Avatar>
     );

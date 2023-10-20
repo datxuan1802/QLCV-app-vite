@@ -22,6 +22,8 @@ import { useWorkspace } from "@/hooks/workspace.hook";
 import { useAtom } from "jotai";
 import { userAtom } from "@/states/user.state";
 import { useNavigate } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import { get } from "@/services/axios.service";
 
 const SettingsTab = () => {
   const navigation = useNavigate();
@@ -50,6 +52,14 @@ const settings = {
 const MainLayout = ({ children }: any) => {
   const { workspaces } = useWorkspace();
   const [user] = useAtom(userAtom);
+  const { data, isLoading } = useQuery({
+    queryKey: ["profile"],
+    queryFn: () => {
+      return get(`/auth/profile`).then((data) => {
+        return data;
+      });
+    },
+  });
 
   const items = workspaces.map((workspacePermission: any) => {
     return {
@@ -100,10 +110,13 @@ const MainLayout = ({ children }: any) => {
             className="w-56"
           />
           <div>
-            <Avatar
-              style={{ backgroundColor: "#87d068" }}
-              icon={<UserOutlined />}
-            />
+            {!isLoading && (
+              <Avatar
+                style={{ backgroundColor: "#87d068" }}
+                icon={<UserOutlined />}
+                src={data?.avatar}
+              />
+            )}
             {/* {user && <AvatarCus user={user} />} */}
           </div>
         </div>
