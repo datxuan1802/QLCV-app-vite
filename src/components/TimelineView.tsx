@@ -17,13 +17,26 @@ import {
 import { Avatar } from "antd";
 import { AvatarCus } from ".";
 import { successToast } from "@/utils/toast";
-export const TimelineLayout = () => {
+
+interface TimelineLayoutProps {
+  tasks: any;
+  setTasks: React.Dispatch<any>;
+}
+export const TimelineLayout: React.FC<TimelineLayoutProps> = ({
+  tasks,
+  setTasks,
+}) => {
   const { boardId } = useParams();
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["groups", boardId],
-    queryFn: () => get(`task/findByBoardId/${boardId}`),
-  });
+  // const { data, isLoading, error } = useQuery({
+  //   queryKey: ["groups", boardId],
+  //   queryFn: () => get(`task/findByBoardId/${boardId}`),
+  // });
+  const [data, setData] = useState([
+    ...tasks.todos,
+    ...tasks.inProgress,
+    ...tasks.done,
+  ]);
   const queryClient = useQueryClient();
   const { mutate, error: err } = useMutation({
     mutationFn: async ({ taskId, data }: any) => {
@@ -42,7 +55,18 @@ export const TimelineLayout = () => {
     const startDate = moment(item.startDate);
     const dueDate = moment(item.dueDate);
     const duration = moment.duration(dueDate.diff(startDate));
-
+    setData((pre) => {
+      return pre.map((task: any) => {
+        if (task._id === itemId) {
+          return {
+            ...task,
+            startDate: moment(dragTime),
+            dueDate: moment(dragTime).add(duration),
+          };
+        }
+        return task;
+      });
+    });
     mutate({
       taskId: itemId,
       data: {
@@ -56,6 +80,17 @@ export const TimelineLayout = () => {
     console.log(moment(time).format("YYYY-MM-DD"));
     console.log(edge);
     if (edge === "right") {
+      setData((pre) => {
+        return pre.map((task: any) => {
+          if (task._id === itemId) {
+            return {
+              ...task,
+              dueDate: moment(time).format("YYYY-MM-DD"),
+            };
+          }
+          return task;
+        });
+      });
       mutate({
         taskId: itemId,
         data: {
@@ -67,7 +102,7 @@ export const TimelineLayout = () => {
 
   return (
     <div>
-      {!isLoading && (
+      {
         <Timeline
           itemRenderer={ItemRenderer}
           groups={data.map((task: any) => getTimelineGroup(task))}
@@ -103,7 +138,7 @@ export const TimelineLayout = () => {
             <DateHeader />
           </TimelineHeaders>
         </Timeline>
-      )}
+      }
     </div>
   );
 };

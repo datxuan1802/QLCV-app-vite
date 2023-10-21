@@ -176,7 +176,9 @@ const BoardPage = () => {
           </Column>
         </KanbanLayout>
       )}
-      {selectView === "Timeline" && <TimelineLayout />}
+      {selectView === "Timeline" && (
+        <TimelineLayout tasks={tasks} setTasks={setTasks} />
+      )}
     </MainLayout>
   );
 };
