@@ -30,11 +30,10 @@ export const AddMemberModal = () => {
       //   navigation(path.home);
     },
   });
-  const { data } = useQuery({
+  useQuery({
     queryKey: ["findUser"],
     queryFn: () => {
       return get(`/auth/find-by-email?email=${email}`).then((data) => {
-        console.log(data);
         return data || {};
       });
     },

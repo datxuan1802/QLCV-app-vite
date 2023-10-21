@@ -22,8 +22,10 @@ const Register = () => {
       });
       //   localStorage.setItem("auth", res.access_token);
       //   setUser(res.user);
+      setLoading(false);
       navigation(path.activeAccount);
     } catch (error) {
+      console.log(error);
       errorToast("Đăng ký thất bại");
     }
     setLoading(false);

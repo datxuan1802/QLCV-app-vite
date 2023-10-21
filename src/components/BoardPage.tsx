@@ -16,7 +16,11 @@ import {
   Image,
   Dropdown,
   Space,
+  Upload,
+  UploadProps,
+  message,
 } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { get, post } from "@/services/axios.service";
@@ -35,6 +39,7 @@ import { useNavigate, useParams } from "react-router";
 import dayjs from "dayjs";
 import { getBgPriorityColor, getBgStatusTask } from "@/utils/mapping";
 import { AvatarCus } from "@/components/";
+import { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
 
 const { Header } = Layout;
 const { TextArea } = Input;
@@ -111,6 +116,15 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
           }}
         >
           <div className="space-y-1">
+            {item?.bg_url && (
+              <div>
+                <img
+                  src={item?.bg_url}
+                  alt=""
+                  className="w-full h-32 bg-slate-200 rounded-xl border-none"
+                />
+              </div>
+            )}
             <div className="py-2 px-1 font-bold">{item.name.toUpperCase()}</div>
             <div
               className={`${getBgPriorityColor(
@@ -149,7 +163,7 @@ export const TaskModal = () => {
   const [dueDate, setDueDate] = useState(dayjs().format("YYYY-MM-DD"));
   const [startDate, setStartDate] = useState(dayjs().format("YYYY-MM-DD"));
   const [assignIds, setAssignIds] = useState<string[]>([]);
-  const [bgUrl, setBgUrl] = useState("");
+  const [bgUrl, setBgUrl] = useState<string | null>(null);
 
   const {
     data: assignUsers,
@@ -166,13 +180,30 @@ export const TaskModal = () => {
     !assignUsersLoading &&
     assignUsers?.map((item: any) => ({
       label: (
-        <div className="flex flex-row items-center">
+        <div className="flex flex-row items-center ">
           <AvatarCus user={item.user} />
           <div className="ml-2">{item.user.name}</div>
         </div>
       ),
       value: item.user._id,
     }));
+
+  const handleChange: UploadProps["onChange"] = async (
+    info: UploadChangeParam<UploadFile>
+  ) => {
+    const fileUpload = info.file.originFileObj as RcFile;
+    const formData = new FormData();
+    formData.append("file", fileUpload);
+
+    post("/s3-upload/image?src=task-bg", formData)
+      .then((data) => {
+        console.log(data);
+        setBgUrl(data.url);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const getTimeFormat = (str: string) => {
     const parts = str.split("/");
@@ -341,6 +372,19 @@ export const TaskModal = () => {
               onChange={(selectedAssignId) => setAssignIds(selectedAssignId)}
               options={assignOptions}
             />
+          </div>
+          {/* input field */}
+          <div className="flex flex-row items-center">
+            <label
+              htmlFor="name"
+              className="block mb-2 text-sm font-medium w-24 text-gray-900 "
+            >
+              Ảnh bìa
+            </label>
+            <Upload className="" onChange={handleChange} showUploadList={false}>
+              <Button icon={<UploadOutlined />}>Upload</Button>
+            </Upload>
+            <div className="ml-2 flex-1 overflow-hidden h-5">{bgUrl}</div>
           </div>
         </div>
       </Modal>

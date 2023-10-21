@@ -1,6 +1,7 @@
 import React from "react";
 import { MainLayout } from "@/components";
 import { Avatar, Button, Breadcrumb, Input, Upload, UploadProps } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { get, patch, post } from "@/services/axios.service";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
@@ -61,11 +62,44 @@ const Settings = () => {
     //     });
     // }
   };
+  const handleUpLoadBg: UploadProps["onChange"] = async (
+    info: UploadChangeParam<UploadFile>
+  ) => {
+    const fileUpload = info.file.originFileObj as RcFile;
+    const formData = new FormData();
+    formData.append("file", fileUpload);
+
+    post("/s3-upload/image?src=user-bg", formData)
+      .then((data) => {
+        console.log(data);
+        patch(`/auth/update`, { background: data.url }).then((data) => {
+          console.log(data);
+          queryClient.invalidateQueries({
+            queryKey: ["profile"],
+          });
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <MainLayout>
       <div>
         <div className="h-52 w-full relative">
+          <Upload
+            className="absolute bottom-[-30px] right-2 z-50"
+            showUploadList={false}
+            onChange={handleUpLoadBg}
+          >
+            <Button
+              icon={<UploadOutlined />}
+              className="bg-blue-400 text-white font-bold"
+            >
+              Click to Upload
+            </Button>
+          </Upload>
           <div className="bg-slate-500 h-64 absolute top-0 right-0 left-0">
             <img src={data?.background} alt="" className="w-full h-full" />
           </div>
@@ -73,7 +107,7 @@ const Settings = () => {
         <div className="ml-6 flex flex-row justify-center items-end">
           {
             <Upload
-              className="z-50 w-32 "
+              className="z-40 w-32 "
               // name="avatar"
               // listType="picture-circle"
               showUploadList={false}
