@@ -85,7 +85,7 @@ export const TimelineLayout: React.FC<TimelineLayoutProps> = ({
           if (task._id === itemId) {
             return {
               ...task,
-              dueDate: moment(time).format("YYYY-MM-DD"),
+              dueDate: moment(time),
             };
           }
           return task;
@@ -94,7 +94,7 @@ export const TimelineLayout: React.FC<TimelineLayoutProps> = ({
       mutate({
         taskId: itemId,
         data: {
-          dueDate: moment(time).format("YYYY-MM-DD"),
+          dueDate: moment(time),
         },
       });
     }

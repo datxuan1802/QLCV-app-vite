@@ -33,7 +33,7 @@ export const getBgStatusTask = (status: EStatus) => {
     case EStatus.TODO:
       return "bg-blue-500";
     case EStatus.IN_PROGRESS:
-      return "bg-yellow-500";
+      return "bg-yellow-400";
     case EStatus.DONE:
       return "bg-green-500";
     default:

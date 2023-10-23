@@ -87,6 +87,12 @@ const BoardPage = () => {
     },
   });
 
+  const { mutate: mutateUpdate } = useMutation({
+    mutationFn: async ({ taskId, data }: any) => {
+      return await patch(`/task/update/${taskId}`, data);
+    },
+  });
+
   const handleOnDragEnd = (result: any) => {
     const { source, destination } = result;
     //NOTE: Check if the draggable item was dropped outside a droppable area
@@ -113,6 +119,14 @@ const BoardPage = () => {
         ...pre,
         [source.droppableId]: sourceTodos,
       }));
+
+      // console.log();
+      // mutateUpdate({
+      //   taskId: task._id,
+      //   data: {
+      //     order: destination.index,
+      //   },
+      // });
     }
 
     // NOTE: Drag and drop between different columns
