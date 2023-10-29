@@ -83,15 +83,15 @@ const MainLayout = ({ children }: any) => {
   });
 
   return (
-    <Layout className="min-h-screen">
+    <Layout className="min-h-screen ">
       <MainHeader />
-      <Layout hasSider className="mt-16">
+      <Layout hasSider className="mt-16 ">
         <Sider width={300} className="bg-slate-300">
           <Menu
             mode="inline"
             // defaultOpenKeys={workspaces[0]?._id as string}
             items={[settings, ...items]}
-            className="min-h-full fixed left-0 w-72"
+            className="min-h-full fixed left-0 w-[300px] "
           />
         </Sider>
         <Content className="min-h-screen bg-white">{children}</Content>
