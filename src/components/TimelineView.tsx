@@ -107,8 +107,9 @@ export const TimelineLayout: React.FC<TimelineLayoutProps> = ({
           defaultTimeEnd={moment().endOf("month")}
           onItemMove={DoItemMove}
           onItemResize={DoItemResize}
+          className="pt-16"
         >
-          <TimelineHeaders>
+          <TimelineHeaders className="fixed top-32 z-50">
             <SidebarHeader>
               {({ getRootProps }) => {
                 return (
@@ -121,7 +122,7 @@ export const TimelineLayout: React.FC<TimelineLayoutProps> = ({
                 );
               }}
             </SidebarHeader>
-            <SidebarHeader variant="right" headerData={{ someData: "extra" }}>
+            {/* <SidebarHeader variant="right" headerData={{ someData: "extra" }}>
               {({ getRootProps, data }) => {
                 return (
                   <div {...getRootProps()} className="bg-blue-400">
@@ -129,7 +130,7 @@ export const TimelineLayout: React.FC<TimelineLayoutProps> = ({
                   </div>
                 );
               }}
-            </SidebarHeader>
+            </SidebarHeader> */}
             <DateHeader unit="primaryHeader" className="bg-blue-500" />
             <DateHeader />
           </TimelineHeaders>
@@ -163,6 +164,7 @@ const ItemRenderer = ({
         style: {
           background: "rgba(255, 255, 255, 0.0)",
           border: "rgba(255, 255, 255, 0.0)",
+          zIndex: 30,
         },
         onMouseDown: () => {},
       })}

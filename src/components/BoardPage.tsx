@@ -397,62 +397,65 @@ export const BoardHeader = () => {
   const [, setSelectView] = useAtom(selectViewAtom);
   const navigation = useNavigate();
   return (
-    <Header className="bg-white flex flex-row justify-center items-center">
-      <div className="flex-1 space-x-2 flex flex-row justify-start items-center">
-        <div>
-          <h2 className="text-2xl text-bold">Board Name</h2>
+    <>
+      <Header className="bg-white flex flex-row justify-center items-center fixed top-16 w-full z-50">
+        <div className="flex-1 space-x-2 flex flex-row justify-start items-center">
+          <div>
+            <h2 className="text-2xl text-bold">Board Name</h2>
+          </div>
+          <Button
+            className="bg-blue-500 normal-case "
+            onClick={() => setOpen(true)}
+            type="primary"
+          >
+            Tạo nhiệm vụ mới
+          </Button>
+          <Button
+            className="bg-blue-500 normal-case "
+            onClick={() => {
+              setOpenAddMemberModal(true);
+              setSelectWorkspaceId(workspaceId as string);
+            }}
+            type="primary"
+          >
+            Thêm thành viên
+          </Button>
+          <Select
+            defaultValue="Board"
+            style={{ width: 120 }}
+            onChange={(value: string) => setSelectView(value)}
+            options={[
+              { value: "Board", label: "Board" },
+              { value: "Timeline", label: "Timeline" },
+              { value: "Table", label: "Table" },
+              // { value: "Calendar", label: "Calender" },
+            ]}
+          />
+          <Button
+            className="bg-blue-500 normal-case "
+            onClick={() => {
+              const url = window.location.pathname;
+              const parts = url.split("/");
+              const endpoint = parts[parts.length - 1];
+              if (endpoint === "report") {
+                navigation(`/workspaces/${workspaceId}/boards/${boardId}`);
+                return;
+              }
+              navigation(`/workspaces/${workspaceId}/boards/${boardId}/report`);
+            }}
+            type="primary"
+          >
+            Xem báo cáo
+          </Button>
         </div>
-        <Button
-          className="bg-blue-500 normal-case "
-          onClick={() => setOpen(true)}
-          type="primary"
-        >
-          Tạo nhiệm vụ mới
-        </Button>
-        <Button
-          className="bg-blue-500 normal-case "
-          onClick={() => {
-            setOpenAddMemberModal(true);
-            setSelectWorkspaceId(workspaceId as string);
-          }}
-          type="primary"
-        >
-          Thêm thành viên
-        </Button>
-        <Select
-          defaultValue="Board"
-          style={{ width: 120 }}
-          onChange={(value: string) => setSelectView(value)}
-          options={[
-            { value: "Board", label: "Board" },
-            { value: "Timeline", label: "Timeline" },
-            { value: "Table", label: "Table" },
-            // { value: "Calendar", label: "Calender" },
-          ]}
-        />
-        <Button
-          className="bg-blue-500 normal-case "
-          onClick={() => {
-            const url = window.location.pathname;
-            const parts = url.split("/");
-            const endpoint = parts[parts.length - 1];
-            if (endpoint === "report") {
-              navigation(`/workspaces/${workspaceId}/boards/${boardId}`);
-              return;
-            }
-            navigation(`/workspaces/${workspaceId}/boards/${boardId}/report`);
-          }}
-          type="primary"
-        >
-          Xem báo cáo
-        </Button>
-      </div>
-      <div className="flex-none space-x-2 flex flex-row justify-center items-center">
-        <AvatarGroup />
-        <SmartOptionBoard />
-        <div>Filter</div>
-      </div>
-    </Header>
+        <div className="flex-none space-x-2 flex flex-row justify-center items-center">
+          <AvatarGroup />
+          <SmartOptionBoard />
+          <div>Filter</div>
+        </div>
+      </Header>
+      <div className="h-16"></div>
+    </>
   );
 };
 

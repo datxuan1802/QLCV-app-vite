@@ -91,7 +91,7 @@ const MainLayout = ({ children }: any) => {
             mode="inline"
             // defaultOpenKeys={workspaces[0]?._id as string}
             items={[settings, ...items]}
-            className="min-h-full"
+            className="min-h-full fixed left-0 w-72"
           />
         </Sider>
         <Content className="min-h-screen bg-white">{children}</Content>
