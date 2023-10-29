@@ -505,13 +505,14 @@ export const TaskDetailModal = () => {
   const [open, setOpen] = useAtom(openDetailTaskModal);
   const [selectTaskId] = useAtom(selectTaskIdAtom);
   const queryClient = useQueryClient();
+  const navigation = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     status: "",
     description: "",
     priority: "",
   });
-  const { boardId } = useParams();
+  const { boardId, workspaceId } = useParams();
   useEffect(() => {
     queryClient.invalidateQueries({
       queryKey: [`task/${selectTaskId}`],
@@ -567,7 +568,11 @@ export const TaskDetailModal = () => {
           type="primary"
           className="bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2"
           // loading={isLoading}
-          // onClick={handleOk}
+          onClick={() => {
+            navigation(
+              `/workspaces/${workspaceId}/boards/${boardId}/tasks/${selectTaskId}`
+            );
+          }}
         >
           Xem chi tiết
         </Button>,

@@ -14,6 +14,7 @@ import {
   Register,
   Report,
   Settings,
+  TaskDetailPage,
 } from "./pages";
 
 // toast container
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
   {
     path: path.settings,
     element: <PrivateRoute component={<Settings />} />,
+  },
+  {
+    path: path.task,
+    element: <PrivateRoute component={<TaskDetailPage />} />,
   },
   {
     path: path.login,

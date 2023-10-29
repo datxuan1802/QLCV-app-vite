@@ -6,6 +6,7 @@ import Register from "./Register";
 import ActiveAcc from "./ActiveAcc";
 import Report from "./Report";
 import Settings from "./Settings";
+import TaskDetailPage from "./TaskDetailPage";
 export {
   Report,
   Login,
@@ -15,4 +16,5 @@ export {
   Register,
   ActiveAcc,
   Settings,
+  TaskDetailPage,
 };
