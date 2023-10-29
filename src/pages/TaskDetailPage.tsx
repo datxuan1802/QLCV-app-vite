@@ -6,8 +6,10 @@ import { UploadOutlined } from "@ant-design/icons";
 import type { CheckboxValueType } from "antd/es/checkbox/Group";
 
 import { MainHeader } from "@/components";
+import { useNavigate } from "react-router";
 
 const TaskDetailPage = () => {
+  const navigation = useNavigate();
   return (
     <div>
       <MainHeader />
@@ -19,9 +21,10 @@ const TaskDetailPage = () => {
               className="text-5xl font-bold border-none focus:shadow-none ml-0 pl-0"
               defaultValue="Title"
             />
-            <Button className="border-2 border-blue-400 text-black hover:bg-blue-400">
+            <Button className="border-2 bg-blue-400 text-white font-bold hover:bg-blue-400">
               Save
             </Button>
+
             <Upload
               className=" border-none text-white "
               showUploadList={false}
@@ -34,6 +37,12 @@ const TaskDetailPage = () => {
                 Click to Upload
               </Button>
             </Upload>
+            <Button
+              onClick={() => navigation(-1)}
+              className="border-2 border-blue-400 text-black hover:bg-blue-400"
+            >
+              Quay lại
+            </Button>
           </div>
           <div className="flex flex-row items-center space-x-2 ml-2">
             <StatusTag label="In Progress" />

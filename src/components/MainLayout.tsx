@@ -85,7 +85,7 @@ const MainLayout = ({ children }: any) => {
   return (
     <Layout className="min-h-screen">
       <MainHeader />
-      <Layout hasSider>
+      <Layout hasSider className="mt-16">
         <Sider width={300} className="bg-slate-300">
           <Menu
             mode="inline"
