@@ -17,7 +17,7 @@ const TaskDetailPage = () => {
           <div className="flex flex-row items-center space-x-2">
             <Input
               className="text-5xl font-bold border-none focus:shadow-none ml-0 pl-0"
-              value="Title"
+              defaultValue="Title"
             />
             <Button className="border-2 border-blue-400 text-black hover:bg-blue-400">
               Save
@@ -44,7 +44,7 @@ const TaskDetailPage = () => {
             <Input.TextArea
               className="text-base border-none focus:shadow-none"
               rows={6}
-              value={
+              defaultValue={
                 "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatemqui odio sint ab est ipsum asperiores. Laudantium quis sunt nonducimus sit rerum illo nulla qui, aliquid, earum repellendus, quodvoluptates officiis? Recusandae alias earum, aspernatur quaerat velillo quae itaque! Esse beatae eveniet natus rerum vitae a recusandaeporro, incidunt ea tempore itaque, iste nisi labore iure, voluptatumreprehenderit in magni mollitia! Ad, sunt amet assumenda at maximevoluptatem eos ipsa adipisci repellendus eveniet commodi accusamusea earum porro a alias laborum perspiciatis illo, cupiditate sequiquidem sint accusantium illum cum. Dicta a sunt modi! Illumpraesentium officia nesciunt."
               }
             ></Input.TextArea>
