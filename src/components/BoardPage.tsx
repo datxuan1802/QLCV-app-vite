@@ -19,11 +19,12 @@ import {
   Upload,
   UploadProps,
   message,
+  Tag,
 } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined, UploadOutlined } from "@ant-design/icons";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { get, post } from "@/services/axios.service";
+import { get, patch, post } from "@/services/axios.service";
 import { successToast } from "@/utils/toast";
 import { useAtom } from "jotai";
 import {
@@ -34,7 +35,7 @@ import {
   selectViewAtom,
   selectWorkspaceIdAtom,
 } from "@/states/modal.state";
-import { EPriority } from "@/utils/type";
+import { EPriority, EStatus } from "@/utils/type";
 import { useNavigate, useParams } from "react-router";
 import dayjs from "dayjs";
 import { getBgPriorityColor, getBgStatusTask } from "@/utils/mapping";
@@ -165,11 +166,7 @@ export const TaskModal = () => {
   const [assignIds, setAssignIds] = useState<string[]>([]);
   const [bgUrl, setBgUrl] = useState<string | null>(null);
 
-  const {
-    data: assignUsers,
-    isLoading: assignUsersLoading,
-    error,
-  } = useQuery({
+  const { data: assignUsers, isLoading: assignUsersLoading } = useQuery({
     queryKey: [workspaceId],
     queryFn: () => {
       return get(`/workspaces/getMembers?workspaceId=${workspaceId}`);
@@ -508,22 +505,56 @@ export const TaskDetailModal = () => {
   const [open, setOpen] = useAtom(openDetailTaskModal);
   const [selectTaskId] = useAtom(selectTaskIdAtom);
   const queryClient = useQueryClient();
+  const [formData, setFormData] = useState({
+    name: "",
+    status: "",
+    description: "",
+    priority: "",
+  });
+  const { boardId } = useParams();
   useEffect(() => {
     queryClient.invalidateQueries({
-      queryKey: [selectTaskId],
+      queryKey: [`task/${selectTaskId}`],
     });
   }, [selectTaskId]);
-  const {
-    data: task,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: [selectTaskId],
+  const { data: task, isLoading } = useQuery({
+    queryKey: [`task/${selectTaskId}`],
     queryFn: () => get(`task/${selectTaskId}`),
+    onSuccess: (data) => {
+      setFormData({
+        name: data.name,
+        status: data.status,
+        description: data.description,
+        priority: data.priority,
+      });
+    },
+  });
+
+  const { mutate, error } = useMutation({
+    mutationFn: async ({ taskId, data }: any) => {
+      return await patch(`task/update/${taskId}`, data);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: [`task/findByBoardId/${boardId}`],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [`task/${selectTaskId}`],
+      });
+      successToast("Cập nhật thành công");
+      setOpen(false);
+    },
   });
 
   const DoCancel = () => {
     setOpen(false);
+  };
+
+  const DoUpdate = () => {
+    mutate({
+      taskId: selectTaskId,
+      data: formData,
+    });
   };
 
   return (
@@ -538,22 +569,33 @@ export const TaskDetailModal = () => {
           // loading={isLoading}
           // onClick={handleOk}
         >
-          Tạo
+          Xem chi tiết
+        </Button>,
+        <Button
+          key="submit"
+          type="primary"
+          className="bg-white border-blue-400 border text-blue-400 hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2"
+          // loading={isLoading}
+          onClick={DoUpdate}
+        >
+          Sửa
         </Button>,
         <Button key="back" onClick={DoCancel}>
           Quay lại
         </Button>,
       ]}
     >
-      <div className="text-3xl mb-3 font-bold">{task?.name}</div>
+      <div className="text-3xl mb-3 font-bold">
+        <Input
+          defaultValue={task?.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          className="border-none focus:border-none focus:shadow-none "
+        />
+      </div>
       <div className="space-y-6">
         <div className="flex flex-row space-x-2 items-center">
-          <div className="text-base text-gray-400">Assign</div>
-          <div className="flex-1">Trung vip</div>
-        </div>
-        <div className="flex flex-row space-x-2 items-center">
           <div className="text-base text-gray-400">Status</div>
-          <div className={`flex-1`}>
+          <div className={`flex-1 flex flex-row items-center space-x-2`}>
             <div
               className={`${getBgStatusTask(
                 task?.status
@@ -561,6 +603,51 @@ export const TaskDetailModal = () => {
             >
               {task?.status}
             </div>
+            <ArrowRightOutlined />
+            <Select
+              defaultValue={EStatus.DONE}
+              style={{ width: 120 }}
+              options={[
+                { value: EStatus.DONE, label: "Done" },
+                { value: EStatus.IN_PROGRESS, label: "In-progress" },
+                { value: EStatus.TODO, label: "Todo" },
+              ]}
+              onChange={(value: any) => {
+                setFormData((preState) => ({
+                  ...preState,
+                  status: value,
+                }));
+              }}
+            />
+          </div>
+        </div>
+        <div className="flex flex-row space-x-2 items-center">
+          <div className="text-base text-gray-400">Priority</div>
+          <div className={`flex-1 flex flex-row items-center space-x-2`}>
+            <div
+              className={`${getBgPriorityColor(
+                task?.priority
+              )} w-fit py-1 px-2 rounded-lg`}
+            >
+              {task?.priority}
+            </div>
+            <ArrowRightOutlined />
+            <Select
+              defaultValue={EPriority.HIGH}
+              style={{ width: 120 }}
+              options={[
+                { value: EPriority.HIGH, label: "Cao" },
+                { value: EPriority.MEDIUM, label: "Vừa" },
+                { value: EPriority.LOW, label: "Thấp" },
+              ]}
+              onChange={(value: any) => {
+                console.log(value);
+                setFormData((preState) => ({
+                  ...preState,
+                  priority: value,
+                }));
+              }}
+            />
           </div>
         </div>
         <div className="flex flex-row space-x-2 items-center">
@@ -572,24 +659,28 @@ export const TaskDetailModal = () => {
           </div>
         </div>
         <div className="flex flex-row space-x-2 items-center">
-          <div className="text-base text-gray-400">Priority</div>
-          <div
-            className={`${getBgPriorityColor(
-              task?.priority
-            )} py-1 px-2 rounded-md w-fit`}
-          >
-            {task?.priority}
-          </div>
+          <div className="text-base text-gray-400">Assign</div>
+          <Avatar.Group>
+            {!isLoading &&
+              task?.assignIds?.map((item: any) => <AvatarCus user={item} />)}
+          </Avatar.Group>
         </div>
       </div>
       <div className="mt-3">
-        <div className="text-xl text-black font-bold">Description</div>
+        <div className="text-xl text-black font-bold mb-2">Description</div>
         <div>
-          <TextArea rows={4} defaultValue={task?.description} />
+          <TextArea
+            rows={4}
+            defaultValue={task?.description}
+            className="border-none"
+            onChange={(e) => {
+              setFormData((preState) => ({
+                ...preState,
+                description: e.target.value,
+              }));
+            }}
+          />
         </div>
-      </div>
-      <div>
-        <div className="text-xl text-black font-bold">Comments</div>
       </div>
     </Modal>
   );
