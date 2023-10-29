@@ -1,7 +1,7 @@
 import WorkspaceTab from "./WorkspaceTab";
 import WorkspaceModal from "./WorkspaceModal";
 import BoardModal from "./BoardModal";
-import MainLayout from "./MainLayout";
+import MainLayout, { MainHeader } from "./MainLayout";
 import { BoardTab, AddBoardTab } from "./BoardTab";
 import { AddWorkspaceTab } from "./WorkspaceTab";
 import {
@@ -36,4 +36,5 @@ export {
   TimelineLayout,
   ReportLayout,
   TableLayout,
+  MainHeader,
 };

@@ -52,14 +52,6 @@ const settings = {
 const MainLayout = ({ children }: any) => {
   const { workspaces } = useWorkspace();
   const [user] = useAtom(userAtom);
-  const { data, isLoading } = useQuery({
-    queryKey: ["profile"],
-    queryFn: () => {
-      return get(`/auth/profile`).then((data) => {
-        return data;
-      });
-    },
-  });
 
   const items = workspaces.map((workspacePermission: any) => {
     return {
@@ -92,35 +84,7 @@ const MainLayout = ({ children }: any) => {
 
   return (
     <Layout className="min-h-screen">
-      <Header className="bg-blue-400 flex flex-row justify-center items-start space-x-2">
-        <div className="flex items-center justify-center mt-1">
-          <img src="/leadership.png" alt="" className="w-10 h-10" />
-        </div>
-        <div className="text-2xl text-bold text-center mt-3">
-          Task management
-        </div>
-        <div>Workspace</div>
-        <div>template</div>
-        <div>create</div>
-        <div className="flex justify-end items-center flex-1 space-x-2">
-          <Search
-            placeholder="input search text"
-            //    onSearch={onSearch}
-            enterButton
-            className="w-56"
-          />
-          <div>
-            {!isLoading && (
-              <Avatar
-                style={{ backgroundColor: "#87d068" }}
-                icon={<UserOutlined />}
-                src={data?.avatar}
-              />
-            )}
-            {/* {user && <AvatarCus user={user} />} */}
-          </div>
-        </div>
-      </Header>
+      <MainHeader />
       <Layout hasSider>
         <Sider width={300} className="bg-slate-300">
           <Menu
@@ -142,3 +106,43 @@ const MainLayout = ({ children }: any) => {
 };
 
 export default MainLayout;
+
+export const MainHeader = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["profile"],
+    queryFn: () => {
+      return get(`/auth/profile`).then((data) => {
+        return data;
+      });
+    },
+  });
+  return (
+    <Header className="z-50 bg-blue-400 flex flex-row justify-center items-start space-x-2 fixed top-0 left-0 right-0">
+      <div className="flex items-center justify-center mt-1">
+        <img src="/leadership.png" alt="" className="w-10 h-10" />
+      </div>
+      <div className="text-2xl text-bold text-center mt-3">Task management</div>
+      <div>Workspace</div>
+      <div>template</div>
+      <div>create</div>
+      <div className="flex justify-end items-center flex-1 space-x-2">
+        <Search
+          placeholder="input search text"
+          //    onSearch={onSearch}
+          enterButton
+          className="w-56"
+        />
+        <div>
+          {!isLoading && (
+            <Avatar
+              style={{ backgroundColor: "#87d068" }}
+              icon={<UserOutlined />}
+              src={data?.avatar}
+            />
+          )}
+          {/* {user && <AvatarCus user={user} />} */}
+        </div>
+      </div>
+    </Header>
+  );
+};
