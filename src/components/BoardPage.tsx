@@ -429,6 +429,7 @@ export const BoardHeader = () => {
           options={[
             { value: "Board", label: "Board" },
             { value: "Timeline", label: "Timeline" },
+            { value: "Table", label: "Table" },
             // { value: "Calendar", label: "Calender" },
           ]}
         />

@@ -6,6 +6,7 @@ import {
   Task,
   BoardHeader,
   TimelineLayout,
+  TableLayout,
 } from "@/components";
 import { useParams } from "react-router";
 // import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -193,6 +194,7 @@ const BoardPage = () => {
       {selectView === "Timeline" && (
         <TimelineLayout tasks={tasks} setTasks={setTasks} />
       )}
+      {selectView === "Table" && <TableLayout />}
     </MainLayout>
   );
 };
