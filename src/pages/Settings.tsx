@@ -157,7 +157,9 @@ const Settings = () => {
           {!isLoading && (
             <InputForm label="Tên người dùng" defaultValue={data.name} />
           )}
-          {!isLoading && <InputForm label="Email" defaultValue={data.email} />}
+          {!isLoading && (
+            <InputForm label="Email" defaultValue={data.email} disable={true} />
+          )}
         </div>
         <div className="ml-6 mt-6">
           <div className={`space-y-2`}>
@@ -188,18 +190,20 @@ interface InputFormProps {
   inputStyle?: string;
   defaultValue: string;
   placeholder?: string;
+  disable?: boolean;
 }
 const InputForm = ({
   label,
   inputStyle,
   defaultValue,
   placeholder = "",
+  disable = false,
 }: InputFormProps) => {
   return (
     <div className={`${inputStyle} space-y-2`}>
       <div className="font-semibold">{label}</div>
       <div>
-        <Input size="large" defaultValue={defaultValue} />
+        <Input size="large" defaultValue={defaultValue} disabled={disable} />
       </div>
     </div>
   );

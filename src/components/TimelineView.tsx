@@ -43,7 +43,6 @@ export const TimelineLayout: React.FC<TimelineLayoutProps> = ({
       return await patch(`task/update/${taskId}`, data);
     },
     onSuccess: (data) => {
-      console.log(data);
       queryClient.invalidateQueries({
         queryKey: ["groups", boardId],
       });
@@ -76,9 +75,6 @@ export const TimelineLayout: React.FC<TimelineLayoutProps> = ({
     });
   };
   const DoItemResize = (itemId: any, time: any, edge: any) => {
-    console.log(itemId);
-    console.log(moment(time).format("YYYY-MM-DD"));
-    console.log(edge);
     if (edge === "right") {
       setData((pre) => {
         return pre.map((task: any) => {
@@ -168,9 +164,7 @@ const ItemRenderer = ({
           background: "rgba(255, 255, 255, 0.0)",
           border: "rgba(255, 255, 255, 0.0)",
         },
-        onMouseDown: () => {
-          console.log("on item click", item);
-        },
+        onMouseDown: () => {},
       })}
     >
       {itemContext.useResizeHandle ? <div {...leftResizeProps} /> : null}

@@ -103,7 +103,7 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
   const [, setOpen] = useAtom(openDetailTaskModal);
   const [, setTaskId] = useAtom(selectTaskIdAtom);
   return (
-    <Draggable key={item} draggableId={draggableId} index={index}>
+    <Draggable key={item._id} draggableId={draggableId} index={index}>
       {(provided) => (
         <div
           className="bg-white rounded-lg shadow-sm p-2"
@@ -139,8 +139,8 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
             </div>
             <div>
               <Avatar.Group>
-                {item.assignIds.map((user: any) => (
-                  <AvatarCus user={user} className="w-5 h-5" />
+                {item.assignIds.map((user: any, index: number) => (
+                  <AvatarCus user={user} key={index} className="w-5 h-5" />
                 ))}
               </Avatar.Group>
             </div>
@@ -438,7 +438,6 @@ export const BoardHeader = () => {
             const url = window.location.pathname;
             const parts = url.split("/");
             const endpoint = parts[parts.length - 1];
-            console.log(endpoint);
             if (endpoint === "report") {
               navigation(`/workspaces/${workspaceId}/boards/${boardId}`);
               return;
