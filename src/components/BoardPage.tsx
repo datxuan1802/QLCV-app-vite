@@ -447,6 +447,22 @@ export const BoardHeader = () => {
           >
             Xem báo cáo
           </Button>
+          <Button
+            className="bg-blue-500 normal-case "
+            onClick={() => {
+              const url = window.location.pathname;
+              const parts = url.split("/");
+              const endpoint = parts[parts.length - 1];
+              if (endpoint === "report") {
+                navigation(`/workspaces/${workspaceId}/boards/${boardId}`);
+                return;
+              }
+              navigation(`/workspaces/${workspaceId}/boards/${boardId}/report`);
+            }}
+            type="primary"
+          >
+            Chi tiết
+          </Button>
         </div>
         <div className="flex-none space-x-2 flex flex-row justify-center items-center">
           <AvatarGroup />
@@ -575,6 +591,7 @@ export const TaskDetailModal = () => {
             navigation(
               `/workspaces/${workspaceId}/boards/${boardId}/tasks/${selectTaskId}`
             );
+            setOpen(false);
           }}
         >
           Xem chi tiết
