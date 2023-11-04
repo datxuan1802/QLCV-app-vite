@@ -13,15 +13,14 @@ import { getBgPriorityColor, getBgStatusTask } from "@/utils/mapping";
 import { EPriority, EStatus } from "@/utils/type";
 import moment from "moment";
 import { successToast } from "@/utils/toast";
-
 import io from "socket.io-client";
+import useSubTask from "@/hooks/subtask.hook";
 
 let socket: any;
 const TaskDetailPage = () => {
   const navigation = useNavigate();
   const { taskId } = useParams();
   const user: any = JSON.parse(localStorage.getItem("user") || "{}");
-  console.log(user?._id);
   const [content, setContent] = useState("");
   const [messages, setMessages] = useState<any>([]);
 
@@ -43,7 +42,7 @@ const TaskDetailPage = () => {
     };
   }, [taskId]);
 
-  const { data, isLoading: isMessLoading } = useQuery({
+  const { isLoading: isMessLoading } = useQuery({
     queryKey: [`message/${taskId}`],
     queryFn: () =>
       get(`message/${taskId}`).then((data) => {
@@ -53,12 +52,16 @@ const TaskDetailPage = () => {
       setMessages(data);
     },
   });
+  const { data: task } = useQuery({
+    queryKey: [`task/${taskId}`],
+    queryFn: () => get(`task/${taskId}`),
+  });
   const queryClient = useQueryClient();
   const [formData, setFormData] = useState({
-    name: "",
-    status: "",
-    description: "",
-    priority: "",
+    name: task?.name || "",
+    status: task?.status || "",
+    description: task?.description || "",
+    priority: task?.priority || "",
   });
   const { mutate } = useMutation({
     mutationFn: async ({ taskId, data }: any) => {
@@ -68,15 +71,12 @@ const TaskDetailPage = () => {
       queryClient.invalidateQueries({
         queryKey: [`task/${taskId}`],
       });
-      //   queryClient.invalidateQueries({
-      //     queryKey: [`task/findByBoardId/${boardId}`],
-      //   });
-      //   queryClient.invalidateQueries({
-      //     queryKey: [`task/${selectTaskId}`],
-      //   });
       successToast("Cập nhật thành công");
     },
   });
+  const { subTasks, subTaskLoading, createSubTask, updateSubTask } = useSubTask(
+    taskId as string
+  );
 
   const DoUpdate = () => {
     mutate({
@@ -85,41 +85,23 @@ const TaskDetailPage = () => {
     });
   };
 
-  const { data: task } = useQuery({
-    queryKey: [`task/${taskId}`],
-    queryFn: () => get(`task/${taskId}`),
-    onSuccess: (data) => {
-      setFormData({
-        name: data.name,
-        status: data.status,
-        description: data.description,
-        priority: data.priority,
-      });
-    },
-  });
-  const handleKeyPress = (event: any) => {
+  const DoPressEnter = (event: any) => {
     if (event.key === "Enter" && !event.shiftKey) {
-      // Do something when Enter is pressed (without Shift)
-      // const socket = io(
-      //   `http://localhost:5556?task_id=${taskId}&user_id=${user?._id}`
-      // );
       socket.emit("send-comment", {
         message: content,
       });
       setContent("");
-      // Add your logic here for what should happen when Enter is pressed
-      // For example, you can submit the form, save the comment, etc.
     }
   };
   return (
     <div>
       <MainHeader />
       <div className="w-full h-screen mt-16">
-        {task?.bg_url && (
-          <div className="bg-slate-200 h-60">
+        <div className="bg-slate-200 h-60">
+          {task?.bg_url && (
             <img src={task?.bg_url} alt="" className="w-full h-full" />
-          </div>
-        )}
+          )}
+        </div>
         <div className="px-60 pt-5 space-y-4">
           <div className="flex flex-row items-center space-x-2">
             <Input
@@ -130,7 +112,8 @@ const TaskDetailPage = () => {
                   name: e.target.value,
                 });
               }}
-              defaultValue={task?.name}
+              placeholder="Task name here"
+              defaultValue={formData?.name}
             />
             <Button
               onClick={DoUpdate}
@@ -138,7 +121,6 @@ const TaskDetailPage = () => {
             >
               Save
             </Button>
-
             <Upload
               className=" border-none text-white "
               showUploadList={false}
@@ -177,27 +159,31 @@ const TaskDetailPage = () => {
                   description: e.target.value,
                 });
               }}
-              defaultValue={task?.description}
+              placeholder="Description here"
+              defaultValue={formData?.description}
             />
           </div>
           <div>
-            <Label label="Sub-task" />
+            <div className="flex flex-row items-center space-x-1">
+              <Label label="Sub-task" />
+              <Button
+                onClick={() => createSubTask()}
+                className="font-bold text-5xl flex justify-center items-center pb-2 border-none focus:shadow-none"
+              >
+                +
+              </Button>
+            </div>
             <div className="flex flex-col space-y-2 mt-2">
-              <Checkbox className="text-base font-semibold w-fit" value="D">
-                Sub-task 1
-              </Checkbox>
-              <Checkbox className="text-base font-semibold w-fit" value="D">
-                Sub-task 2
-              </Checkbox>
-              <Checkbox className="text-base font-semibold w-fit" value="D">
-                Sub-task 3
-              </Checkbox>
+              {!subTaskLoading &&
+                subTasks.map((subTask: any) => (
+                  <SubTask subTask={subTask} updateSubTask={updateSubTask} />
+                ))}
             </div>
           </div>
           <div className="pb-16">
             <Label label="Comments" />
             <div
-              className="mt-6 overflow-y-scroll h-96"
+              className="mt-6 overflow-y-scroll max-h-96"
               ref={scrollToBottomRef}
             >
               {!isMessLoading &&
@@ -212,7 +198,7 @@ const TaskDetailPage = () => {
                 onChange={(e) => {
                   setContent(e.target.value);
                 }}
-                onKeyDown={handleKeyPress}
+                onKeyDown={DoPressEnter}
               />
             </div>
           </div>
@@ -283,6 +269,48 @@ const Comment = ({ message }: { message: any }) => {
       >
         {message?.message}
       </div>
+    </div>
+  );
+};
+
+const SubTask = ({ updateSubTask, subTask }: any) => {
+  const [text, setText] = useState(subTask.name);
+  const DoPressEnter = (event: any) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      updateSubTask({
+        subTaskId: subTask._id,
+        data: {
+          name: text,
+        },
+      });
+      successToast("Cập nhật sub task thành công");
+    }
+  };
+  return (
+    <div className="flex flex-row items-center">
+      <Checkbox
+        className="text-base font-semibold w-fit"
+        checked={subTask.status === EStatus.DONE ? true : false}
+        onChange={() => {
+          updateSubTask({
+            subTaskId: subTask._id,
+            data: {
+              status:
+                subTask.status === EStatus.DONE ? EStatus.TODO : EStatus.DONE,
+            },
+          });
+        }}
+      />
+      <Input
+        defaultValue={subTask.name}
+        value={text}
+        placeholder="Sub-task name"
+        className="w-fit border-none focus:shadow-none"
+        onChange={(e) => {
+          setText(e.target.value);
+        }}
+        onKeyDown={DoPressEnter}
+      />
     </div>
   );
 };
