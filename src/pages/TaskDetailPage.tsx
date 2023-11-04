@@ -196,7 +196,6 @@ const TaskDetailPage = () => {
           </div>
           <div className="pb-16">
             <Label label="Comments" />
-
             <div
               className="mt-6 overflow-y-scroll h-96"
               ref={scrollToBottomRef}
@@ -272,10 +271,16 @@ const Comment = ({ message }: { message: any }) => {
     name: message?.user?.name,
     avatar: message?.user?.avatar,
   } as User;
+  const _user = JSON.parse(localStorage.getItem("user") || "{}");
+  const isAuth = _user?._id === user?._id;
   return (
     <div className="flex flex-row items-start space-x-4 mb-2">
-      <AvatarCus user={user} tailwind="w-8 h-8" />
-      <div className="px-2 bg-slate-200 rounded-xl w-full min-h-[64px]">
+      <AvatarCus user={user} tailwind="h-8 w-8" />
+      <div
+        className={`px-2  rounded-xl w-full min-h-[64px] ${
+          isAuth ? "bg-blue-200" : "bg-slate-200"
+        }`}
+      >
         {message?.message}
       </div>
     </div>
