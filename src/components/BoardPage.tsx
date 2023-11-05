@@ -21,7 +21,11 @@ import {
   message,
   Tag,
 } from "antd";
-import { ArrowRightOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+  ArrowRightOutlined,
+  FilterOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { get, patch, post } from "@/services/axios.service";
@@ -41,6 +45,8 @@ import dayjs from "dayjs";
 import { getBgPriorityColor, getBgStatusTask } from "@/utils/mapping";
 import { AvatarCus } from "@/components/";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
+
+import io from "socket.io-client";
 
 const { Header } = Layout;
 const { TextArea } = Input;
@@ -398,8 +404,8 @@ export const BoardHeader = () => {
   const navigation = useNavigate();
   return (
     <>
-      <Header className="bg-white flex flex-row justify-center items-center fixed top-16 w-full z-50">
-        <div className="flex-1 space-x-2 flex flex-row justify-start items-center">
+      <Header className="bg-white flex flex-row justify-center items-center fixed top-16 w-full z-50 shadow-xl">
+        <div className="flex-1 space-x-4 flex flex-row justify-start items-center">
           <div>
             <h2 className="text-2xl text-bold">Board Name</h2>
           </div>
@@ -463,24 +469,46 @@ export const BoardHeader = () => {
           >
             Chi tiết
           </Button>
-        </div>
-        <div className="flex-none space-x-2 flex flex-row justify-center items-center">
-          <AvatarGroup />
-          <SmartOptionBoard />
-          <div>Filter</div>
+          <div className="flex flex-row items-center space-x-2">
+            <AvatarGroup />
+            <Button
+              className="border-blue-400"
+              icon={<FilterOutlined className="text-blue-400" />}
+              size="large"
+            />
+          </div>
         </div>
       </Header>
+      {/* handle position absolute */}
       <div className="h-16"></div>
     </>
   );
 };
 
 // Avatar
+let workspaceSocket: any;
 const AvatarGroup = () => {
   // const [workspaceId] = useAtom(selectWorkspaceIdAtom);
   const { workspaceId } = useParams();
-  const [avatars, setAvatars] = useState([]);
+  const [avatars, setAvatars] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    workspaceSocket = io(
+      `http://localhost:5556/workspaces-socket?workspace_id=${workspaceId}`
+    );
+    workspaceSocket.on("connect", () => {
+      console.log("Connected to server");
+    });
+    workspaceSocket.on("user-access", (newWorkspacePermission: any) => {
+      setAvatars((preAvatar: any) => [...preAvatar, newWorkspacePermission]);
+    });
+    // Clean up the workspaceSocket connection when component unmounts
+    return () => {
+      workspaceSocket.disconnect();
+    };
+  }, [workspaceId]);
+
   const DoGetAvatars = async () => {
     setIsLoading(true);
     const res = await get(`/workspaces/getMembers?workspaceId=${workspaceId}`);
@@ -495,7 +523,7 @@ const AvatarGroup = () => {
   return (
     <Avatar.Group>
       {avatars?.map((item: any) => (
-        <AvatarCus key={item.user._id} user={item.user} />
+        <AvatarCus key={item.user._id} user={item.user} tailwind="h-8 w-8" />
       ))}
     </Avatar.Group>
   );

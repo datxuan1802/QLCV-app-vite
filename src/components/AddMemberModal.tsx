@@ -19,7 +19,7 @@ export const AddMemberModal = () => {
   const inviteUser = useMutation({
     mutationFn: (userId: string) => {
       return post(
-        `/workspaces/invite-member?workspaceId=${workspaceId}&userId=${userId}`,
+        `/workspaces/invite-member?workspaceId=${workspaceId}&userId=${userId}&email=${email}`,
         {}
       );
     },
