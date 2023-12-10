@@ -17,6 +17,9 @@ import {
   TaskDetailPage,
 } from "./pages";
 
+// google auth context
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
 // toast container
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -65,11 +68,16 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} fallbackElement={<div>Loading...</div>} />
-      <ToastContainer />
-      <ReactQueryDevtools initialIsOpen={true} />
-    </QueryClientProvider>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider
+          router={router}
+          fallbackElement={<div>Loading...</div>}
+        />
+        <ToastContainer />
+        <ReactQueryDevtools initialIsOpen={true} />
+      </QueryClientProvider>
+    </GoogleOAuthProvider>
   );
 }
 

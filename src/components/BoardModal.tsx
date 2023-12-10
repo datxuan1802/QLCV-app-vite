@@ -63,7 +63,7 @@ const BoardModal: React.FC = () => {
     <>
       <Modal
         open={open}
-        title="Tạo một workspace mới"
+        title="Tạo một project mới"
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[
@@ -88,10 +88,10 @@ const BoardModal: React.FC = () => {
               htmlFor="name"
               className="block mb-2 text-sm font-medium w-32 text-gray-900 "
             >
-              Tên board
+              Tên Project
             </label>
             <Input
-              placeholder="Tên workspace"
+              placeholder="Tên project"
               value={name}
               onChange={(e) => setName(e.target.value)}
               size="small"
@@ -103,10 +103,10 @@ const BoardModal: React.FC = () => {
               htmlFor="description"
               className="block mb-2 text-sm font-medium w-32 text-gray-900 "
             >
-              Mô tả board
+              Mô tả project
             </label>
             <Input
-              placeholder="Tên workspace"
+              placeholder="Mô tả project"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               size="small"

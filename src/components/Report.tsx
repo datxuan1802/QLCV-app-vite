@@ -112,19 +112,22 @@ const TaskDoneLineChart = () => {
     datasets: [
       {
         label: "High",
-        data: report?.high,
+        // data: report?.high,
+        data: [0, 1, 7, 6, 5, 3, 1],
         borderColor: "rgba(255, 99, 132, 1)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
       {
         label: "Medium",
-        data: report?.medium,
+        // data: report?.medium,
+        data: [2, 1, 6, 4, 2, 7, 5],
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
       },
       {
         label: "Low",
-        data: report?.low,
+        data: [4, 6, 3, 1, 7, 5, 2],
+        // data: report?.low,
         borderColor: "rgb(75, 192, 192)",
         backgroundColor: "rgba(75, 192, 192, 0.5)",
       },

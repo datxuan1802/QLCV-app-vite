@@ -1,11 +1,11 @@
-import React from "react";
+// import React from "react";
 import { MainLayout } from "@/components";
 import { useDefaultPage } from "@/hooks/localStorage.hook";
 import { Button } from "antd";
 import { useAtom } from "jotai";
 import { openWorkspaceModal } from "@/states/modal.state";
 const Home = () => {
-  useDefaultPage();
+  // useDefaultPage();
   const [, setOpen] = useAtom(openWorkspaceModal);
   return (
     <MainLayout>

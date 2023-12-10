@@ -10,6 +10,20 @@
       rel="stylesheet"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Meta tags for Google Sign-In -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="frame-ancestors 'self'"
+    />
+    <meta
+      http-equiv="X-Content-Security-Policy"
+      content="frame-ancestors 'self'"
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="child-src 'self' https://accounts.google.com"
+    />
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
     <title>Task management</title>
   </head>
   <body>
