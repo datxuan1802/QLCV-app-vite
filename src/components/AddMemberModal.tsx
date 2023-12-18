@@ -56,7 +56,7 @@ export const AddMemberModal = () => {
 
   return (
     <Modal
-      title="Thêm thành viên"
+      title="Add member"
       open={open}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -68,10 +68,10 @@ export const AddMemberModal = () => {
           loading={inviteUser.isLoading}
           onClick={handleOk}
         >
-          Gửi lời mời
+          Invite
         </Button>,
         <Button key="back" onClick={handleCancel}>
-          Quay lại
+          Cancel
         </Button>,
       ]}
     >
@@ -83,7 +83,7 @@ export const AddMemberModal = () => {
           Email
         </label>
         <Input
-          placeholder="Email thành viên"
+          placeholder="trungvu267@gmail.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           size="small"

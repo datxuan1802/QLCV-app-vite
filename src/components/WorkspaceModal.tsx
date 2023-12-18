@@ -55,7 +55,7 @@ const WorkspaceModal: React.FC = () => {
     <>
       <Modal
         open={open}
-        title="Tạo một workspace mới"
+        title="Create a new workspace"
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[
@@ -66,10 +66,10 @@ const WorkspaceModal: React.FC = () => {
             loading={isLoading}
             onClick={handleOk}
           >
-            Tạo
+            Create
           </Button>,
           <Button key="back" onClick={handleCancel}>
-            Quay lại
+            Cancel
           </Button>,
         ]}
       >
@@ -80,10 +80,10 @@ const WorkspaceModal: React.FC = () => {
               htmlFor="name"
               className="block mb-2 text-sm font-medium w-32 text-gray-900 "
             >
-              Tên workspace
+              Name
             </label>
             <Input
-              placeholder="Tên workspace"
+              placeholder="Workspace name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               size="small"
@@ -95,10 +95,10 @@ const WorkspaceModal: React.FC = () => {
               htmlFor="description"
               className="block mb-2 text-sm font-medium w-32 text-gray-900 "
             >
-              Mô tả workspace
+              Description
             </label>
             <Input
-              placeholder="Tên workspace"
+              placeholder="Workspace Description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               size="small"
@@ -110,7 +110,7 @@ const WorkspaceModal: React.FC = () => {
               htmlFor="name"
               className="block mb-2 text-sm font-medium w-32 text-gray-900 "
             >
-              Loại workspace
+              Type
             </label>
             <Select
               defaultValue="private"

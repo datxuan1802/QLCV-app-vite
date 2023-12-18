@@ -137,7 +137,7 @@ const TaskDetailPage = () => {
               onClick={() => navigation(-1)}
               className="border-2 border-blue-400 text-black hover:bg-blue-400"
             >
-              Quay lại
+              Cancel
             </Button>
           </div>
           <div className="flex flex-row items-center space-x-2 ml-2">

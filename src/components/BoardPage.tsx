@@ -234,7 +234,7 @@ export const TaskModal = () => {
       queryClient.invalidateQueries({
         queryKey: [`task/findByBoardId/${boardId}`],
       });
-      successToast("Tạo nhiệm vụ mới thành công");
+      successToast("Create new task");
     },
   });
 
@@ -254,7 +254,7 @@ export const TaskModal = () => {
     <>
       <Modal
         open={open}
-        title="Tạo một nhiệm vụ mới"
+        title="Create a new task"
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[
@@ -265,10 +265,10 @@ export const TaskModal = () => {
             loading={isLoading}
             onClick={handleOk}
           >
-            Tạo
+            Create
           </Button>,
           <Button key="back" onClick={handleCancel}>
-            Quay lại
+            Cancel
           </Button>,
         ]}
       >
@@ -279,10 +279,10 @@ export const TaskModal = () => {
               htmlFor="name"
               className="block mb-2 text-sm font-medium w-32 text-gray-900 "
             >
-              Tên nhiệm vụ
+              Name
             </label>
             <Input
-              placeholder="Tên nhiệm vụ"
+              placeholder="Task name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               size="small"
@@ -294,10 +294,10 @@ export const TaskModal = () => {
               htmlFor="description"
               className="block mb-2 text-sm font-medium w-32 text-gray-900 "
             >
-              Mô tả
+              Description
             </label>
             <Input
-              placeholder="Mô tả nhiệm vụ"
+              placeholder="Task description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               size="small"
@@ -310,7 +310,7 @@ export const TaskModal = () => {
               htmlFor="name"
               className="block mb-2 text-sm font-medium w-32 text-gray-900 "
             >
-              Thời gian
+              Time
             </label>
             <RangePicker
               className="w-full"
@@ -344,16 +344,16 @@ export const TaskModal = () => {
                 htmlFor="name"
                 className="block mb-2 w-24 text-sm font-medium text-gray-900 "
               >
-                Độ ưu tiên
+                Priority
               </label>
               <Select
                 defaultValue={EPriority.HIGH}
                 style={{ width: 120 }}
                 onChange={(val: EPriority) => setPriority(val)}
                 options={[
-                  { value: EPriority.HIGH, label: "Cao" },
-                  { value: EPriority.MEDIUM, label: "Vừa" },
-                  { value: EPriority.LOW, label: "Thấp" },
+                  { value: EPriority.HIGH, label: "High" },
+                  { value: EPriority.MEDIUM, label: "Medium" },
+                  { value: EPriority.LOW, label: "Low" },
                 ]}
               />
             </div>
@@ -364,13 +364,13 @@ export const TaskModal = () => {
               htmlFor="name"
               className="block mb-2 w-24 text-sm font-medium text-gray-900 mr-5"
             >
-              Người đảm nhiệm
+              Assign
             </label>
             <Select
               // defaultValue={EPriority.HIGH}
               mode="multiple"
               allowClear
-              placeholder="Người nhận nhiệm vụ"
+              placeholder="Assign user"
               className="w-full"
               onChange={(selectedAssignId) => setAssignIds(selectedAssignId)}
               options={assignOptions}
@@ -382,7 +382,7 @@ export const TaskModal = () => {
               htmlFor="name"
               className="block mb-2 text-sm font-medium w-24 text-gray-900 "
             >
-              Ảnh bìa
+              Background image
             </label>
             <Upload className="" onChange={handleChange} showUploadList={false}>
               <Button icon={<UploadOutlined />}>Upload</Button>
@@ -414,7 +414,7 @@ export const BoardHeader = () => {
             onClick={() => setOpen(true)}
             type="primary"
           >
-            Tạo nhiệm vụ mới
+            Create new task
           </Button>
           <Button
             className="bg-blue-500 normal-case "
@@ -424,7 +424,7 @@ export const BoardHeader = () => {
             }}
             type="primary"
           >
-            Thêm thành viên
+            Add member
           </Button>
           <Select
             defaultValue="Board"
@@ -451,7 +451,7 @@ export const BoardHeader = () => {
             }}
             type="primary"
           >
-            Xem báo cáo
+            Report
           </Button>
           <Button
             className="bg-blue-500 normal-case "
@@ -467,7 +467,7 @@ export const BoardHeader = () => {
             }}
             type="primary"
           >
-            Chi tiết
+            Detail
           </Button>
           <div className="flex flex-row items-center space-x-2">
             <AvatarGroup />
@@ -622,7 +622,7 @@ export const TaskDetailModal = () => {
             setOpen(false);
           }}
         >
-          Xem chi tiết
+          Detail
         </Button>,
         <Button
           key="submit"
@@ -631,18 +631,19 @@ export const TaskDetailModal = () => {
           // loading={isLoading}
           onClick={DoUpdate}
         >
-          Sửa
+          Edit
         </Button>,
         <Button key="back" onClick={DoCancel}>
-          Quay lại
+          Cancel
         </Button>,
       ]}
     >
-      <div className="text-3xl mb-3 font-bold">
+      <div className="text-3xl mb-3  flex flex-row items-center">
+        <div className="text-base text-gray-400">Name</div>
         <Input
           defaultValue={task?.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          className="border-none focus:border-none focus:shadow-none "
+          className="font-bold border-none focus:border-none focus:shadow-none "
         />
       </div>
       <div className="space-y-6">
@@ -689,9 +690,9 @@ export const TaskDetailModal = () => {
               defaultValue={EPriority.HIGH}
               style={{ width: 120 }}
               options={[
-                { value: EPriority.HIGH, label: "Cao" },
-                { value: EPriority.MEDIUM, label: "Vừa" },
-                { value: EPriority.LOW, label: "Thấp" },
+                { value: EPriority.HIGH, label: "High" },
+                { value: EPriority.MEDIUM, label: "Medium" },
+                { value: EPriority.LOW, label: "Low" },
               ]}
               onChange={(value: any) => {
                 console.log(value);
