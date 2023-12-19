@@ -63,7 +63,9 @@ export const KanbanLayout = ({
 }: KanbanLayoutProps) => {
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
-      <div className="flex flex-row justify-between mt-4 mx-2 ">{children}</div>
+      <div className="flex flex-row justify-between mt-4 mx-2 bg-slate-200">
+        {children}
+      </div>
     </DragDropContext>
   );
 };
@@ -88,7 +90,7 @@ export const Column = ({
           {...provided.droppableProps}
           ref={provided.innerRef}
           className={`space-y-1 
-          w-72 p-2 rounded-lg bg-slate-100 h-fit
+          w-72 p-2 rounded-lg bg-slate-300 h-fit
           ${snapshot.isDraggingOver ? "bg-red-200" : ""}
             `}
         >
@@ -407,7 +409,7 @@ export const BoardHeader = () => {
       <Header className="bg-white flex flex-row justify-center items-center fixed top-16 w-full z-50 shadow-xl">
         <div className="flex-1 space-x-4 flex flex-row justify-start items-center">
           <div>
-            <h2 className="text-2xl text-bold">Board Name</h2>
+            <h2 className="text-2xl text-bold">My project</h2>
           </div>
           <Button
             className="bg-blue-500 normal-case "

@@ -10,13 +10,15 @@ import {
 } from "@/components";
 import { useParams } from "react-router";
 // import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useMutation, useQueries } from "@tanstack/react-query";
+import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
 import { get, patch } from "@/services/axios.service";
 
 import { EStatus } from "@/utils/type";
 import { mapStatusTask } from "@/utils/mapping";
 import { useAtom } from "jotai";
 import { selectViewAtom } from "@/states/modal.state";
+import { errorToast } from "@/utils/toast";
+import { userAtom } from "@/states/user.state";
 
 const BoardPage = () => {
   const { boardId, workspaceId } = useParams();
@@ -27,6 +29,8 @@ const BoardPage = () => {
   });
 
   const [selectView] = useAtom(selectViewAtom);
+  const [user] = useAtom(userAtom);
+  const [permission, setPermission] = useState([]);
 
   useEffect(() => {
     localStorage.setItem(
@@ -94,6 +98,22 @@ const BoardPage = () => {
     },
   });
 
+  // NOTE: get permission
+  useQuery({
+    queryKey: [`permission/${workspaceId}/${user?._id}`],
+    queryFn: () => {
+      return get(`/workspaces/permission?workspaceId=${workspaceId}`).then(
+        (data) => {
+          return data || {};
+        }
+      );
+    },
+    onSuccess: (permission) => {
+      setPermission(permission?.roles || []);
+    },
+    // enabled: enabled,
+  });
+
   const handleOnDragEnd = (result: any) => {
     const { source, destination } = result;
     //NOTE: Check if the draggable item was dropped outside a droppable area
@@ -136,6 +156,13 @@ const BoardPage = () => {
       sourceTodos.splice(source.index, 1);
       task.status = destination.droppableId;
       destinationTodos.splice(destination.index, 0, task);
+      if (
+        source.droppableId === "done" &&
+        hasAdminOrManager(permission) === false
+      ) {
+        errorToast("You don't have permission move task when status is done");
+        return;
+      }
       setTasks((pre: any) => ({
         ...pre,
         [source.droppableId]: sourceTodos,
@@ -200,3 +227,7 @@ const BoardPage = () => {
 };
 
 export default BoardPage;
+
+function hasAdminOrManager(arr: string[]) {
+  return arr.includes("Admin") || arr.includes("Manager");
+}
