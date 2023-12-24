@@ -26,7 +26,7 @@ export const AddMemberModal = () => {
     onSuccess: (data) => {
       // setRefresh(true);
       setOpen(false);
-      successToast("Lời mời đã được gửi đến email thành công");
+      successToast("The invitation has been sent to email successfully!");
       //   navigation(path.home);
     },
   });
@@ -56,7 +56,7 @@ export const AddMemberModal = () => {
 
   return (
     <Modal
-      title="Add member"
+      title="Invite Member"
       open={open}
       onOk={handleOk}
       onCancel={handleCancel}

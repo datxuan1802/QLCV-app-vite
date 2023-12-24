@@ -177,10 +177,10 @@ export const TaskModal = () => {
   const { data: assignUsers, isLoading: assignUsersLoading } = useQuery({
     queryKey: [workspaceId],
     queryFn: () => {
+      if (!workspaceId) return null;
       return get(`/workspaces/getMembers?workspaceId=${workspaceId}`);
     },
   });
-
   const assignOptions =
     !assignUsersLoading &&
     assignUsers?.map((item: any) => ({
@@ -404,12 +404,21 @@ export const BoardHeader = () => {
   const [, setSelectWorkspaceId] = useAtom(selectWorkspaceIdAtom);
   const [, setSelectView] = useAtom(selectViewAtom);
   const navigation = useNavigate();
+
+  const { data, isLoading } = useQuery({
+    queryKey: [`board/${boardId}`],
+    queryFn: () =>
+      get(`/board/${boardId}`).then((data) => {
+        return data;
+      }),
+    onSuccess: (data) => {},
+  });
   return (
     <>
       <Header className="bg-white flex flex-row justify-center items-center fixed top-16 w-full z-50 shadow-xl">
         <div className="flex-1 space-x-4 flex flex-row justify-start items-center">
           <div>
-            <h2 className="text-2xl text-bold">My project</h2>
+            <h2 className="text-2xl text-bold">{data?.name}</h2>
           </div>
           <Button
             className="bg-blue-500 normal-case "
@@ -426,7 +435,7 @@ export const BoardHeader = () => {
             }}
             type="primary"
           >
-            Add member
+            Invite member
           </Button>
           <Select
             defaultValue="Board"

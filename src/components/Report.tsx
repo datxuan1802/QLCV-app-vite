@@ -188,7 +188,7 @@ const TaskReport = () => {
     labels: ["To Do", "In Progress", "Done"],
     datasets: [
       {
-        label: "# of Votes",
+        label: "# counts",
         data: report,
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
@@ -254,7 +254,7 @@ const PriorityReport = () => {
     labels: ["High", "Medium", "Low"],
     datasets: [
       {
-        label: "# of Votes",
+        label: "# counts",
         data: report,
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
@@ -334,7 +334,7 @@ const TaskDoneBaseOnPriority = () => {
     labels: ["High", "Medium", "Low"],
     datasets: [
       {
-        label: "# of Votes",
+        label: "# counts",
         data: report,
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
@@ -398,7 +398,7 @@ export const taskDoneByDueDate = {
   labels: ["early", "on time", "late"],
   datasets: [
     {
-      label: "# of Votes",
+      label: "# counts",
       data: [12, 19, 3],
       backgroundColor: [
         "rgba(255, 99, 132, 0.2)",

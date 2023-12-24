@@ -37,6 +37,9 @@ const WorkspaceModal: React.FC = () => {
       successToast("Tạo workspace mới thành công");
       // navigation(path.home);
     },
+    onError: (error: any) => {
+      console.log(error);
+    },
   });
 
   const handleOk = () => {

@@ -1,5 +1,5 @@
 // components
-import { Layout, Menu, Avatar, Input } from "antd";
+import { Layout, Menu, Avatar, Input, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import {
   AddBoardTab,
@@ -108,6 +108,7 @@ const MainLayout = ({ children }: any) => {
 export default MainLayout;
 
 export const MainHeader = () => {
+  const navigation = useNavigate();
   const { data, isLoading } = useQuery({
     queryKey: ["profile"],
     queryFn: () => {
@@ -122,9 +123,9 @@ export const MainHeader = () => {
         <img src="/leadership.png" alt="" className="w-10 h-10" />
       </div>
       <div className="text-2xl text-bold text-center mt-3">Task management</div>
-      <div>Workspace</div>
+      {/* <div>Workspace</div>
       <div>template</div>
-      <div>create</div>
+      <div>create</div> */}
       <div className="flex justify-end items-center flex-1 space-x-2">
         <Search
           placeholder="input search text"
@@ -142,6 +143,15 @@ export const MainHeader = () => {
           )}
           {/* {user && <AvatarCus user={user} />} */}
         </div>
+        <Button
+          type="text"
+          onClick={() => {
+            localStorage.clear();
+            navigation("/login");
+          }}
+        >
+          Logout
+        </Button>
       </div>
     </Header>
   );
