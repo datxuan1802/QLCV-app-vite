@@ -146,7 +146,7 @@ const TaskDoneLineChart = ({
     setReport(result);
   }, [data]);
 
-  const taskDoneByTeam = {
+  const taskDoneByDate = {
     labels: getDaysInRange(startDate, dueDate),
     datasets: [
       {
@@ -182,11 +182,11 @@ const TaskDoneLineChart = ({
               },
               title: {
                 display: true,
-                text: "Task completed by priority",
+                text: "Tasks completed by priority",
               },
             },
           }}
-          data={taskDoneByTeam}
+          data={taskDoneByDate}
         />
       )}
     </ChartLayout>
