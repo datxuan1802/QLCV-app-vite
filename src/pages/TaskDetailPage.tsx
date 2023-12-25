@@ -52,10 +52,13 @@ const TaskDetailPage = () => {
       setMessages(data);
     },
   });
-  const { data: task } = useQuery({
+  const { data: task, refetch } = useQuery({
     queryKey: [`task/${taskId}`],
     queryFn: () => get(`task/${taskId}`),
   });
+  useEffect(() => {
+    refetch();
+  }, [task]);
   const queryClient = useQueryClient();
   const [formData, setFormData] = useState({
     name: task?.name || "",
@@ -104,7 +107,7 @@ const TaskDetailPage = () => {
         </div>
         <div className="px-60 pt-5 space-y-4">
           <div className="flex flex-row items-center space-x-2">
-            <Input
+            {/* <Input
               className="text-5xl font-bold border-none focus:shadow-none ml-0 pl-0"
               onChange={(e) => {
                 setFormData({
@@ -114,7 +117,10 @@ const TaskDetailPage = () => {
               }}
               placeholder="Task name here"
               defaultValue={formData?.name}
-            />
+            /> */}
+            <h1 className="text-5xl font-bold border-none focus:shadow-none ml-0 pl-0">
+              {formData?.name}
+            </h1>
             <Button
               onClick={DoUpdate}
               className="border-2 bg-blue-400 text-white font-bold hover:bg-blue-400"
