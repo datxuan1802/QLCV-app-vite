@@ -1,14 +1,14 @@
+"use client";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { errorToast, successToast } from "../utils/toast";
 import { path } from "../utils/path";
 import { Input, Button, Space } from "antd";
 import { post } from "@/services/axios.service";
-
 const Register = () => {
-  const [username, setUsername] = useState("trung vu");
-  const [email, setEmail] = useState("vutrung26072001@gmail.com");
-  const [password, setPassword] = useState("13456");
+  const [username, setUsername] = useState("Mananger");
+  const [email, setEmail] = useState("Manager01@gmail.com");
+  const [password, setPassword] = useState("123456");
   const navigation = useNavigate();
   const [loading, setLoading] = useState(false);
   const DoRegister = async () => {
@@ -19,11 +19,14 @@ const Register = () => {
         email,
         password,
         roles: ["Manager"],
+        isActivated: true,
       });
       //   localStorage.setItem("auth", res.access_token);
       //   setUser(res.user);
       setLoading(false);
-      navigation(path.activeAccount);
+      // navigation(path.activeAccount);//push page active account email
+      navigation(path.login);
+      successToast("Đăng ký thành công");
     } catch (error) {
       console.log(error);
       errorToast("Đăng ký thất bại");
