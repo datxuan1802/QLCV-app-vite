@@ -3,7 +3,7 @@ import {
   openAddMemberModal,
   selectWorkspaceIdAtom,
 } from "@/states/modal.state";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Modal, Button, Input } from "antd";
 import { useAtom } from "jotai";
@@ -29,6 +29,9 @@ export const AddMemberModal = () => {
       // successToast("The invitation has been sent to email successfully!");
       successToast("Add member successfully");
       //   navigation(path.home);
+    },
+    onError(error, variables, context) {
+      errorToast("Email này chưa đăng ký tài khoản. Vui lòng thử lại!");
     },
   });
   useQuery({
