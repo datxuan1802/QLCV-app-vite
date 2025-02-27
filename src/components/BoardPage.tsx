@@ -111,6 +111,15 @@ interface TaskLayoutProps {
 export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
   const [, setOpen] = useAtom(openDetailTaskModal);
   const [, setTaskId] = useAtom(selectTaskIdAtom);
+  const { workspaceId } = useParams();
+
+  const { data: user } = useQuery({
+    queryKey: [workspaceId],
+    queryFn: () => {
+      if (!workspaceId) return null;
+      return get(`/workspaces/getMembers?workspaceId=${workspaceId}`);
+    },
+  });
   return (
     <Draggable key={item._id} draggableId={draggableId} index={index}>
       {(provided) => (
@@ -148,9 +157,18 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
             </div>
             <div>
               <Avatar.Group>
-                {item.assignIds.map((user: any, index: number) => (
-                  <AvatarCus user={user} key={index} className="w-5 h-5" />
-                ))}
+                {item.assignIds.map((data: any, index: number) => {
+                  return (
+                    <AvatarCus
+                      user={
+                        user?.find((item: any) => item?.user?._id === data)
+                          ?.user
+                      }
+                      key={index}
+                      className="w-5 h-5"
+                    />
+                  );
+                })}
               </Avatar.Group>
             </div>
           </div>
@@ -590,8 +608,6 @@ export const TaskDetailModal = () => {
       });
     },
   });
-  console.log(task, "task");
-  console.log(avatars, "ava");
 
   const { mutate, error } = useMutation({
     mutationFn: async ({ taskId, data }: any) => {
