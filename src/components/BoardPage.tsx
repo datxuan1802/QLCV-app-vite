@@ -562,7 +562,7 @@ const SmartOptionBoard = () => {
 export const TaskDetailModal = () => {
   const [open, setOpen] = useAtom(openDetailTaskModal);
   const [selectTaskId] = useAtom(selectTaskIdAtom);
-  const [avatars, setAvatars] = useState();
+  const [avatars, setAvatars] = useState<any>([]);
   const queryClient = useQueryClient();
   const navigation = useNavigate();
   const [formData, setFormData] = useState({
@@ -571,6 +571,7 @@ export const TaskDetailModal = () => {
     description: "",
     priority: "",
   });
+
   const { boardId, workspaceId } = useParams();
   useEffect(() => {
     queryClient.invalidateQueries({
@@ -591,6 +592,7 @@ export const TaskDetailModal = () => {
   });
   console.log(task, "task");
   console.log(avatars, "ava");
+
   const { mutate, error } = useMutation({
     mutationFn: async ({ taskId, data }: any) => {
       return await patch(`task/update/${taskId}`, data);
@@ -736,7 +738,21 @@ export const TaskDetailModal = () => {
           <div className="text-base text-gray-400">Assign</div>
           <Avatar.Group>
             {!isLoading &&
-              task?.assignIds?.map((item: any) => <AvatarCus user={item} />)}
+              avatars &&
+              task?.assignIds?.map((item: any) => {
+                console.log(
+                  avatars?.find((data: any) => data?.user?._id === item)?.user,
+                  "filter data"
+                );
+                return (
+                  <AvatarCus
+                    user={
+                      avatars?.find((data: any) => data?.user?._id === item)
+                        ?.user
+                    }
+                  />
+                );
+              })}
           </Avatar.Group>
         </div>
       </div>
