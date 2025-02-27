@@ -83,7 +83,6 @@ const Settings = () => {
         console.log(err);
       });
   };
-
   return (
     <MainLayout>
       <div>
@@ -101,7 +100,12 @@ const Settings = () => {
             </Button>
           </Upload>
           <div className="bg-slate-500 h-64 absolute top-0 right-0 left-0">
-            <img src={data?.background} alt="" className="w-full h-full" />
+            <img
+              // src={data?.background ? data?.background : "/default.png"}
+              src="/default.png"
+              alt=""
+              className="w-full h-full bg-cover"
+            />
           </div>
         </div>
         <div className="ml-6 flex flex-row justify-center items-end">
@@ -117,7 +121,8 @@ const Settings = () => {
             >
               {!isLoading && (
                 <img
-                  src={data?.avatar}
+                  // src={data?.avatar ? data?.avatar : "/logot1.jpg"}
+                  src={"/logot1.jpg"}
                   alt="avatar"
                   className="rounded-full bg-blue-200"
                 />
@@ -140,7 +145,7 @@ const Settings = () => {
           className="ml-8 mt-6"
           items={[
             {
-              title: "Home",
+              title: <a href="/">Home</a>,
             },
             {
               title: <a href="">Application Center</a>,
