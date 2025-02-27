@@ -19,13 +19,13 @@ const Register = () => {
         email,
         password,
         roles: ["Manager"],
-        isActivated: true,
+        // isActivated: true,
       });
       //   localStorage.setItem("auth", res.access_token);
       //   setUser(res.user);
       setLoading(false);
-      // navigation(path.activeAccount);//push page active account email
-      navigation(path.login);
+      navigation(path.activeAccount); //push page active account email
+      // navigation(path.login);
       successToast("Đăng ký thành công");
     } catch (error) {
       console.log(error);

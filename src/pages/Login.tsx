@@ -14,7 +14,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { useGoogleLogin } from "@react-oauth/google";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("manager01@gmail.com");
+  const [email, setEmail] = useState("xuandat18022k2@gmail.com");
   const [password, setPassword] = useState("123456");
   const navigation = useNavigate();
   const [, setUser] = useAtom(userAtom);
