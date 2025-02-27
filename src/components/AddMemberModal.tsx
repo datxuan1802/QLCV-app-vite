@@ -48,8 +48,8 @@ export const AddMemberModal = () => {
     enabled: enabled,
   });
   const handleOk = () => {
-    console.log(workspaceId);
-    console.log(email);
+    // console.log(workspaceId);
+    // console.log(email);
 
     setEnabled(true);
   };
