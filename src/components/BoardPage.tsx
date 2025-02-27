@@ -562,6 +562,7 @@ const SmartOptionBoard = () => {
 export const TaskDetailModal = () => {
   const [open, setOpen] = useAtom(openDetailTaskModal);
   const [selectTaskId] = useAtom(selectTaskIdAtom);
+  const [avatars, setAvatars] = useState();
   const queryClient = useQueryClient();
   const navigation = useNavigate();
   const [formData, setFormData] = useState({
@@ -588,7 +589,8 @@ export const TaskDetailModal = () => {
       });
     },
   });
-
+  console.log(task, "task");
+  console.log(avatars, "ava");
   const { mutate, error } = useMutation({
     mutationFn: async ({ taskId, data }: any) => {
       return await patch(`task/update/${taskId}`, data);
@@ -604,6 +606,13 @@ export const TaskDetailModal = () => {
       setOpen(false);
     },
   });
+  const DoGetAvatars = async () => {
+    const res = await get(`/workspaces/getMembers?workspaceId=${workspaceId}`);
+    setAvatars(res);
+  };
+  useEffect(() => {
+    DoGetAvatars();
+  }, [workspaceId]);
 
   const DoCancel = () => {
     setOpen(false);
