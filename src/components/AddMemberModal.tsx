@@ -12,7 +12,7 @@ import React, { useState } from "react";
 export const AddMemberModal = () => {
   const [open, setOpen] = useAtom(openAddMemberModal);
   const [email, setEmail] = useState("");
-  //   const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [workspaceId] = useAtom(selectWorkspaceIdAtom);
 
   const [enabled, setEnabled] = useState(false);
@@ -26,7 +26,8 @@ export const AddMemberModal = () => {
     onSuccess: (data) => {
       // setRefresh(true);
       setOpen(false);
-      successToast("The invitation has been sent to email successfully!");
+      // successToast("The invitation has been sent to email successfully!");
+      successToast("Add member successfully");
       //   navigation(path.home);
     },
   });
@@ -66,6 +67,7 @@ export const AddMemberModal = () => {
           type="primary"
           className="bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2"
           loading={inviteUser.isLoading}
+          disabled={inviteUser.isLoading}
           onClick={handleOk}
         >
           Invite
