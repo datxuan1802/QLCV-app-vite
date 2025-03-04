@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { MainLayout } from "@/components";
 import { Avatar, Button, Breadcrumb, Input, Upload, UploadProps } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { get, patch, post } from "@/services/axios.service";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
+import { errorToast, successToast } from "@/utils/toast";
 
 const Settings = () => {
   const { data, isLoading } = useQuery({
@@ -83,6 +84,24 @@ const Settings = () => {
         console.log(err);
       });
   };
+  const [userName, setUserName] = useState(data?.name);
+  const [bio, setBio] = useState(data?.bio);
+
+  const DoUpdateUSer = async () => {
+    try {
+      const res = await patch("/auth/update", {
+        ...data,
+        name: userName,
+        bio: bio,
+      });
+
+      successToast("Cập nhật thành công.");
+      return res;
+    } catch (error) {
+      console.log(error);
+      errorToast("Cập nhật thất bại.");
+    }
+  };
   return (
     <MainLayout>
       <div>
@@ -133,7 +152,10 @@ const Settings = () => {
             {!isLoading && data?.name}
           </div>
           <div className="flex-1 flex flex-row flex-end space-x-2 justify-end items-center mr-6 mb-2">
-            <Button className=" rounded-r-lg bg-blue-400 text-white font-semibold">
+            <Button
+              onClick={DoUpdateUSer}
+              className=" rounded-r-lg bg-blue-400 text-white font-semibold"
+            >
               Save
             </Button>
             <Button className="border rounded-r-lg border-slate-200 text-black font-semibold">
@@ -160,7 +182,11 @@ const Settings = () => {
         />
         <div className="flex flex-row items-center justify-start space-x-5 ml-6 mt-6">
           {!isLoading && (
-            <InputForm label="Tên người dùng" defaultValue={data.name} />
+            <InputForm
+              label="Tên người dùng"
+              defaultValue={data.name}
+              setUserName={setUserName}
+            />
           )}
           {!isLoading && (
             <InputForm label="Email" defaultValue={data.email} disable={true} />
@@ -178,7 +204,7 @@ const Settings = () => {
                   showCount
                   maxLength={100}
                   style={{ height: 120, marginBottom: 24, width: 440 }}
-                  // onChange={onChange}
+                  onChange={(e) => setBio(e.target.value)}
                 />
               )}
             </div>
@@ -196,6 +222,7 @@ interface InputFormProps {
   defaultValue: string;
   placeholder?: string;
   disable?: boolean;
+  setUserName: React.Dispatch<any>;
 }
 const InputForm = ({
   label,
@@ -203,12 +230,18 @@ const InputForm = ({
   defaultValue,
   placeholder = "",
   disable = false,
+  setUserName,
 }: InputFormProps) => {
   return (
     <div className={`${inputStyle} space-y-2`}>
       <div className="font-semibold">{label}</div>
       <div>
-        <Input size="large" defaultValue={defaultValue} disabled={disable} />
+        <Input
+          size="large"
+          defaultValue={defaultValue}
+          disabled={disable}
+          onChange={(e) => setUserName(e.target.value)}
+        />
       </div>
     </div>
   );

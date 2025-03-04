@@ -85,5 +85,6 @@ async function patch(url: string, params: any) {
     throw new Error(error.message);
   }
 }
+
 export { get, post, patch };
 export default request;
