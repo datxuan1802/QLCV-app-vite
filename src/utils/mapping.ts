@@ -44,7 +44,7 @@ export const getBgStatusTask = (status: EStatus) => {
 export const getTimelineGroup = (task: any): ITimelineGroup => {
   return {
     id: task._id,
-    title: task.name,
+    title: task?.name,
     height: 60,
   };
 };
@@ -53,7 +53,7 @@ export const getTimeLineItem = (task: any): ITimelineItem => {
   return {
     id: task._id,
     group: task._id,
-    title: task.name,
+    title: task?.name,
     canMove: true,
     canResize: true,
     start_time: moment(task.startDate),

@@ -50,13 +50,13 @@ export const TimelineLayout: React.FC<TimelineLayoutProps> = ({
     },
   });
   const DoItemMove = (itemId: any, dragTime: any, newGroupOrder: any) => {
-    const item = data.find((task: any) => task._id === itemId);
+    const item = data.find((task: any) => task?._id === itemId);
     const startDate = moment(item.startDate);
     const dueDate = moment(item.dueDate);
     const duration = moment.duration(dueDate.diff(startDate));
     setData((pre) => {
       return pre.map((task: any) => {
-        if (task._id === itemId) {
+        if (task?._id === itemId) {
           return {
             ...task,
             startDate: moment(dragTime),
@@ -78,7 +78,7 @@ export const TimelineLayout: React.FC<TimelineLayoutProps> = ({
     if (edge === "right") {
       setData((pre) => {
         return pre.map((task: any) => {
-          if (task._id === itemId) {
+          if (task?._id === itemId) {
             return {
               ...task,
               dueDate: moment(time),
@@ -175,7 +175,7 @@ const ItemRenderer = ({
       >
         <Avatar.Group>
           {item?.assignIds.map((user: any) => (
-            <AvatarCus user={user} key={user._id} />
+            <AvatarCus user={user} key={user?._id} />
           ))}
         </Avatar.Group>
         <div>{itemContext.title}</div>

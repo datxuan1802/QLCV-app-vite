@@ -106,7 +106,7 @@ const Settings = () => {
     <MainLayout>
       <div>
         <div className="h-52 w-full relative">
-          <Upload
+          {/* <Upload
             className="absolute bottom-[-30px] right-2 z-50"
             showUploadList={false}
             onChange={handleUpLoadBg}
@@ -117,7 +117,7 @@ const Settings = () => {
             >
               Click to Upload
             </Button>
-          </Upload>
+          </Upload> */}
           <div className="bg-slate-500 h-64 absolute top-0 right-0 left-0">
             <img
               // src={data?.background ? data?.background : "/default.png"}
@@ -184,7 +184,7 @@ const Settings = () => {
           {!isLoading && (
             <InputForm
               label="Tên người dùng"
-              defaultValue={data.name}
+              defaultValue={data?.name}
               setUserName={setUserName}
             />
           )}

@@ -121,7 +121,7 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
     },
   });
   return (
-    <Draggable key={item._id} draggableId={draggableId} index={index}>
+    <Draggable key={item?._id} draggableId={draggableId} index={index}>
       {(provided) => (
         <div
           className="bg-white rounded-lg shadow-sm p-2"
@@ -129,7 +129,7 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           onClick={() => {
-            setTaskId(item._id);
+            setTaskId(item?._id);
             setOpen(true);
           }}
         >
@@ -143,7 +143,9 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
                 />
               </div>
             )}
-            <div className="py-2 px-1 font-bold">{item.name.toUpperCase()}</div>
+            <div className="py-2 px-1 font-bold">
+              {item?.name.toUpperCase()}
+            </div>
             <div
               className={`${getBgPriorityColor(
                 item.priority
@@ -205,10 +207,10 @@ export const TaskModal = () => {
       label: (
         <div className="flex flex-row items-center ">
           <AvatarCus user={item.user} />
-          <div className="ml-2">{item.user.name}</div>
+          <div className="ml-2">{item?.user?.name}</div>
         </div>
       ),
-      value: item.user._id,
+      value: item.user?._id,
     }));
 
   const handleChange: UploadProps["onChange"] = async (
@@ -552,7 +554,7 @@ const AvatarGroup = () => {
   return (
     <Avatar.Group>
       {avatars?.map((item: any) => (
-        <AvatarCus key={item.user._id} user={item.user} tailwind="h-8 w-8" />
+        <AvatarCus key={item?.user?._id} user={item.user} tailwind="h-8 w-8" />
       ))}
     </Avatar.Group>
   );
@@ -601,7 +603,7 @@ export const TaskDetailModal = () => {
     queryFn: () => get(`task/${selectTaskId}`),
     onSuccess: (data) => {
       setFormData({
-        name: data.name,
+        name: data?.name,
         status: data.status,
         description: data.description,
         priority: data.priority,

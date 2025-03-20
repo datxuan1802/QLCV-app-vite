@@ -169,7 +169,7 @@ const BoardPage = () => {
         [destination.droppableId]: destinationTodos,
       }));
       mutate({
-        taskId: task._id,
+        taskId: task?._id,
         status: mapStatusTask(destination.droppableId),
       });
     }
@@ -183,10 +183,10 @@ const BoardPage = () => {
             {tasks.todos &&
               tasks.todos?.map((task: any, index: number) => (
                 <Task
-                  key={task._id}
+                  key={task?._id}
                   item={task}
                   index={index}
-                  draggableId={task._id}
+                  draggableId={task?._id}
                 />
               ))}
           </Column>
@@ -198,10 +198,10 @@ const BoardPage = () => {
             {tasks.inProgress &&
               tasks.inProgress?.map((task: any, index: number) => (
                 <Task
-                  key={task._id}
+                  key={task?._id}
                   item={task}
                   index={index}
-                  draggableId={task._id}
+                  draggableId={task?._id}
                 />
               ))}
           </Column>
@@ -209,10 +209,10 @@ const BoardPage = () => {
             {tasks.done &&
               tasks.done?.map((task: any, index: number) => (
                 <Task
-                  key={task._id}
+                  key={task?._id}
                   item={task}
                   index={index}
-                  draggableId={task._id}
+                  draggableId={task?._id}
                 />
               ))}
           </Column>

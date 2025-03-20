@@ -54,13 +54,13 @@ const MainLayout = ({ children }: any) => {
   const { workspaces } = useWorkspace();
   const [user] = useAtom(userAtom);
 
-  const items = workspaces.map((workspacePermission: any) => {
+  const items = workspaces?.map((workspacePermission: any) => {
     return {
-      key: workspacePermission._id,
+      key: workspacePermission?._id,
       label: <WorkspaceTab workspace={workspacePermission} />,
       children: [
         {
-          key: workspacePermission._id + "1",
+          key: workspacePermission?._id + "1",
           label: (
             <AddBoardTab
               workspaceId={workspacePermission?.workspace?._id}
@@ -69,11 +69,11 @@ const MainLayout = ({ children }: any) => {
         },
         ...workspacePermission.workspace.boards.map((board: any) => {
           return {
-            key: board._id,
+            key: board?._id,
             label: (
               <BoardTab
                 board={board}
-                workspaceId={workspacePermission.workspace._id}
+                workspaceId={workspacePermission.workspace?._id}
               ></BoardTab>
             ),
             // label: board.name,

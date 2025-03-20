@@ -43,7 +43,7 @@ export const AddMemberModal = () => {
     },
     onSuccess: (user) => {
       setEnabled(false);
-      inviteUser.mutate(user._id);
+      inviteUser.mutate(user?._id);
     },
     enabled: enabled,
   });

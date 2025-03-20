@@ -5,9 +5,9 @@ import { useNavigate } from "react-router";
 export const BoardTab = ({ board, workspaceId }: any) => {
   const navigation = useNavigate();
   const GetBoard = () => {
-    navigation(`/workspaces/${workspaceId}/boards/${board._id}`);
+    navigation(`/workspaces/${workspaceId}/boards/${board?._id}`);
   };
-  return <div onClick={GetBoard}>{board.name}</div>;
+  return <div onClick={GetBoard}>{board?.name}</div>;
 };
 export const AddBoardTab = ({ workspaceId }: { workspaceId: string }) => {
   const [, setOpen] = useAtom(openBoardModal);

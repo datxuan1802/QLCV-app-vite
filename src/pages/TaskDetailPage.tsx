@@ -280,7 +280,7 @@ const Comment = ({ message }: { message: any }) => {
 };
 
 const SubTask = ({ updateSubTask, subTask }: any) => {
-  const [text, setText] = useState(subTask.name);
+  const [text, setText] = useState(subTask?.name);
   const DoPressEnter = (event: any) => {
     if (event.key === "Enter" && !event.shiftKey) {
       updateSubTask({
@@ -308,7 +308,7 @@ const SubTask = ({ updateSubTask, subTask }: any) => {
         }}
       />
       <Input
-        defaultValue={subTask.name}
+        defaultValue={subTask?.name}
         value={text}
         placeholder="Sub-task name"
         className="w-fit border-none focus:shadow-none"

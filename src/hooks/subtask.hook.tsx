@@ -48,7 +48,7 @@ const useSubTask = (taskId: string) => {
     onSuccess: (data) => {
       setSubTasks((preSubTask: any) => {
         return preSubTask.map((subTask: any) => {
-          if (subTask._id === data._id) {
+          if (subTask?._id === data?._id) {
             return data;
           }
           return subTask;
