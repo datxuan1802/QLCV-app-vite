@@ -102,7 +102,12 @@ const TaskDetailPage = () => {
       <div className="w-full h-screen mt-16">
         <div className="bg-slate-200 h-60">
           {task?.bg_url && (
-            <img src={task?.bg_url} alt="" className="w-full h-full" />
+            // <img src={task?.bg_url} alt="" className="w-full h-full" />
+            <img
+              src={"/default.png"}
+              alt=""
+              className="w-full h-full bg-cover"
+            />
           )}
         </div>
         <div className="px-60 pt-5 space-y-4">
@@ -127,7 +132,7 @@ const TaskDetailPage = () => {
             >
               Save
             </Button>
-            <Upload
+            {/* <Upload
               className=" border-none text-white "
               showUploadList={false}
               // onChange={handleUpLoadBg}
@@ -138,7 +143,7 @@ const TaskDetailPage = () => {
               >
                 Click to Upload
               </Button>
-            </Upload>
+            </Upload> */}
             <Button
               onClick={() => navigation(-1)}
               className="border-2 border-blue-400 text-black hover:bg-blue-400"
