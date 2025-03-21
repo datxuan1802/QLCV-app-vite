@@ -278,7 +278,7 @@ const TaskLineChartWithPriority = ({
               },
               title: {
                 display: true,
-                text: "Task by priority",
+                text: "Tasks by done date",
               },
             },
           }}
@@ -299,7 +299,7 @@ const TeamPerformance = ({
   const { boardId } = useParams();
   const [labels, setLabels] = useState<string[]>([]);
   const [report, setReport] = useState<any>({});
-  const { isLoading, refetch } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["team-report"],
     queryFn: () => {
       return get(
