@@ -109,13 +109,13 @@ export const TimelineLayout: React.FC<TimelineLayoutProps> = ({
           onItemResize={DoItemResize}
           className="pt-16"
         >
-          <TimelineHeaders className="fixed top-32 z-50">
+          <TimelineHeaders className="fixed z-50 top-32">
             <SidebarHeader>
               {({ getRootProps }) => {
                 return (
                   <div
                     {...getRootProps()}
-                    className="text-center font-semibold bg-blue-400 pt-5 text-base"
+                    className="pt-5 text-base font-semibold text-center bg-blue-400"
                   >
                     Task name
                   </div>

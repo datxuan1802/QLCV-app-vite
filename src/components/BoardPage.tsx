@@ -63,7 +63,7 @@ export const KanbanLayout = ({
 }: KanbanLayoutProps) => {
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
-      <div className="flex flex-row justify-between mt-4 mx-2 bg-slate-200">
+      <div className="flex flex-row justify-between mx-2 mt-4 bg-slate-200">
         {children}
       </div>
     </DragDropContext>
@@ -83,7 +83,7 @@ export const Column = ({
 }: ColumnLayoutProps) => {
   // const [, setOpen] = useAtom(openTaskModal);
   return (
-    // <div className="w-72 p-2 rounded-lg bg-slate-500">
+    // <div className="p-2 rounded-lg w-72 bg-slate-500">
     <Droppable droppableId={droppableId} type="board">
       {(provided, snapshot) => (
         <div
@@ -94,7 +94,7 @@ export const Column = ({
           ${snapshot.isDraggingOver ? "bg-red-200" : ""}
             `}
         >
-          <div className="text-center font-bold">{columnName}</div>
+          <div className="font-bold text-center">{columnName}</div>
           {children}
           {provided.placeholder}
         </div>
@@ -120,11 +120,13 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
       return get(`/workspaces/getMembers?workspaceId=${workspaceId}`);
     },
   });
+  console.log(item, "item");
+  console.log(user, "user");
   return (
     <Draggable key={item?._id} draggableId={draggableId} index={index}>
       {(provided) => (
         <div
-          className="bg-white rounded-lg shadow-sm p-2"
+          className="p-2 bg-white rounded-lg shadow-sm"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -139,11 +141,11 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
                 <img
                   src={item?.bg_url}
                   alt=""
-                  className="w-full h-32 bg-slate-200 rounded-xl border-none"
+                  className="w-full h-32 border-none bg-slate-200 rounded-xl"
                 />
               </div>
             )}
-            <div className="py-2 px-1 font-bold">
+            <div className="px-1 py-2 font-bold">
               {item?.name.toUpperCase()}
             </div>
             <div
@@ -153,7 +155,7 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
             >
               {item.priority}
             </div>
-            <div className="p-1 rounded-md bg-blue-500 w-fit flex flex-row items-center ">
+            <div className="flex flex-row items-center p-1 bg-blue-500 rounded-md w-fit ">
               <ClockCircleOutlined className="pr-2" />
               {dayjs(item.dueDate).format("DD/MM/YYYY")}
             </div>
@@ -163,7 +165,7 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
                   return (
                     <AvatarCus
                       user={
-                        user?.find((item: any) => item?.user?._id === data)
+                        user?.find((item: any) => item?.user?._id === data?._id)
                           ?.user
                       }
                       key={index}
@@ -299,7 +301,7 @@ export const TaskModal = () => {
           <div className="flex flex-row">
             <label
               htmlFor="name"
-              className="block mb-2 text-sm font-medium w-32 text-gray-900 "
+              className="block w-32 mb-2 text-sm font-medium text-gray-900 "
             >
               Name
             </label>
@@ -314,7 +316,7 @@ export const TaskModal = () => {
           <div className="flex flex-row">
             <label
               htmlFor="description"
-              className="block mb-2 text-sm font-medium w-32 text-gray-900 "
+              className="block w-32 mb-2 text-sm font-medium text-gray-900 "
             >
               Description
             </label>
@@ -330,7 +332,7 @@ export const TaskModal = () => {
           <div className="flex flex-row">
             <label
               htmlFor="name"
-              className="block mb-2 text-sm font-medium w-32 text-gray-900 "
+              className="block w-32 mb-2 text-sm font-medium text-gray-900 "
             >
               Time
             </label>
@@ -343,7 +345,7 @@ export const TaskModal = () => {
           </div>
           <div className="flex flex-row space-x-2">
             {/* input field */}
-            {/* <div className="flex flex-row space-x-1 items-center">
+            {/* <div className="flex flex-row items-center space-x-1">
               <label
                 htmlFor="name"
                 className="block mb-2 text-sm font-medium text-gray-900 "
@@ -361,10 +363,10 @@ export const TaskModal = () => {
               />
             </div> */}
             {/* input field */}
-            <div className="flex flex-row justify-start space-x-1 items-center">
+            <div className="flex flex-row items-center justify-start space-x-1">
               <label
                 htmlFor="name"
-                className="block mb-2 w-24 text-sm font-medium text-gray-900 "
+                className="block w-24 mb-2 text-sm font-medium text-gray-900 "
               >
                 Priority
               </label>
@@ -381,10 +383,10 @@ export const TaskModal = () => {
             </div>
           </div>
           {/* input field */}
-          <div className="flex flex-row justify-start space-x-1 items-center">
+          <div className="flex flex-row items-center justify-start space-x-1">
             <label
               htmlFor="name"
-              className="block mb-2 w-24 text-sm font-medium text-gray-900 mr-5"
+              className="block w-24 mb-2 mr-5 text-sm font-medium text-gray-900"
             >
               Assign
             </label>
@@ -402,14 +404,14 @@ export const TaskModal = () => {
           <div className="flex flex-row items-center">
             <label
               htmlFor="name"
-              className="block mb-2 text-sm font-medium w-24 text-gray-900 "
+              className="block w-24 mb-2 text-sm font-medium text-gray-900 "
             >
               Background image
             </label>
             <Upload className="" onChange={handleChange} showUploadList={false}>
               <Button icon={<UploadOutlined />}>Upload</Button>
             </Upload>
-            <div className="ml-2 flex-1 overflow-hidden h-5">{bgUrl}</div>
+            <div className="flex-1 h-5 ml-2 overflow-hidden">{bgUrl}</div>
           </div>
         </div>
       </Modal>
@@ -435,20 +437,20 @@ export const BoardHeader = () => {
   });
   return (
     <>
-      <Header className="bg-white flex flex-row justify-center items-center fixed top-16 w-full z-50 shadow-xl">
-        <div className="flex-1 space-x-4 flex flex-row justify-start items-center">
+      <Header className="fixed z-50 flex flex-row items-center justify-center w-full bg-white shadow-xl top-16">
+        <div className="flex flex-row items-center justify-start flex-1 space-x-4">
           <div>
             <h2 className="text-2xl text-bold">{data?.name}</h2>
           </div>
           <Button
-            className="bg-blue-500 normal-case "
+            className="normal-case bg-blue-500 "
             onClick={() => setOpen(true)}
             type="primary"
           >
             Create new task
           </Button>
           <Button
-            className="bg-blue-500 normal-case "
+            className="normal-case bg-blue-500 "
             onClick={() => {
               setOpenAddMemberModal(true);
               setSelectWorkspaceId(workspaceId as string);
@@ -469,7 +471,7 @@ export const BoardHeader = () => {
             ]}
           />
           <Button
-            className="bg-blue-500 normal-case "
+            className="normal-case bg-blue-500 "
             onClick={() => {
               const url = window.location.pathname;
               const parts = url.split("/");
@@ -485,7 +487,7 @@ export const BoardHeader = () => {
             Report
           </Button>
           <Button
-            className="bg-blue-500 normal-case "
+            className="normal-case bg-blue-500 "
             onClick={() => {
               const url = window.location.pathname;
               const parts = url.split("/");
@@ -501,7 +503,7 @@ export const BoardHeader = () => {
             Detail
           </Button>
           <div className="flex flex-row items-center space-x-2">
-            <AvatarGroup />
+            {/* <AvatarGroup /> */}
             <Button
               className="border-blue-400"
               icon={<FilterOutlined className="text-blue-400" />}
@@ -678,7 +680,7 @@ export const TaskDetailModal = () => {
         </Button>,
       ]}
     >
-      <div className="text-3xl mb-3  flex flex-row items-center">
+      <div className="flex flex-row items-center mb-3 text-3xl">
         <div className="text-base text-gray-400">Name</div>
         <Input
           defaultValue={task?.name}
@@ -687,7 +689,7 @@ export const TaskDetailModal = () => {
         />
       </div>
       <div className="space-y-6">
-        <div className="flex flex-row space-x-2 items-center">
+        <div className="flex flex-row items-center space-x-2">
           <div className="text-base text-gray-400">Status</div>
           <div className={`flex-1 flex flex-row items-center space-x-2`}>
             <div
@@ -715,7 +717,7 @@ export const TaskDetailModal = () => {
             />
           </div>
         </div>
-        <div className="flex flex-row space-x-2 items-center">
+        <div className="flex flex-row items-center space-x-2">
           <div className="text-base text-gray-400">Priority</div>
           <div className={`flex-1 flex flex-row items-center space-x-2`}>
             <div
@@ -744,15 +746,15 @@ export const TaskDetailModal = () => {
             />
           </div>
         </div>
-        <div className="flex flex-row space-x-2 items-center">
+        <div className="flex flex-row items-center space-x-2">
           <div className="text-base text-gray-400">Due date</div>
           <div className="flex-1">
-            <div className="w-fit px-2 py-1 rounded-md bg-slate-200">
+            <div className="px-2 py-1 rounded-md w-fit bg-slate-200">
               {dayjs(task?.dueDate).format("DD/MM/YYYY")}
             </div>
           </div>
         </div>
-        <div className="flex flex-row space-x-2 items-center">
+        <div className="flex flex-row items-center space-x-2">
           <div className="text-base text-gray-400">Assign</div>
           <Avatar.Group>
             {!isLoading &&
@@ -775,7 +777,7 @@ export const TaskDetailModal = () => {
         </div>
       </div>
       <div className="mt-3">
-        <div className="text-xl text-black font-bold mb-2">Description</div>
+        <div className="mb-2 text-xl font-bold text-black">Description</div>
         <div>
           <TextArea
             rows={4}
