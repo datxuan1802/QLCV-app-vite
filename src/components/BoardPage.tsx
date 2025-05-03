@@ -28,7 +28,7 @@ import {
 } from "@ant-design/icons";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { get, patch, post } from "@/services/axios.service";
+import { deleteBoard, get, patch, post } from "@/services/axios.service";
 import { successToast } from "@/utils/toast";
 import { useAtom } from "jotai";
 import {
@@ -610,6 +610,7 @@ export const TaskDetailModal = () => {
       });
     },
   });
+  console.log(task,'tasck');
 
   const { mutate, error } = useMutation({
     mutationFn: async ({ taskId, data }: any) => {
@@ -624,6 +625,24 @@ export const TaskDetailModal = () => {
       });
       successToast("Cập nhật thành công");
       setOpen(false);
+    },
+  });
+  //delete task
+  const { mutate:DelBoard} = useMutation({
+    mutationFn: async ({taskId}: any) => {
+      return await deleteBoard(`task/delete`,taskId);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: [`task/findByBoardId/${boardId}`],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [`task/${selectTaskId}`],
+      });
+      successToast("Xóa task thành công");
+      setOpen(false);
+      DoCancel();
+      setIsModalVisible(false);
     },
   });
   const DoGetAvatars = async () => {
@@ -644,12 +663,42 @@ export const TaskDetailModal = () => {
       data: formData,
     });
   };
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+  const handleOk = () => {
+    DelBoard({taskId: task._id});
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   return (
+    <>
+    <Modal
+        title="Xóa task"
+        open={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okText="Xác nhận xóa"
+        cancelText="Hủy"
+        okButtonProps={{
+          className:
+            "hover:bg-blue-600 hover:text-white hover:border-none text-black border border-black ",
+        }}
+        cancelButtonProps={{
+          className:
+            "border border-black text-black hover:bg-red-100 hover:text-red-500 hover:border-none",
+        }}
+      >
+        Bạn có chắc chắn muốn Xóa task này không?
+      </Modal>
     <Modal
       open={!isLoading && open}
       onCancel={DoCancel}
-      footer={[
+      footer={!!task&&task?.status!=='done'?[
         <Button
           key="submit"
           type="primary"
@@ -673,6 +722,37 @@ export const TaskDetailModal = () => {
         >
           Edit
         </Button>,
+        <Button key="back" onClick={showModal} className="text-white bg-red-500">
+        Delete
+      </Button>,
+        <Button key="back" onClick={DoCancel}>
+          Cancel
+        </Button>,
+      ]:[
+        <Button
+          key="submit"
+          type="primary"
+          className="bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2"
+          // loading={isLoading}
+          onClick={() => {
+            navigation(
+              `/workspaces/${workspaceId}/boards/${boardId}/tasks/${selectTaskId}`
+            );
+            setOpen(false);
+          }}
+        >
+          Detail
+        </Button>,
+        <Button
+          key="submit"
+          type="primary"
+          className="bg-white border-blue-400 border text-blue-400 hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2"
+          // loading={isLoading}
+          onClick={DoUpdate}
+        >
+          Edit
+        </Button>,
+        
         <Button key="back" onClick={DoCancel}>
           Cancel
         </Button>,
@@ -787,5 +867,6 @@ export const TaskDetailModal = () => {
         </div>
       </div>
     </Modal>
+    </>
   );
 };

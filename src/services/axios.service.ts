@@ -1,4 +1,5 @@
 import axios from "axios";
+import { url } from "node:inspector";
 const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5556/api/v1";
 const request = axios.create({
   baseURL: apiUrl,
@@ -86,5 +87,14 @@ async function patch(url: string, params: any) {
   }
 }
 
-export { get, post, patch };
+async function deleteBoard(url: string, id: any){
+  try{
+    const { data, status } = await request.delete(url,id);
+    return data;
+  }catch(error:any){
+throw new Error(error.message);
+  }
+}
+
+export { get, post, patch,deleteBoard };
 export default request;
