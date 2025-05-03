@@ -120,9 +120,7 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
       return get(`/workspaces/getMembers?workspaceId=${workspaceId}`);
     },
   });
-  console.log(item, "item");
-  console.log(user, "user");
-  return (
+    return (
     <Draggable key={item?._id} draggableId={draggableId} index={index}>
       {(provided) => (
         <div
@@ -757,17 +755,13 @@ export const TaskDetailModal = () => {
         <div className="flex flex-row items-center space-x-2">
           <div className="text-base text-gray-400">Assign</div>
           <Avatar.Group>
-            {!isLoading &&
+            {
               avatars &&
               task?.assignIds?.map((item: any) => {
-                console.log(
-                  avatars?.find((data: any) => data?.user?._id === item)?.user,
-                  "filter data"
-                );
                 return (
                   <AvatarCus
                     user={
-                      avatars?.find((data: any) => data?.user?._id === item)
+                      avatars?.find((data: any) => data?.user?._id === item._id)
                         ?.user
                     }
                   />
