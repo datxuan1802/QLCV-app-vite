@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { get, patch, post } from "@/services/axios.service";
+import { deleteBoard, get, patch, post } from "@/services/axios.service";
 
 export enum ESubStatus {
   TODO = "todo",
@@ -9,7 +9,7 @@ export enum ESubStatus {
 const useSubTask = (taskId: string) => {
   const [subTasks, setSubTasks] = useState<any>([]);
 
-  const { isLoading } = useQuery({
+  const { isLoading,refetch } = useQuery({
     queryKey: ["sub-task"],
     queryFn: () => {
       return get(`/sub-task/find-by-task/${taskId}`).then((data) => {
@@ -56,12 +56,26 @@ const useSubTask = (taskId: string) => {
       });
     },
   });
+  
 
+  const { mutate: deleteSubtask } = useMutation({
+    mutationFn: async ({
+      subTaskId,
+    }: {
+      subTaskId: string;
+    }) => {
+      return await deleteBoard(`/sub-task/delete`, subTaskId);
+    },
+    onSuccess(data, variables, context) {
+      refetch();
+    },
+  });
   return {
     subTasks,
     subTaskLoading: isLoading,
     createSubTask: create,
     updateSubTask: update,
+    deleteSubtask: deleteSubtask,
   };
 };
 

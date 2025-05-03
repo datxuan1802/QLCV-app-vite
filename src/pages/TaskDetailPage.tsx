@@ -15,6 +15,7 @@ import moment from "moment";
 import { successToast } from "@/utils/toast";
 import io from "socket.io-client";
 import useSubTask from "@/hooks/subtask.hook";
+import { Trash2 } from 'lucide-react';
 
 let socket: any;
 const TaskDetailPage = () => {
@@ -77,7 +78,7 @@ const TaskDetailPage = () => {
       successToast("Cập nhật thành công");
     },
   });
-  const { subTasks, subTaskLoading, createSubTask, updateSubTask } = useSubTask(
+  const { subTasks, subTaskLoading, createSubTask, updateSubTask,deleteSubtask } = useSubTask(
     taskId as string
   );
 
@@ -110,10 +111,10 @@ const TaskDetailPage = () => {
             />
           )}
         </div>
-        <div className="px-60 pt-5 space-y-4">
+        <div className="pt-5 space-y-4 px-60">
           <div className="flex flex-row items-center space-x-2">
             {/* <Input
-              className="text-5xl font-bold border-none focus:shadow-none ml-0 pl-0"
+              className="pl-0 ml-0 text-5xl font-bold border-none focus:shadow-none"
               onChange={(e) => {
                 setFormData({
                   ...formData,
@@ -123,35 +124,35 @@ const TaskDetailPage = () => {
               placeholder="Task name here"
               defaultValue={formData?.name}
             /> */}
-            <h1 className="text-5xl font-bold border-none focus:shadow-none ml-0 pl-0">
+            <h1 className="pl-0 ml-0 text-5xl font-bold border-none focus:shadow-none">
               {formData?.name}
             </h1>
             <Button
               onClick={DoUpdate}
-              className="border-2 bg-blue-400 text-white font-bold hover:bg-blue-400"
+              className="font-bold text-white bg-blue-400 border-2 hover:bg-blue-400"
             >
               Save
             </Button>
             {/* <Upload
-              className=" border-none text-white "
+              className="text-white border-none "
               showUploadList={false}
               // onChange={handleUpLoadBg}
             >
               <Button
                 icon={<UploadOutlined />}
-                className="bg-blue-400 text-white font-bold"
+                className="font-bold text-white bg-blue-400"
               >
                 Click to Upload
               </Button>
             </Upload> */}
             <Button
               onClick={() => navigation(-1)}
-              className="border-2 border-blue-400 text-black hover:bg-blue-400"
+              className="text-black border-2 border-blue-400 hover:bg-blue-400"
             >
               Cancel
             </Button>
           </div>
-          <div className="flex flex-row items-center space-x-2 ml-2">
+          <div className="flex flex-row items-center ml-2 space-x-2">
             <StatusTag label={task?.status} />
             <PriorityTag label={task?.priority} />
             <TimeTag
@@ -179,15 +180,15 @@ const TaskDetailPage = () => {
               <Label label="Sub-task" />
               <Button
                 onClick={() => createSubTask()}
-                className="font-bold text-5xl flex justify-center items-center pb-2 border-none focus:shadow-none"
+                className="flex items-center justify-center pb-2 text-5xl font-bold border-none focus:shadow-none"
               >
                 +
               </Button>
             </div>
-            <div className="flex flex-col space-y-2 mt-2">
+            <div className="flex flex-col mt-2 space-y-2">
               {!subTaskLoading &&
                 subTasks.map((subTask: any) => (
-                  <SubTask subTask={subTask} updateSubTask={updateSubTask} />
+                  <SubTask subTask={subTask} updateSubTask={updateSubTask} deleteSubtask={deleteSubtask} />
                 ))}
             </div>
           </div>
@@ -200,7 +201,7 @@ const TaskDetailPage = () => {
               {!isMessLoading &&
                 messages.map((item: any) => <Comment message={item} />)}
             </div>
-            <div className="flex flex-row items-start justify-center space-x-2 mt-2">
+            <div className="flex flex-row items-start justify-center mt-2 space-x-2">
               <AvatarCus user={user} />
               <Input
                 className="h-12"
@@ -252,14 +253,14 @@ const TimeTag = ({
   dueDate: string;
 }) => {
   return (
-    <div className="bg-blue-400 py-1 px-2 rounded-md w-fit font-semibold">
+    <div className="px-2 py-1 font-semibold bg-blue-400 rounded-md w-fit">
       {startDate} - {dueDate}
     </div>
   );
 };
 
 const Label = ({ label }: { label: string }) => {
-  return <div className="font-semibold text-4xl">{label}</div>;
+  return <div className="text-4xl font-semibold">{label}</div>;
 };
 
 const Comment = ({ message }: { message: any }) => {
@@ -271,7 +272,7 @@ const Comment = ({ message }: { message: any }) => {
   const _user = JSON.parse(localStorage.getItem("user") || "{}");
   const isAuth = _user?._id === user?._id;
   return (
-    <div className="flex flex-row items-start space-x-4 mb-2">
+    <div className="flex flex-row items-start mb-2 space-x-4">
       <AvatarCus user={user} tailwind="h-8 w-8" />
       <div
         className={`px-2  rounded-xl w-full min-h-[64px] ${
@@ -284,7 +285,7 @@ const Comment = ({ message }: { message: any }) => {
   );
 };
 
-const SubTask = ({ updateSubTask, subTask }: any) => {
+const SubTask = ({ updateSubTask,deleteSubtask, subTask }: any) => {
   const [text, setText] = useState(subTask?.name);
   const DoPressEnter = (event: any) => {
     if (event.key === "Enter" && !event.shiftKey) {
@@ -316,12 +317,16 @@ const SubTask = ({ updateSubTask, subTask }: any) => {
         defaultValue={subTask?.name}
         value={text}
         placeholder="Sub-task name"
-        className="w-fit border-none focus:shadow-none"
+        className="border-none w-fit focus:shadow-none"
         onChange={(e) => {
           setText(e.target.value);
         }}
         onKeyDown={DoPressEnter}
       />
+      <button title="trash" onClick={()=>{deleteSubtask({subTaskId: subTask._id})}} className="text-red-500 hover:text-red-700">
+      <Trash2 size={20} />
+    </button>
+
     </div>
   );
 };

@@ -21,6 +21,7 @@
     "framer-motion": "^10.16.4",
     "interactjs": "^1.10.19",
     "jotai": "^2.4.2",
+    "lucide-react": "^0.507.0",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
