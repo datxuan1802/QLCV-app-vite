@@ -581,6 +581,7 @@ const SmartOptionBoard = () => {
 
 export const TaskDetailModal = () => {
   const [open, setOpen] = useAtom(openDetailTaskModal);
+  const [dataTask, setDataTask] = useState<any>();
   const [selectTaskId] = useAtom(selectTaskIdAtom);
   const [avatars, setAvatars] = useState<any>([]);
   const queryClient = useQueryClient();
@@ -591,7 +592,7 @@ export const TaskDetailModal = () => {
     description: "",
     priority: "",
   });
-
+ 
   const { boardId, workspaceId } = useParams();
   useEffect(() => {
     queryClient.invalidateQueries({
@@ -610,6 +611,11 @@ export const TaskDetailModal = () => {
       });
     },
   });
+
+  useEffect(()=>{if(task){
+    setDataTask(task);
+  }},[open,task])
+
   console.log(task,'tasck');
 
   const { mutate, error } = useMutation({
@@ -669,7 +675,7 @@ export const TaskDetailModal = () => {
     setIsModalVisible(true);
   };
   const handleOk = () => {
-    DelBoard({taskId: task._id});
+    DelBoard({taskId: dataTask._id});
   };
 
   const handleCancel = () => {
@@ -698,7 +704,7 @@ export const TaskDetailModal = () => {
     <Modal
       open={!isLoading && open}
       onCancel={DoCancel}
-      footer={!!task&&task?.status!=='done'?[
+      footer={!!dataTask&&dataTask?.status!=='done'?[
         <Button
           key="submit"
           type="primary"
@@ -761,7 +767,7 @@ export const TaskDetailModal = () => {
       <div className="flex flex-row items-center mb-3 text-3xl">
         <div className="text-base text-gray-400">Name</div>
         <Input
-          defaultValue={task?.name}
+          defaultValue={dataTask?.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           className="font-bold border-none focus:border-none focus:shadow-none "
         />
@@ -772,10 +778,10 @@ export const TaskDetailModal = () => {
           <div className={`flex-1 flex flex-row items-center space-x-2`}>
             <div
               className={`${getBgStatusTask(
-                task?.status
+                dataTask?.status
               )} w-fit py-1 px-2 rounded-lg`}
             >
-              {task?.status}
+              {dataTask?.status}
             </div>
             <ArrowRightOutlined />
             <Select
@@ -800,10 +806,10 @@ export const TaskDetailModal = () => {
           <div className={`flex-1 flex flex-row items-center space-x-2`}>
             <div
               className={`${getBgPriorityColor(
-                task?.priority
+                dataTask?.priority
               )} w-fit py-1 px-2 rounded-lg`}
             >
-              {task?.priority}
+              {dataTask?.priority}
             </div>
             <ArrowRightOutlined />
             <Select
@@ -828,7 +834,7 @@ export const TaskDetailModal = () => {
           <div className="text-base text-gray-400">Due date</div>
           <div className="flex-1">
             <div className="px-2 py-1 rounded-md w-fit bg-slate-200">
-              {dayjs(task?.dueDate).format("DD/MM/YYYY")}
+              {dayjs(dataTask?.dueDate).format("DD/MM/YYYY")}
             </div>
           </div>
         </div>
@@ -837,7 +843,7 @@ export const TaskDetailModal = () => {
           <Avatar.Group>
             {
               avatars &&
-              task?.assignIds?.map((item: any) => {
+              dataTask?.assignIds?.map((item: any) => {
                 return (
                   <AvatarCus
                     user={
@@ -855,7 +861,7 @@ export const TaskDetailModal = () => {
         <div>
           <TextArea
             rows={4}
-            defaultValue={task?.description}
+            defaultValue={dataTask?.description}
             className="border-none"
             onChange={(e) => {
               setFormData((preState) => ({

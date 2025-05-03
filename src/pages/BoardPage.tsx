@@ -10,14 +10,14 @@ import {
 } from "@/components";
 import { useParams } from "react-router";
 // import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
+import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { get, patch } from "@/services/axios.service";
 
 import { EStatus } from "@/utils/type";
 import { mapStatusTask } from "@/utils/mapping";
 import { useAtom } from "jotai";
 import { selectViewAtom } from "@/states/modal.state";
-import { errorToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import { userAtom } from "@/states/user.state";
 
 const BoardPage = () => {
@@ -76,6 +76,7 @@ const BoardPage = () => {
       },
     ],
   });
+  const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
     // mutationFn:  (taskId: string,status:EStatus) => {
@@ -90,8 +91,16 @@ const BoardPage = () => {
     }) => {
       return await patch(`/task/update-status/${taskId}?status=${status}`, {});
     },
+     onSuccess: (data) => {
+          queryClient.invalidateQueries({
+            queryKey: [`task/findByBoardId/${boardId}`],
+          });
+          queryClient.invalidateQueries({
+            queryKey: [`task/${data._id}`],
+          });
+          successToast("Cập nhật thành công");
+        },
   });
-
   const { mutate: mutateUpdate } = useMutation({
     mutationFn: async ({ taskId, data }: any) => {
       return await patch(`/task/update/${taskId}`, data);
