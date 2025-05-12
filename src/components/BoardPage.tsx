@@ -444,7 +444,7 @@ export const BoardHeader = () => {
       <Header className="fixed z-50 flex flex-row items-center justify-center w-full bg-white shadow-xl top-16">
         <div className="flex flex-row items-center justify-start flex-1 space-x-4">
           <div>
-            <h2 className="text-2xl text-bold">{data?.name}</h2>
+            <h2 className="text-2xl font-semibold text-bold">{data?.name}</h2>
           </div>
           <Button
             className="normal-case bg-blue-500 "
@@ -507,7 +507,7 @@ export const BoardHeader = () => {
             Chi tiết
           </Button>
           <div className="flex flex-row items-center space-x-2">
-            {/* <AvatarGroup /> */}
+            <AvatarGroup />
             <Button
               className="border-blue-400"
               icon={<FilterOutlined className="text-blue-400" />}

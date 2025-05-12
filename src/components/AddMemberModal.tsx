@@ -27,7 +27,7 @@ export const AddMemberModal = () => {
       // setRefresh(true);
       setOpen(false);
       // successToast("The invitation has been sent to email successfully!");
-      successToast("Add member successfully");
+      successToast("Thêm nhân sự thành công");
       //   navigation(path.home);
     },
     onError(error, variables, context) {
@@ -73,22 +73,22 @@ export const AddMemberModal = () => {
           disabled={inviteUser.isLoading}
           onClick={handleOk}
         >
-          Invite
+          Mời
         </Button>,
         <Button key="back" onClick={handleCancel}>
-          Cancel
+          Hủy
         </Button>,
       ]}
     >
       <div className="space-y-2">
         <label
           htmlFor="name"
-          className="block text-sm font-medium text-gray-900 mr-2"
+          className="block mr-2 text-sm font-medium text-gray-900"
         >
           Email
         </label>
         <Input
-          placeholder="trungvu267@gmail.com"
+          placeholder="abc@gmail.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           size="small"

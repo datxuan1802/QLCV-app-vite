@@ -101,15 +101,12 @@ const TaskDetailPage = () => {
     <div>
       <MainHeader />
       <div className="w-full h-screen mt-16">
-        <div className="bg-slate-200 h-60">
-          {task?.bg_url && (
-            // <img src={task?.bg_url} alt="" className="w-full h-full" />
+        <div className="h-60">
             <img
               src={"/default.png"}
               alt=""
-              className="w-full h-full bg-cover"
+              className="w-full bg-cover h-60"
             />
-          )}
         </div>
         <div className="pt-5 space-y-4 px-60">
           <div className="flex flex-row items-center space-x-2">
@@ -124,14 +121,14 @@ const TaskDetailPage = () => {
               placeholder="Task name here"
               defaultValue={formData?.name}
             /> */}
-            <h1 className="pl-0 ml-0 text-5xl font-bold border-none focus:shadow-none">
-              {formData?.name}
+            <h1 className="w-1/2 pl-0 ml-0 text-5xl font-bold border-none focus:shadow-none">
+              Tên nhiệm vụ : {task?.name}
             </h1>
             <Button
               onClick={DoUpdate}
-              className="font-bold text-white bg-blue-400 border-2 hover:bg-blue-400"
+              className="font-bold border-2"
             >
-              Save
+              Lưu lại
             </Button>
             {/* <Upload
               className="text-white border-none "
@@ -147,21 +144,21 @@ const TaskDetailPage = () => {
             </Upload> */}
             <Button
               onClick={() => navigation(-1)}
-              className="text-black border-2 border-blue-400 hover:bg-blue-400"
+              className="text-black border-2"
             >
-              Cancel
+              Quay trở lại
             </Button>
           </div>
-          <div className="flex flex-row items-center ml-2 space-x-2">
-            <StatusTag label={task?.status} />
-            <PriorityTag label={task?.priority} />
-            <TimeTag
+          <div className="flex flex-col items-start space-y-2">
+            <div className="flex items-center text-xl font-semibold gap-x-2"><p className="w-32">Trạng thái: </p><StatusTag label={task?.status} /></div>
+            <div className="flex items-center text-xl font-semibold gap-x-2"><p className="w-32">Mức độ:</p> <PriorityTag label={task?.priority} /></div>
+            <div className="flex items-center text-xl font-semibold gap-x-2"><p className="w-32">Thời gian:</p> <TimeTag
               startDate={moment(task?.startDate).format("DD/MM")}
               dueDate={moment(task?.dueDate).format("DD/MM/YYYY")}
-            />
+            /></div>
           </div>
           <div>
-            <Label label="Description" />
+            <Label label="Mô tả nhiệm vụ" />
             <Input.TextArea
               className="text-base border-none focus:shadow-none"
               rows={6}
@@ -171,13 +168,13 @@ const TaskDetailPage = () => {
                   description: e.target.value,
                 });
               }}
-              placeholder="Description here"
+              placeholder="Mô tả ở đây"
               defaultValue={formData?.description}
             />
           </div>
           <div>
             <div className="flex flex-row items-center space-x-1">
-              <Label label="Sub-task" />
+              <Label label="Nhiệm vụ phụ" />
               <Button
                 onClick={() => createSubTask()}
                 className="flex items-center justify-center pb-2 text-5xl font-bold border-none focus:shadow-none"
@@ -193,7 +190,7 @@ const TaskDetailPage = () => {
             </div>
           </div>
           <div className="pb-16">
-            <Label label="Comments" />
+            <Label label="Bình luận" />
             <div
               className="mt-6 overflow-y-scroll max-h-96"
               ref={scrollToBottomRef}
@@ -201,11 +198,11 @@ const TaskDetailPage = () => {
               {!isMessLoading &&
                 messages.map((item: any) => <Comment message={item} />)}
             </div>
-            <div className="flex flex-row items-start justify-center mt-2 space-x-2">
+            <div className="flex justify-center mt-2 space-x-2 items-Center">
               <AvatarCus user={user} />
               <Input
                 className="h-12"
-                placeholder="Comments here"
+                placeholder="Bình luận"
                 value={content}
                 onChange={(e) => {
                   setContent(e.target.value);
@@ -229,7 +226,7 @@ const StatusTag = ({ label }: { label: string }) => {
         label as EStatus
       )} py-1 px-2 rounded-md w-fit font-semibold`}
     >
-      {label?.toUpperCase()}
+      {label==='todo'?'Việc cần làm':label==='done'?'Hoàn thành':'Đang thực hiện'}
     </div>
   );
 };
@@ -240,7 +237,7 @@ const PriorityTag = ({ label }: { label: string }) => {
         label as EPriority
       )} py-1 px-2 rounded-md w-fit font-semibold`}
     >
-      {label?.toUpperCase()}
+      {label==='high'?'Cao':label==='medium'?'Trung bình':'Thấp'}
     </div>
   );
 };
@@ -295,7 +292,7 @@ const SubTask = ({ updateSubTask,deleteSubtask, subTask }: any) => {
           name: text,
         },
       });
-      successToast("Cập nhật sub task thành công");
+      successToast("Cập nhật nhiệm vụ phụ thành công");
     }
   };
   return (
@@ -316,7 +313,7 @@ const SubTask = ({ updateSubTask,deleteSubtask, subTask }: any) => {
       <Input
         defaultValue={subTask?.name}
         value={text}
-        placeholder="Sub-task name"
+        placeholder="Tên nhiệm vụ phụ"
         className="border-none w-fit focus:shadow-none"
         onChange={(e) => {
           setText(e.target.value);
