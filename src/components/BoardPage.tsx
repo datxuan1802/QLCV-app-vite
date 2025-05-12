@@ -256,7 +256,7 @@ export const TaskModal = () => {
       queryClient.invalidateQueries({
         queryKey: [`task/findByBoardId/${boardId}`],
       });
-      successToast("Create new task");
+      successToast("Tạo nhiệm vụ mới thành công");
     },
   });
 
@@ -276,7 +276,7 @@ export const TaskModal = () => {
     <>
       <Modal
         open={open}
-        title="Create a new task"
+        title="Tạo nhiệm vụ mới"
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[
@@ -287,10 +287,10 @@ export const TaskModal = () => {
             loading={isLoading}
             onClick={handleOk}
           >
-            Create
+            Tạo
           </Button>,
           <Button key="back" onClick={handleCancel}>
-            Cancel
+            Hủy
           </Button>,
         ]}
       >
@@ -301,7 +301,7 @@ export const TaskModal = () => {
               htmlFor="name"
               className="block w-32 mb-2 text-sm font-medium text-gray-900 "
             >
-              Name
+              Tên
             </label>
             <Input
               placeholder="Task name"
@@ -316,7 +316,7 @@ export const TaskModal = () => {
               htmlFor="description"
               className="block w-32 mb-2 text-sm font-medium text-gray-900 "
             >
-              Description
+              Mô tả
             </label>
             <Input
               placeholder="Task description"
@@ -332,7 +332,7 @@ export const TaskModal = () => {
               htmlFor="name"
               className="block w-32 mb-2 text-sm font-medium text-gray-900 "
             >
-              Time
+              Thời gian
             </label>
             <RangePicker
               className="w-full"
@@ -366,16 +366,16 @@ export const TaskModal = () => {
                 htmlFor="name"
                 className="block w-24 mb-2 text-sm font-medium text-gray-900 "
               >
-                Priority
+                Mức độ
               </label>
               <Select
                 defaultValue={EPriority.HIGH}
                 style={{ width: 120 }}
                 onChange={(val: EPriority) => setPriority(val)}
                 options={[
-                  { value: EPriority.HIGH, label: "High" },
-                  { value: EPriority.MEDIUM, label: "Medium" },
-                  { value: EPriority.LOW, label: "Low" },
+                  { value: EPriority.HIGH, label: "Cao" },
+                  { value: EPriority.MEDIUM, label: "Trung bình" },
+                  { value: EPriority.LOW, label: "Thấp" },
                 ]}
               />
             </div>
@@ -386,7 +386,7 @@ export const TaskModal = () => {
               htmlFor="name"
               className="block w-24 mb-2 mr-5 text-sm font-medium text-gray-900"
             >
-              Assign
+              Giao phó
             </label>
             <Select
               // defaultValue={EPriority.HIGH}
@@ -399,7 +399,7 @@ export const TaskModal = () => {
             />
           </div>
           {/* input field */}
-          <div className="flex flex-row items-center">
+          {/* <div className="flex flex-row items-center">
             <label
               htmlFor="name"
               className="block w-24 mb-2 text-sm font-medium text-gray-900 "
@@ -410,7 +410,7 @@ export const TaskModal = () => {
               <Button icon={<UploadOutlined />}>Upload</Button>
             </Upload>
             <div className="flex-1 h-5 ml-2 overflow-hidden">{bgUrl}</div>
-          </div>
+          </div> */}
         </div>
       </Modal>
     </>
@@ -445,7 +445,7 @@ export const BoardHeader = () => {
             onClick={() => setOpen(true)}
             type="primary"
           >
-            Create new task
+            Tạo nhiệm vụ mới
           </Button>
           <Button
             className="normal-case bg-blue-500 "
@@ -455,16 +455,16 @@ export const BoardHeader = () => {
             }}
             type="primary"
           >
-            Invite member
+            Thêm nhân sự
           </Button>
           <Select
             defaultValue="Board"
-            style={{ width: 120 }}
+            style={{ width: 150 }}
             onChange={(value: string) => setSelectView(value)}
             options={[
-              { value: "Board", label: "Board" },
-              { value: "Timeline", label: "Timeline" },
-              { value: "Table", label: "Table" },
+              { value: "Board", label: "Bảng nhiệm vụ" },
+              { value: "Timeline", label: "Dòng thời gian" },
+              { value: "Table", label: "Bảng" },
               // { value: "Calendar", label: "Calender" },
             ]}
           />
@@ -482,7 +482,7 @@ export const BoardHeader = () => {
             }}
             type="primary"
           >
-            Report
+            Báo cáo
           </Button>
           <Button
             className="normal-case bg-blue-500 "
@@ -498,7 +498,7 @@ export const BoardHeader = () => {
             }}
             type="primary"
           >
-            Detail
+            Chi tiết
           </Button>
           <div className="flex flex-row items-center space-x-2">
             {/* <AvatarGroup /> */}
@@ -717,7 +717,7 @@ export const TaskDetailModal = () => {
             setOpen(false);
           }}
         >
-          Detail
+          Chi tiết
         </Button>,
         <Button
           key="submit"
@@ -726,13 +726,13 @@ export const TaskDetailModal = () => {
           // loading={isLoading}
           onClick={DoUpdate}
         >
-          Edit
+          Cập nhật
         </Button>,
         <Button key="back" onClick={showModal} className="text-white bg-red-500">
-        Delete
+        Xóa
       </Button>,
         <Button key="back" onClick={DoCancel}>
-          Cancel
+          Hủy
         </Button>,
       ]:[
         <Button
@@ -747,7 +747,7 @@ export const TaskDetailModal = () => {
             setOpen(false);
           }}
         >
-          Detail
+          Chi tiết
         </Button>,
         <Button
           key="submit"
@@ -756,16 +756,16 @@ export const TaskDetailModal = () => {
           // loading={isLoading}
           onClick={DoUpdate}
         >
-          Edit
+          Cập nhật
         </Button>,
         
         <Button key="back" onClick={DoCancel}>
-          Cancel
+          Hủy
         </Button>,
       ]}
     >
       <div className="flex flex-row items-center mb-3 text-3xl">
-        <div className="text-base text-gray-400">Name</div>
+        <div className="text-base text-gray-400">Tên</div>
         <Input
           defaultValue={dataTask?.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -774,7 +774,7 @@ export const TaskDetailModal = () => {
       </div>
       <div className="space-y-6">
         <div className="flex flex-row items-center space-x-2">
-          <div className="text-base text-gray-400">Status</div>
+          <div className="text-base text-gray-400">Trạng thái</div>
           <div className={`flex-1 flex flex-row items-center space-x-2`}>
             <div
               className={`${getBgStatusTask(
@@ -788,9 +788,9 @@ export const TaskDetailModal = () => {
               defaultValue={EStatus.DONE}
               style={{ width: 120 }}
               options={[
-                { value: EStatus.DONE, label: "Done" },
-                { value: EStatus.IN_PROGRESS, label: "In-progress" },
-                { value: EStatus.TODO, label: "Todo" },
+                { value: EStatus.DONE, label: "Hoàn thành" },
+                { value: EStatus.IN_PROGRESS, label: "Đang làm" },
+                { value: EStatus.TODO, label: "Việc cần làm" },
               ]}
               onChange={(value: any) => {
                 setFormData((preState) => ({
@@ -802,7 +802,7 @@ export const TaskDetailModal = () => {
           </div>
         </div>
         <div className="flex flex-row items-center space-x-2">
-          <div className="text-base text-gray-400">Priority</div>
+          <div className="text-base text-gray-400">Mức độ</div>
           <div className={`flex-1 flex flex-row items-center space-x-2`}>
             <div
               className={`${getBgPriorityColor(
@@ -816,9 +816,9 @@ export const TaskDetailModal = () => {
               defaultValue={EPriority.HIGH}
               style={{ width: 120 }}
               options={[
-                { value: EPriority.HIGH, label: "High" },
-                { value: EPriority.MEDIUM, label: "Medium" },
-                { value: EPriority.LOW, label: "Low" },
+                { value: EPriority.HIGH, label: "Cao" },
+                { value: EPriority.MEDIUM, label: "Trung bình" },
+                { value: EPriority.LOW, label: "Thấp" },
               ]}
               onChange={(value: any) => {
                 console.log(value);
@@ -831,7 +831,7 @@ export const TaskDetailModal = () => {
           </div>
         </div>
         <div className="flex flex-row items-center space-x-2">
-          <div className="text-base text-gray-400">Due date</div>
+          <div className="text-base text-gray-400">Ngày đến hạn</div>
           <div className="flex-1">
             <div className="px-2 py-1 rounded-md w-fit bg-slate-200">
               {dayjs(dataTask?.dueDate).format("DD/MM/YYYY")}
@@ -839,7 +839,7 @@ export const TaskDetailModal = () => {
           </div>
         </div>
         <div className="flex flex-row items-center space-x-2">
-          <div className="text-base text-gray-400">Assign</div>
+          <div className="text-base text-gray-400">Giao phó</div>
           <Avatar.Group>
             {
               avatars &&
@@ -857,7 +857,7 @@ export const TaskDetailModal = () => {
         </div>
       </div>
       <div className="mt-3">
-        <div className="mb-2 text-xl font-bold text-black">Description</div>
+        <div className="mb-2 text-xl font-bold text-black">Mô tả</div>
         <div>
           <TextArea
             rows={4}

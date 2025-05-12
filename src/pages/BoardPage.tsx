@@ -188,7 +188,7 @@ const BoardPage = () => {
       <BoardHeader />
       {selectView === "Board" && (
         <KanbanLayout handleOnDragEnd={handleOnDragEnd}>
-          <Column droppableId={"todos"} columnName="To Do">
+          <Column droppableId={"todos"} columnName="Việc cần  làm">
             {tasks.todos &&
               tasks.todos?.map((task: any, index: number) => (
                 <Task
@@ -201,7 +201,7 @@ const BoardPage = () => {
           </Column>
           <Column
             droppableId={"inProgress"}
-            columnName="In Progress"
+            columnName="Đang thực hiện"
             className="bg-red-200"
           >
             {tasks.inProgress &&
@@ -214,7 +214,7 @@ const BoardPage = () => {
                 />
               ))}
           </Column>
-          <Column droppableId={"done"} columnName="Done" className="bg-red-500">
+          <Column droppableId={"done"} columnName="Hoàn thành" className="bg-red-500">
             {tasks.done &&
               tasks.done?.map((task: any, index: number) => (
                 <Task

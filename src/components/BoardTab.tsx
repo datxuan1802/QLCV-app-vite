@@ -21,7 +21,7 @@ export const AddBoardTab = ({ workspaceId }: { workspaceId: string }) => {
       }}
       className="border-none outline-none "
     >
-      Add new project
+      Tạo dự án mới
     </button>
   );
 };

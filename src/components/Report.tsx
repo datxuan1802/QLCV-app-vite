@@ -75,12 +75,12 @@ export const ReportLayout = () => {
       <BoardHeader />
       <RangePicker
         size="large"
-        className="w-1/3 mt-6 mx-6"
+        className="w-1/3 mx-6 mt-6"
         format="DD/MM/YYYY"
         defaultValue={[dayjs(), dayjs().add(5, "day")]}
         onChange={DoSetDate}
       />
-      <div className="grid grid-cols-3 px-6 pt-6 space-x-3 min-h-screen">
+      <div className="grid min-h-screen grid-cols-3 px-6 pt-6 space-x-3">
         <TaskDoneLineChart
           data={data}
           startDate={startDate}
@@ -425,7 +425,7 @@ const TaskReport = () => {
   });
   const dataDoughnut = {
     label: "Các nhiệm vụ theo trạng thái",
-    labels: ["To Do", "In Progress", "Done"],
+    labels: ["Việc cần làm", "Đang tiến hành", "Hoàn thành"],
     datasets: [
       {
         label: "# counts",
@@ -490,7 +490,7 @@ const PriorityReport = ({
     setReport([highPriorityCount, mediumPriorityCount, lowPriorityCount]);
   }, [data]);
   const dataDoughnutPriority = {
-    labels: ["High", "Medium", "Low"],
+    labels: ["Cao", "Trung bình", "Thấp"],
     datasets: [
       {
         label: "# counts",
