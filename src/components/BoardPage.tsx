@@ -253,6 +253,12 @@ export const TaskModal = () => {
     },
 
     onSuccess: (data) => {
+
+      setName('');
+      setDescription('');
+      setPriority(EPriority.HIGH);
+      setAssignIds([]);
+      setBgUrl(null);
       queryClient.invalidateQueries({
         queryKey: [`task/findByBoardId/${boardId}`],
       });
