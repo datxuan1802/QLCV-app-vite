@@ -45,7 +45,7 @@ const MainLayout = ({ children,workspaceId }: any) => {
   };
   const WorkspaceName = () => {
     const navigation = useNavigate();
-    return <div  className="flex items-center gap-x-2 hover:text-[#1922FF] "><div><AiOutlineProject size={20} color="#007bff" /></div><div>{workspaces?.find((item:any)=>item?._id===workspaceId)?.workspace?.name}</div><AiOutlineDown size={10} color="gray" className="ml-1" /> {/* Add the down arrow icon */}</div>;
+    return <div  className="flex items-center gap-x-2 hover:text-[#1922FF] "><div><AiOutlineProject size={20} color="#007bff" /></div><div>{workspaces?.find((item:any)=>item?.workspace?._id===workspaceId)?.workspace?.name}</div><AiOutlineDown size={10} color="gray" className="ml-1" /> {/* Add the down arrow icon */}</div>;
   };
   const settings =  [
     {
