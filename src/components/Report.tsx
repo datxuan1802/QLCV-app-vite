@@ -363,19 +363,19 @@ const TeamPerformance = ({
     labels,
     datasets: [
       {
-        label: "Low",
+        label: "Thấp",
         data: report.low,
         borderColor: "rgb(75, 192, 192)",
         backgroundColor: "rgba(75, 192, 192, 0.5)",
       },
       {
-        label: "Medium",
+        label: "Trung bình",
         data: report.medium,
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
       },
       {
-        label: "High",
+        label: "Cao",
         data: report.high,
         borderColor: "rgba(255, 99, 132, 1)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",

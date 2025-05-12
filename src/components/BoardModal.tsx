@@ -106,7 +106,7 @@ const BoardModal: React.FC = () => {
               Mô tả
             </label>
             <Input
-              placeholder="Mổ  tả"
+              placeholder="Mô tả"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               size="small"

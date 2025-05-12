@@ -151,7 +151,7 @@ export const Task = ({ item, draggableId, index }: TaskLayoutProps) => {
                 item.priority
               )} py-1 px-2 rounded-md w-fit font-semibold`}
             >
-              {item.priority}
+              {item.priority==='high'?'Cao':item.priority==='medium'?'Trung bình':'Thấp'}
             </div>
             <div className="flex flex-row items-center p-1 bg-blue-500 rounded-md w-fit ">
               <ClockCircleOutlined className="pr-2" />
@@ -616,7 +616,6 @@ export const TaskDetailModal = () => {
     setDataTask(task);
   }},[open,task])
 
-  console.log(task,'tasck');
 
   const { mutate, error } = useMutation({
     mutationFn: async ({ taskId, data }: any) => {
@@ -781,7 +780,7 @@ export const TaskDetailModal = () => {
                 dataTask?.status
               )} w-fit py-1 px-2 rounded-lg`}
             >
-              {dataTask?.status}
+              {dataTask?.status==='todo'?'Việc cần làm':dataTask?.status==='done'?'Hoàn thành':"Đang thực hiện"}
             </div>
             <ArrowRightOutlined />
             <Select
@@ -809,7 +808,7 @@ export const TaskDetailModal = () => {
                 dataTask?.priority
               )} w-fit py-1 px-2 rounded-lg`}
             >
-              {dataTask?.priority}
+              {dataTask?.priority==='high'?'Cao':dataTask?.priority==='medium'?'Trung bình':'Thấp'}
             </div>
             <ArrowRightOutlined />
             <Select
