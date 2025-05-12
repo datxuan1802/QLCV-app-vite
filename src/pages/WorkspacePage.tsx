@@ -4,6 +4,7 @@ import { useAtom } from "jotai";
 import { openBoardModal, selectWorkspaceIdAtom } from "@/states/modal.state";
 import { useWorkspace } from "@/hooks/workspace.hook";
 import { useNavigate, useParams } from "react-router-dom";
+import { Avatar } from "antd";
 const ProjectPage = () => {
       const {workspaceId } = useParams();
           const navigation = useNavigate();
@@ -30,10 +31,15 @@ const ProjectPage = () => {
       <div className="flex flex-col p-6 px-48 h-fit">
         <div></div>
         <div className="flex items-center justify-between pb-12"><div className="text-3xl font-semibold ">Danh sách dự án</div><button onClick={()=>{setOpen(true);setSelectWorkspaceId(workspaceId!)}} className="p-2 bg-blue-500 rounded cursor-pointer">+ Tạo dự án mới</button></div>
-        <div className="flex flex-wrap justify-start w-full h-fit gap-x-6 gap-y-6">
-  {workspaces.find((data:any)=>data?._id===workspaceId)?.workspace?.boards?.map((data: any,index:number) => {
+        <div className="flex flex-wrap justify-start w-full h-fit gap-x-6 gap-y-2">
+  {workspaces.find((data:any)=>data?.workspace?._id===workspaceId)?.workspace?.boards?.map((data: any,index:number) => {
     return (
-     <div onClick={()=>navigation(`/workspaces/${workspaceId}/boards/${data?._id}`)} key={index} className="flex flex-col w-full py-4 bg-white border-t border-b"><div>{data?.name}</div><div>{data?.description}</div></div>
+     <div onClick={()=>navigation(`/workspaces/${workspaceId}/boards/${data?._id}`)} key={index} className="flex items-center w-full px-2 py-2 bg-white border-t border-b rounded-lg hover:bg-blue-300 gap-x-4">
+     <div> <Avatar shape='square' className={` bg-green-500`}>
+      {data?.name}
+    </Avatar></div> 
+      <div className="flex flex-col w-full"><div>{data?.name}</div><div>{data?.description}</div></div>
+      </div>
     );
   })}
  

@@ -39,7 +39,7 @@ console.log(workspaces,'ws');
     return (
       <div
         onClick={() => {
-          navigation(`/workspaces/${data?._id}`);
+          navigation(`/workspaces/${data?.workspace?._id}`);
         }}
         key={data._id}
         className="flex flex-col w-[calc(33.333%-1rem)] p-4 cursor-pointer bg-white hover:bg-blue-100 border rounded-lg h-[200px] gap-y-2"
