@@ -84,7 +84,7 @@ const Settings = () => {
         console.log(err);
       });
   };
-  const [userName, setUserName] = useState(data?.name);
+  const [userName, setUserName] = useState(data?.name!);
   const [bio, setBio] = useState(data?.bio);
 
   const DoUpdateUSer = async () => {
@@ -105,7 +105,7 @@ const Settings = () => {
   return (
     <MainLayout>
       <div>
-        <div className="h-52 w-full relative">
+        <div className="relative w-full h-52">
           {/* <Upload
             className="absolute bottom-[-30px] right-2 z-50"
             showUploadList={false}
@@ -113,12 +113,12 @@ const Settings = () => {
           >
             <Button
               icon={<UploadOutlined />}
-              className="bg-blue-400 text-white font-bold"
+              className="font-bold text-white bg-blue-400"
             >
               Click to Upload
             </Button>
           </Upload> */}
-          <div className="bg-slate-500 h-64 absolute top-0 right-0 left-0">
+          <div className="absolute top-0 left-0 right-0 h-64 bg-slate-500">
             <img
               // src={data?.background ? data?.background : "/default.png"}
               src="/default.png"
@@ -127,7 +127,7 @@ const Settings = () => {
             />
           </div>
         </div>
-        <div className="ml-6 flex flex-row justify-center items-end">
+        <div className="flex flex-row items-end justify-center ml-6">
           {
             <Upload
               className="z-40 w-32 "
@@ -143,44 +143,44 @@ const Settings = () => {
                   // src={data?.avatar ? data?.avatar : "/logot1.jpg"}
                   src={"/logot1.jpg"}
                   alt="avatar"
-                  className="rounded-full bg-blue-200"
+                  className="bg-blue-200 rounded-full"
                 />
               )}
             </Upload>
           }
-          <div className="font-semibold text-2xl ml-2 mb-10">
+          <div className="mb-10 ml-2 text-2xl font-semibold">
             {!isLoading && data?.name}
           </div>
-          <div className="flex-1 flex flex-row flex-end space-x-2 justify-end items-center mr-6 mb-2">
+          <div className="flex flex-row items-center justify-end flex-1 mb-2 mr-6 space-x-2 flex-end">
             <Button
               onClick={DoUpdateUSer}
-              className=" rounded-r-lg bg-blue-400 text-white font-semibold"
+              className="font-semibold text-white bg-blue-400 rounded-r-lg "
             >
-              Save
+              Lưu
             </Button>
-            <Button className="border rounded-r-lg border-slate-200 text-black font-semibold">
-              Cancel
+            <Button className="font-semibold text-black border rounded-r-lg border-slate-200">
+              Hủy
             </Button>
           </div>
         </div>
         <Breadcrumb
-          className="ml-8 mt-6"
+          className="mt-6 ml-8"
           items={[
             {
               title: <a href="/">Home</a>,
             },
+            // {
+            //   title: <a href="">Application Center</a>,
+            // },
+            // {
+            //   title: <a href="">Application List</a>,
+            // },
             {
-              title: <a href="">Application Center</a>,
-            },
-            {
-              title: <a href="">Application List</a>,
-            },
-            {
-              title: "An Application",
+              title: "Tài khoản của tôi",
             },
           ]}
         />
-        <div className="flex flex-row items-center justify-start space-x-5 ml-6 mt-6">
+        <div className="flex flex-row items-center justify-start mt-6 ml-6 space-x-5">
           {!isLoading && (
             <InputForm
               label="Tên người dùng"
@@ -189,10 +189,10 @@ const Settings = () => {
             />
           )}
           {!isLoading && (
-            <InputForm label="Email" defaultValue={data.email} disable={true} />
+            <InputForm label="Email" defaultValue={data?.email} disable={true} />
           )}
         </div>
-        <div className="ml-6 mt-6">
+        <div className="mt-6 ml-6">
           <div className={`space-y-2`}>
             <div className="font-semibold">Mô tả</div>
             <div>
@@ -203,7 +203,7 @@ const Settings = () => {
                   size="large"
                   showCount
                   maxLength={100}
-                  style={{ height: 120, marginBottom: 24, width: 440 }}
+                  style={{ height: 200, marginBottom: 24, width: 440 }}
                   onChange={(e) => setBio(e.target.value)}
                 />
               )}

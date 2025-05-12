@@ -9,18 +9,18 @@ const Home = () => {
   const [, setOpen] = useAtom(openWorkspaceModal);
   return (
     <MainLayout>
-      <div className="flex justify-center items-center h-full flex-col space-y-4">
+      <div className="flex flex-col items-center justify-center h-full space-y-4">
         <img src="/leadership.png" alt="" className="w-80 h-80" />
         <h1 className="text-3xl w-[600px] font-semibold text-center">
-          Create new workspace
+          Tạo không gian làm việc mới
         </h1>
         <div>
           <Button
             size="large"
-            className="bg-blue-500 text-white"
+            className="text-white bg-blue-500"
             onClick={() => setOpen(true)}
           >
-            Create workspace
+            Tạo không gian làm việc mới
           </Button>
         </div>
       </div>

@@ -34,7 +34,7 @@ const WorkspaceModal: React.FC = () => {
 
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [queryKey.workspace] });
-      successToast("Create new workspace successfully");
+      successToast("Tạo không gian làm việc mới thành công");
       // navigation(path.home);
     },
     onError: (error: any) => {
@@ -52,7 +52,7 @@ const WorkspaceModal: React.FC = () => {
   };
 
   if (isError) {
-    return <div>error</div>;
+    return <div>Lỗi</div>;
   }
   return (
     <>
@@ -69,10 +69,10 @@ const WorkspaceModal: React.FC = () => {
             loading={isLoading}
             onClick={handleOk}
           >
-            Create
+            Tạo
           </Button>,
           <Button key="back" onClick={handleCancel}>
-            Cancel
+            Hủy
           </Button>,
         ]}
       >
@@ -81,12 +81,12 @@ const WorkspaceModal: React.FC = () => {
           <div className="flex flex-row">
             <label
               htmlFor="name"
-              className="block mb-2 text-sm font-medium w-32 text-gray-900 "
+              className="block w-32 mb-2 text-sm font-medium text-gray-900 "
             >
-              Name
+              Tên
             </label>
             <Input
-              placeholder="Workspace name"
+              placeholder="Tên không gian làm việc"
               value={name}
               onChange={(e) => setName(e.target.value)}
               size="small"
@@ -96,12 +96,12 @@ const WorkspaceModal: React.FC = () => {
           <div className="flex flex-row">
             <label
               htmlFor="description"
-              className="block mb-2 text-sm font-medium w-32 text-gray-900 "
+              className="block w-32 mb-2 text-sm font-medium text-gray-900 "
             >
-              Description
+              Mô tả
             </label>
             <Input
-              placeholder="Workspace Description"
+              placeholder="Mô tả không gian làm việc"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               size="small"
@@ -111,9 +111,9 @@ const WorkspaceModal: React.FC = () => {
           <div className="flex flex-row">
             <label
               htmlFor="name"
-              className="block mb-2 text-sm font-medium w-32 text-gray-900 "
+              className="block w-32 mb-2 text-sm font-medium text-gray-900 "
             >
-              Type
+              Kiểu
             </label>
             <Select
               defaultValue="private"
