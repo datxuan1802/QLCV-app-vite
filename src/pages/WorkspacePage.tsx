@@ -1,19 +1,16 @@
 // import React from "react";
 import { MainLayout } from "@/components";
-import { useDefaultPage } from "@/hooks/localStorage.hook";
-import { Button } from "antd";
 import { useAtom } from "jotai";
-import { openBoardModal, openWorkspaceModal } from "@/states/modal.state";
+import { openBoardModal, openWorkspaceModal, selectWorkspaceIdAtom } from "@/states/modal.state";
 import { useWorkspace } from "@/hooks/workspace.hook";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 const ProjectPage = () => {
       const {workspaceId } = useParams();
           const navigation = useNavigate();
   const [, setOpen] = useAtom(openBoardModal); 
+   const [, setSelectWorkspaceId] = useAtom(selectWorkspaceIdAtom);
    const Users= JSON.parse(localStorage.getItem('user') as string);
     const { workspaces }:any = useWorkspace();
-console.log(workspaces,'ws');
-
   return (
     <MainLayout workspaceId={workspaceId}>
       {/* <div className="flex flex-col items-center justify-center h-full space-y-4">
@@ -33,11 +30,11 @@ console.log(workspaces,'ws');
       </div> */}
       <div className="flex flex-col p-6 px-48 h-fit">
         <div></div>
-        <div className="pb-12"><div className="text-3xl font-semibold ">Danh sách dự án</div></div>
+        <div className="flex items-center justify-between pb-12"><div className="text-3xl font-semibold ">Danh sách dự án</div><div onClick={()=>{setOpen(true),setSelectWorkspaceId(workspaceId as string)}} className="p-2 bg-blue-500 rounded cursor-pointer">+ Tạo dự án mới</div></div>
         <div className="flex flex-wrap justify-start w-full h-fit gap-x-6 gap-y-6">
-  {workspaces.find((data:any)=>data?._id===workspaceId)?.workspace?.boards?.map((data: any) => {
+  {workspaces.find((data:any)=>data?._id===workspaceId)?.workspace?.boards?.map((data: any,index:number) => {
     return (
-     <div></div>
+     <div key={index} className="flex flex-col w-full py-4 bg-white border-t border-b"><div>{data?.name}</div><div>{data?.description}</div></div>
     );
   })}
  

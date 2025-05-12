@@ -100,7 +100,7 @@ const MainLayout = ({ children,workspaceId }: any) => {
             ></AddBoardTab>
           ),
         },
-        ...workspacePermission.workspace.boards.map((board: any) => {
+        ...workspacePermission?.workspace?.boards?.map((board: any) => {
           return {
             key: board?._id,
             label: (

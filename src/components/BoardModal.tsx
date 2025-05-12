@@ -41,7 +41,7 @@ const BoardModal: React.FC = () => {
       console.log(data);
       queryClient.invalidateQueries({ queryKey: [queryKey.workspace] });
       setBoards((preBoards: any) => [...preBoards, data]);
-      successToast("Tạo Board mới thành công");
+      successToast("Tạo dự án mới thành công");
       //   navigation(path.home);
     },
   });
