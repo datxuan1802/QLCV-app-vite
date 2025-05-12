@@ -52,7 +52,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="p-3 h-screen flex justify-center items-center bg-slate-100">
+    <div className="flex items-center justify-center h-screen p-3 bg-slate-100">
       <div
         // onSubmit={handleSubmit(handleLogin)}
         className="w-[420px] rounded-lg border p-10 flex justify-center flex-col border-slate-300 bg-white mx-auto space-y-6"
@@ -60,14 +60,14 @@ const LoginPage = () => {
         <div className="flex flex-row justify-center">
           <img src="/leadership.png" alt="" className="w-32 h-32" />
         </div>
-        <div className="mx-auto text-center my-2">
-          <h2 className="text-3xl font-bold">Task management</h2>
+        <div className="mx-auto my-2 text-center">
+          <h2 className="text-3xl font-bold">Quản lý dự án</h2>
         </div>
         <div className="flex flex-col gap-5"></div>
-        <div className="mb-3 gap-y-5  items-center flex flex-row space-x-2">
-          <label className="font-medium text-base w-20">Email</label>
+        <div className="flex flex-row items-center mb-3 space-x-2 gap-y-5">
+          <label className="w-24 text-base font-medium">Email</label>
           {/* <Input {...register("email")} /> */}
-          {/* <label className="my-0 py-0 text-red-500">
+          {/* <label className="py-0 my-0 text-red-500">
             {errors?.email?.message}
           </label> */}
           <Input
@@ -78,11 +78,11 @@ const LoginPage = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="mb-3 gap-y-5  items-center flex flex-row space-x-2">
-          <label className="font-medium text-base w-16">Password</label>
+        <div className="flex flex-row items-center mb-3 space-x-2 gap-y-5">
+          <label className="w-24 text-base font-medium">Mật khẩu</label>
           <Input.Password
-            placeholder="password"
-            className="bg-white w-full"
+            placeholder="mật khẩu"
+            className="w-full bg-white"
             size="large"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -128,7 +128,7 @@ const LoginPage = () => {
                 d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
               ></path>
             </svg>
-            Sign in with Google
+            Đăng nhập với Google
           </Button>
           {/* <GoogleLogin
             type="standard"
@@ -144,7 +144,7 @@ const LoginPage = () => {
           /> */}
         </div>
         <span className="text-[#1952bd] text-center mt-5">Quên mật khẩu</span>
-        <div className="text-center relative p-3 ">
+        <div className="relative p-3 text-center ">
           <span className="">
             Chưa có tài khoản trong hệ thống?{" "}
             <Link className="text-blue-600" to={path.register}>

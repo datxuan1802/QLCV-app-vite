@@ -35,16 +35,16 @@ const Register = () => {
   };
 
   return (
-    <div className="p-3 h-screen flex justify-center items-center bg-slate-100">
+    <div className="flex items-center justify-center h-screen p-3 bg-slate-100">
       <div
         // onSubmit={handleSubmit(handleLogin)}
-        className="w-[420px] rounded-lg border p-10 flex justify-center flex-col border-slate-300 bg-white mx-auto space-y-6"
+        className="w-[430px] rounded-lg border p-10 flex justify-center flex-col border-slate-300 bg-white mx-auto space-y-6"
       >
         <div className="flex flex-row justify-center">
           <img src="/leadership.png" alt="" className="w-32 h-32" />
         </div>
-        <div className="mx-auto text-center my-2">
-          <h2 className="text-3xl font-bold">Task management </h2>
+        <div className="mx-auto my-2 text-center">
+          <h2 className="text-3xl font-bold">Quản lý dự án </h2>
         </div>
         <div className="flex flex-col gap-5">
           {/* <Button className="border-none text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2">
@@ -88,24 +88,24 @@ const Register = () => {
           </Button> */}
         </div>
 
-        <div className="mb-3 gap-y-5  items-center flex flex-row space-x-2">
-          <label className="font-medium text-base w-20">Name</label>
+        <div className="flex flex-row items-center mb-3 space-x-2 gap-y-5">
+          <label className="w-24 text-base font-medium">Tên</label>
           {/* <Input {...register("email")} /> */}
-          {/* <label className="my-0 py-0 text-red-500">
+          {/* <label className="py-0 my-0 text-red-500">
             {errors?.email?.message}
           </label> */}
           <Input
-            placeholder="Username"
+            placeholder="Tên"
             size="large"
             className="w-full"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
-        <div className="mb-3 gap-y-5  items-center flex flex-row space-x-2">
-          <label className="font-medium text-base w-20">Email</label>
+        <div className="flex flex-row items-center mb-3 space-x-2 gap-y-5">
+          <label className="w-24 text-base font-medium">Email</label>
           {/* <Input {...register("email")} /> */}
-          {/* <label className="my-0 py-0 text-red-500">
+          {/* <label className="py-0 my-0 text-red-500">
             {errors?.email?.message}
           </label> */}
           <Input
@@ -116,11 +116,11 @@ const Register = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="mb-3 gap-y-5  items-center flex flex-row space-x-2">
-          <label className="font-medium text-base w-16">Password</label>
+        <div className="flex flex-row items-center mb-3 space-x-2 gap-y-5">
+          <label className="w-24 text-base font-medium">Mật khẩu</label>
           <Input.Password
-            placeholder="password"
-            className="bg-white w-full"
+            placeholder="Mật khẩu"
+            className="w-full bg-white"
             size="large"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -137,13 +137,13 @@ const Register = () => {
           Đăng ký tài khoản
         </Button>
         <span className="text-[#1952bd] text-center mt-5">
-          I forgot my password
+          Quên mật khẩu
         </span>
-        <div className="text-center relative p-3 ">
+        <div className="relative p-3 text-center ">
           <span className="">
-            Don't have an account yet?{" "}
-            <Link className="text-blue-600" to={path.register}>
-              Register
+            Đã có tài khoản đi đến để {" "}
+            <Link className="text-blue-600" to={path.login}>
+              Đăng nhập
             </Link>
           </span>
           <p className="absolute border z-[-1] border-slate-200 top-[50%] w-full left-0 "></p>
