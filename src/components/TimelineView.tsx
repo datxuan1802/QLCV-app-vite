@@ -117,7 +117,7 @@ export const TimelineLayout: React.FC<TimelineLayoutProps> = ({
                     {...getRootProps()}
                     className="pt-5 text-base font-semibold text-center bg-blue-400"
                   >
-                    Task name
+                    Tên nhiệm vụ
                   </div>
                 );
               }}

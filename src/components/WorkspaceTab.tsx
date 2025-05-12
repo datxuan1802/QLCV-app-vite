@@ -33,5 +33,5 @@ export default WorkspaceTab;
 
 export const AddWorkspaceTab = () => {
   const [, setOpen] = useAtom(openWorkspaceModal);
-  return <div onClick={() => setOpen(true)}>Add workspace </div>;
+  return <div onClick={() => setOpen(true)}>Tạo không gian làm việc </div>;
 };

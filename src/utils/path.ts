@@ -8,4 +8,5 @@ export const path = {
   task: "workspaces/:workspaceId/boards/:boardId/tasks/:taskId",
   report: "/workspaces/:workspaceId/boards/:boardId/report",
   settings: "/settings",
+  
 };

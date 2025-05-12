@@ -1,6 +1,7 @@
 // components
 import { Layout, Menu, Avatar, Input, Button, Modal } from "antd";
 import { UserOutlined } from "@ant-design/icons";
+import { FaHome, FaUser } from 'react-icons/fa';
 import {
   AddBoardTab,
   BoardTab,
@@ -16,7 +17,7 @@ import {
 } from ".";
 const { Header, Content, Sider } = Layout;
 const { Search } = Input;
-
+import { AiOutlineProject } from 'react-icons/ai';
 // hooks
 import { useWorkspace } from "@/hooks/workspace.hook";
 import { useAtom } from "jotai";
@@ -25,35 +26,67 @@ import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { get } from "@/services/axios.service";
 import { useState } from "react";
+import { AiOutlineDown } from 'react-icons/ai';
 
-const SettingsTab = () => {
-  const navigation = useNavigate();
-  return <div onClick={() => navigation("/settings")}>Settings</div>;
-};
 
-const settings = {
-  key: "2",
-  label: "Some settings",
-  children: [
+
+
+const MainLayout = ({ children,workspaceId }: any) => {
+  const { workspaces }:any = useWorkspace();
+  const [user] = useAtom(userAtom);
+  const SettingsTab = () => {
+    const navigation = useNavigate();
+    return <div onClick={() => navigation("/settings")} className={`flex items-center gap-x-2 hover:text-[#1922FF]`}> <FaUser size={20} color="gray" />Thông tin tài khoản</div>;
+  };
+  
+  const HomeTab = () => {
+    const navigation = useNavigate();
+    return <div onClick={() => navigation("/")} className={`flex items-center gap-x-2 hover:text-[#1922FF] ${workspaceId?'border-t':''}`}><div><FaHome size={20} color="black" /></div>Trang chủ</div>;
+  };
+  const WorkspaceName = () => {
+    const navigation = useNavigate();
+    return <div  className="flex items-center gap-x-2 hover:text-[#1922FF] "><div><AiOutlineProject size={20} color="#007bff" /></div><div>{workspaces?.find((item:any)=>item?.workspace?._id===workspaceId)?.workspace?.name}</div><AiOutlineDown size={10} color="gray" className="ml-1" /> {/* Add the down arrow icon */}</div>;
+  };
+  const settings =  [
     {
-      key: "14",
-      label: <AddWorkspaceTab />,
+      key: "26",
+      label: <WorkspaceName/>,
     },
+    {
+      key: "25",
+      label: <HomeTab/>,
+    },
+    // {
+    //   key: "14",
+    //   label: <AddWorkspaceTab />,
+    // },
     {
       key: "12",
       label: <SettingsTab />,
     },
+    // {
+    //   key: "13",
+    //   label: "Báo cáo",
+    // },
+  ];
+  const setting =  [
     {
-      key: "13",
-      label: "reports",
+      key: "25",
+      label: <HomeTab/>,
     },
-  ],
-};
-
-const MainLayout = ({ children }: any) => {
-  const { workspaces } = useWorkspace();
-  const [user] = useAtom(userAtom);
-
+    // {
+    //   key: "14",
+    //   label: <AddWorkspaceTab />,
+    // },
+    {
+      key: "12",
+      label: <SettingsTab />,
+    },
+    // {
+    //   key: "13",
+    //   label: "Báo cáo",
+    // },
+  ];
   const items = workspaces?.map((workspacePermission: any) => {
     return {
       key: workspacePermission?._id,
@@ -67,7 +100,7 @@ const MainLayout = ({ children }: any) => {
             ></AddBoardTab>
           ),
         },
-        ...workspacePermission.workspace.boards.map((board: any) => {
+        ...workspacePermission?.workspace?.boards?.map((board: any) => {
           return {
             key: board?._id,
             label: (
@@ -91,11 +124,11 @@ const MainLayout = ({ children }: any) => {
           <Menu
             mode="inline"
             // defaultOpenKeys={workspaces[0]?._id as string}
-            items={[settings, ...items]}
-            className="min-h-full fixed left-0 w-[300px] "
+            items={workspaceId?settings:setting}
+            className="min-h-full fixed left-0 w-[300px]"
           />
         </Sider>
-        <Content className="min-h-screen bg-white">{children}</Content>
+        <Content className="min-h-screen bg-gray-200">{children}</Content>
       </Layout>
       <BoardModal />
       <WorkspaceModal />
@@ -153,23 +186,23 @@ export const MainHeader = () => {
       >
         Bạn có chắc chắn muốn đăng xuất không?
       </Modal>
-      <Header className="z-50 bg-blue-400 flex flex-row justify-center items-start space-x-2 fixed top-0 left-0 right-0">
+      <Header className="fixed top-0 left-0 right-0 z-50 flex flex-row items-start justify-center space-x-2 bg-blue-400">
         <div className="flex items-center justify-center mt-1">
           <img src="/leadership.png" alt="" className="w-10 h-10" />
         </div>
-        <div className="text-2xl text-bold text-center mt-3">
-          Task management
+        <div className="mt-3 text-2xl text-center text-bold">
+          Quản lý dự án
         </div>
         {/* <div>Workspace</div>
       <div>template</div>
       <div>create</div> */}
-        <div className="flex justify-end items-center flex-1 space-x-2">
-          <Search
+        <div className="flex items-center justify-end flex-1 space-x-2">
+          {/* <Search
             placeholder="input search text"
             //    onSearch={onSearch}
             enterButton
             className="w-56"
-          />
+          /> */}
           <div className="flex items-center gap-x-1">
             {!isLoading && (
               <Avatar
@@ -182,7 +215,7 @@ export const MainHeader = () => {
             {/* {user && <AvatarCus user={user} />} */}
           </div>
           <Button type="text" onClick={showModal}>
-            Logout
+            Đăng xuất
           </Button>
         </div>
       </Header>

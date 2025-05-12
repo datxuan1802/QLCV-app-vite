@@ -24,7 +24,7 @@ const useSubTask = (taskId: string) => {
   const { mutate: create } = useMutation({
     mutationFn: async () => {
       return await post(`/sub-task/create/${taskId}`, {
-        name: "Sub-task name",
+        name: "nhiệm vụ phụ mới",
         status: ESubStatus.TODO,
       }).then((data) => {
         return data;

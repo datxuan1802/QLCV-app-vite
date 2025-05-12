@@ -41,7 +41,7 @@ const BoardModal: React.FC = () => {
       console.log(data);
       queryClient.invalidateQueries({ queryKey: [queryKey.workspace] });
       setBoards((preBoards: any) => [...preBoards, data]);
-      successToast("Tạo Board mới thành công");
+      successToast("Tạo dự án mới thành công");
       //   navigation(path.home);
     },
   });
@@ -63,7 +63,7 @@ const BoardModal: React.FC = () => {
     <>
       <Modal
         open={open}
-        title="Add new project"
+        title="Tạo dự án mới"
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[
@@ -74,10 +74,10 @@ const BoardModal: React.FC = () => {
             loading={isLoading}
             onClick={handleOk}
           >
-            Create
+            Tạo
           </Button>,
           <Button key="back" onClick={handleCancel}>
-            Cancel
+            Hủy
           </Button>,
         ]}
       >
@@ -86,12 +86,12 @@ const BoardModal: React.FC = () => {
           <div className="flex flex-row">
             <label
               htmlFor="name"
-              className="block mb-2 text-sm font-medium w-32 text-gray-900 "
+              className="block w-32 mb-2 text-sm font-medium text-gray-900 "
             >
-              Name
+              Tên
             </label>
             <Input
-              placeholder="Project name"
+              placeholder="Tên dự án"
               value={name}
               onChange={(e) => setName(e.target.value)}
               size="small"
@@ -101,12 +101,12 @@ const BoardModal: React.FC = () => {
           <div className="flex flex-row">
             <label
               htmlFor="description"
-              className="block mb-2 text-sm font-medium w-32 text-gray-900 "
+              className="block w-32 mb-2 text-sm font-medium text-gray-900 "
             >
-              Description
+              Mô tả
             </label>
             <Input
-              placeholder="Project description"
+              placeholder="Mô tả"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               size="small"

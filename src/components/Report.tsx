@@ -75,12 +75,12 @@ export const ReportLayout = () => {
       <BoardHeader />
       <RangePicker
         size="large"
-        className="w-1/3 mt-6 mx-6"
+        className="w-1/3 mx-6 mt-6"
         format="DD/MM/YYYY"
         defaultValue={[dayjs(), dayjs().add(5, "day")]}
         onChange={DoSetDate}
       />
-      <div className="grid grid-cols-3 px-6 pt-6 space-x-3 min-h-screen">
+      <div className="grid min-h-screen grid-cols-3 px-6 pt-6 space-x-3">
         <TaskDoneLineChart
           data={data}
           startDate={startDate}
@@ -363,19 +363,19 @@ const TeamPerformance = ({
     labels,
     datasets: [
       {
-        label: "Low",
+        label: "Thấp",
         data: report.low,
         borderColor: "rgb(75, 192, 192)",
         backgroundColor: "rgba(75, 192, 192, 0.5)",
       },
       {
-        label: "Medium",
+        label: "Trung bình",
         data: report.medium,
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
       },
       {
-        label: "High",
+        label: "Cao",
         data: report.high,
         borderColor: "rgba(255, 99, 132, 1)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
@@ -425,7 +425,7 @@ const TaskReport = () => {
   });
   const dataDoughnut = {
     label: "Các nhiệm vụ theo trạng thái",
-    labels: ["To Do", "In Progress", "Done"],
+    labels: ["Việc cần làm", "Đang tiến hành", "Hoàn thành"],
     datasets: [
       {
         label: "# counts",
@@ -490,7 +490,7 @@ const PriorityReport = ({
     setReport([highPriorityCount, mediumPriorityCount, lowPriorityCount]);
   }, [data]);
   const dataDoughnutPriority = {
-    labels: ["High", "Medium", "Low"],
+    labels: ["Cao", "Trung bình", "Thấp"],
     datasets: [
       {
         label: "# counts",
