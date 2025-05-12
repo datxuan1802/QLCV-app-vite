@@ -24,6 +24,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PrivateRoute from "./route/PrivateRoute";
+import ProjectPage from "./pages/WorkspacePage";
 
 const queryClient = new QueryClient();
 
@@ -32,10 +33,10 @@ const router = createBrowserRouter([
     path: path.home,
     element: <PrivateRoute component={<Home />} />,
   },
-  // {
-  //   path: path.workspace,
-  //   element: <PrivateRoute component={<Workspace />} />,
-  // },
+  {
+    path: path.workspace,
+    element: <PrivateRoute component={<ProjectPage />} />,
+  },
   {
     path: path.board,
     element: <PrivateRoute component={<BoardPage />} />,
@@ -64,6 +65,7 @@ const router = createBrowserRouter([
     path: path.activeAccount,
     element: <ActiveAcc />,
   },
+  
 ]);
 
 function App() {

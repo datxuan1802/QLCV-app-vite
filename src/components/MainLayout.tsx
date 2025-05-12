@@ -1,6 +1,7 @@
 // components
 import { Layout, Menu, Avatar, Input, Button, Modal } from "antd";
 import { UserOutlined } from "@ant-design/icons";
+import { FaHome, FaUser } from 'react-icons/fa';
 import {
   AddBoardTab,
   BoardTab,
@@ -16,7 +17,7 @@ import {
 } from ".";
 const { Header, Content, Sider } = Layout;
 const { Search } = Input;
-
+import { AiOutlineProject } from 'react-icons/ai';
 // hooks
 import { useWorkspace } from "@/hooks/workspace.hook";
 import { useAtom } from "jotai";
@@ -25,35 +26,67 @@ import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { get } from "@/services/axios.service";
 import { useState } from "react";
+import { AiOutlineDown } from 'react-icons/ai';
 
-const SettingsTab = () => {
-  const navigation = useNavigate();
-  return <div onClick={() => navigation("/settings")}>Thông tin tài khoản</div>;
-};
 
-const settings = {
-  key: "2",
-  label: "Some settings",
-  children: [
+
+
+const MainLayout = ({ children,workspaceId }: any) => {
+  const { workspaces }:any = useWorkspace();
+  const [user] = useAtom(userAtom);
+  const SettingsTab = () => {
+    const navigation = useNavigate();
+    return <div onClick={() => navigation("/settings")} className={`flex items-center gap-x-2 hover:text-[#1922FF]`}> <FaUser size={20} color="gray" />Thông tin tài khoản</div>;
+  };
+  
+  const HomeTab = () => {
+    const navigation = useNavigate();
+    return <div onClick={() => navigation("/")} className={`flex items-center gap-x-2 hover:text-[#1922FF] ${workspaceId?'border-t':''}`}><div><FaHome size={20} color="black" /></div>Trang chủ</div>;
+  };
+  const WorkspaceName = () => {
+    const navigation = useNavigate();
+    return <div  className="flex items-center gap-x-2 hover:text-[#1922FF] "><div><AiOutlineProject size={20} color="#007bff" /></div><div>{workspaces?.find((item:any)=>item?._id===workspaceId)?.workspace?.name}</div><AiOutlineDown size={10} color="gray" className="ml-1" /> {/* Add the down arrow icon */}</div>;
+  };
+  const settings =  [
     {
-      key: "14",
-      label: <AddWorkspaceTab />,
+      key: "26",
+      label: <WorkspaceName/>,
     },
+    {
+      key: "25",
+      label: <HomeTab/>,
+    },
+    // {
+    //   key: "14",
+    //   label: <AddWorkspaceTab />,
+    // },
     {
       key: "12",
       label: <SettingsTab />,
     },
+    // {
+    //   key: "13",
+    //   label: "Báo cáo",
+    // },
+  ];
+  const setting =  [
     {
-      key: "13",
-      label: "Báo cáo",
+      key: "25",
+      label: <HomeTab/>,
     },
-  ],
-};
-
-const MainLayout = ({ children }: any) => {
-  const { workspaces } = useWorkspace();
-  const [user] = useAtom(userAtom);
-
+    // {
+    //   key: "14",
+    //   label: <AddWorkspaceTab />,
+    // },
+    {
+      key: "12",
+      label: <SettingsTab />,
+    },
+    // {
+    //   key: "13",
+    //   label: "Báo cáo",
+    // },
+  ];
   const items = workspaces?.map((workspacePermission: any) => {
     return {
       key: workspacePermission?._id,
@@ -91,11 +124,11 @@ const MainLayout = ({ children }: any) => {
           <Menu
             mode="inline"
             // defaultOpenKeys={workspaces[0]?._id as string}
-            items={[settings, ...items]}
+            items={workspaceId?settings:setting}
             className="min-h-full fixed left-0 w-[300px]"
           />
         </Sider>
-        <Content className="min-h-screen bg-white">{children}</Content>
+        <Content className="min-h-screen bg-gray-200">{children}</Content>
       </Layout>
       <BoardModal />
       <WorkspaceModal />
