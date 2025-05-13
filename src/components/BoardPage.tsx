@@ -433,8 +433,6 @@ export const BoardHeader = () => {
   const navigation = useNavigate();
  const { workspaces }:any = useWorkspace();
  const Users =JSON.parse(localStorage.getItem('user') as string);
- console.log(Users,'user');
- console.log(workspaces,'ws');
   const { data, isLoading } = useQuery({
     queryKey: [`board/${boardId}`],
     queryFn: () =>
@@ -478,7 +476,7 @@ export const BoardHeader = () => {
               // { value: "Calendar", label: "Calender" },
             ]}
           />
-          <Button
+          {/* <Button
             className="normal-case bg-blue-500 "
             onClick={() => {
               const url = window.location.pathname;
@@ -493,8 +491,8 @@ export const BoardHeader = () => {
             type="primary"
           >
             Báo cáo
-          </Button>
-          <Button
+          </Button> */}
+          {/* <Button
             className="normal-case bg-blue-500 "
             onClick={() => {
               const url = window.location.pathname;
@@ -509,7 +507,7 @@ export const BoardHeader = () => {
             type="primary"
           >
             Chi tiết
-          </Button>
+          </Button> */}
           <div className="flex flex-row items-center space-x-2">
             <AvatarGroup />
             <Button

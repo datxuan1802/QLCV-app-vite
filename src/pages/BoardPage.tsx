@@ -184,7 +184,7 @@ const BoardPage = () => {
     }
   };
   return (
-    <MainLayout workspaceId={workspaceId}>
+    <MainLayout workspaceId={workspaceId} type='board'>
       <BoardHeader />
       {selectView === "Board" && (
         <KanbanLayout handleOnDragEnd={handleOnDragEnd}>

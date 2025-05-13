@@ -71,7 +71,7 @@ export const ReportLayout = () => {
   }, [startDate, dueDate]);
 
   return (
-    <MainLayout workspaceId={workspaceId}>
+    <MainLayout workspaceId={workspaceId} type='board'>
       <BoardHeader />
       <RangePicker
         size="large"

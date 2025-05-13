@@ -27,12 +27,12 @@ import { useQuery } from "@tanstack/react-query";
 import { get } from "@/services/axios.service";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineDown } from 'react-icons/ai';
-import { MdFormatListBulleted, MdWorkspacesOutline } from "react-icons/md";
+import { MdBarChart, MdFormatListBulleted, MdVisibility, MdWorkspacesOutline } from "react-icons/md";
 
 
 
-const MainLayout = ({ children,workspaceId }: any) => {
-  const { workspaces }:any = useWorkspace();
+const MainLayout = ({ children,workspaceId ,type}: any) => {
+  const { workspaces,boardId }:any = useWorkspace();
   const pathname=useLocation();
   const [user] = useAtom(userAtom);
   const SettingsTab = () => {
@@ -46,11 +46,19 @@ const MainLayout = ({ children,workspaceId }: any) => {
   };
   const WorkspaceName = () => {
     const navigation = useNavigate();
-    return <div  className="flex items-center gap-x-2 hover:text-[#1922FF] "><div><AiOutlineProject size={20} color="#007bff" /></div><div>{workspaces?.find((item:any)=>item?.workspace?._id===workspaceId)?.workspace?.name}</div><AiOutlineDown size={10} color="gray" className="ml-1" /></div>;
+    return <div  className="flex items-center gap-x-2 hover:text-[#1922FF] "><div><AiOutlineProject size={25} color="#007bff" /></div><div className="text-xl font-semibold">{workspaces?.find((item:any)=>item?.workspace?._id===workspaceId)?.workspace?.name}</div><AiOutlineDown size={20} color="gray" className="ml-1" /></div>;
   };
   const ListBoard = () => {
     const navigation = useNavigate();
     return <div onClick={() => navigation(`/workspaces/${workspaceId}`)} className={`flex items-center gap-x-2 border-t hover:text-[#1922FF]`}> <MdFormatListBulleted size={20} className="text-black" />Danh sách dự án</div>;
+  };
+  const Report = () => {
+    const navigation = useNavigate();
+    return <>{type==='board'&&<div onClick={() => navigation(`/workspaces/${workspaceId}/boards/${boardId}/report`)} className={`flex items-center gap-x-2  hover:text-[#1922FF]`}>  <MdBarChart size={20} className="text-black"/>Báo cáo</div>}</>;
+  };
+  const Detail = () => {
+    const navigation = useNavigate();
+    return <>{type==='board'&&<div onClick={() => navigation(`/workspaces/${workspaceId}/boards/${boardId}`)} className={`flex items-center gap-x-2  hover:text-[#1922FF]`}> <MdVisibility size={20} className="text-black"/>Chi tiết dự án</div>}</>;
   };
   const settings =  [
     {
@@ -72,6 +80,14 @@ const MainLayout = ({ children,workspaceId }: any) => {
     {
       key: "27  ",
       label: <ListBoard />,
+    },
+    {
+      key: "27  ",
+      label: <Report />,
+    },
+    {
+      key: "27  ",
+      label: <Detail />,
     },
     // {
     //   key: "13",
