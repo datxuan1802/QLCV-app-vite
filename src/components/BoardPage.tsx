@@ -441,7 +441,7 @@ export const BoardHeader = () => {
   });
   return (
     <>
-      <Header className="fixed z-50 flex flex-row items-center justify-center w-full bg-white shadow-xl top-16">
+      <Header className="fixed z-40 flex flex-row items-center justify-center w-full bg-white shadow-xl top-16">
         <div className="flex flex-row items-center justify-start flex-1 w-full space-x-4">
           <div>
             <h2 className="text-2xl font-semibold text-bold max-w-[1/5] truncate">{data?.name}</h2>
@@ -470,7 +470,7 @@ export const BoardHeader = () => {
             options={[
               { value: "Board", label: "Bảng nhiệm vụ" },
               { value: "Timeline", label: "Dòng thời gian" },
-              { value: "Table", label: "Bảng" },
+              { value: "Table", label: "Danh sách nhân sự" },
               // { value: "Calendar", label: "Calender" },
             ]}
           />

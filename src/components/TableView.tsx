@@ -1,5 +1,7 @@
+import { userAtom } from '@/states/user.state';
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { useAtom } from 'jotai';
 
 interface DataType {
     key: React.Key;
@@ -49,6 +51,8 @@ interface DataType {
   ];
 
 export const TableLayout = () => {
+    const [user] = useAtom(userAtom);
+    console.log(user,'user');
     return <>
   <Table
     columns={columns}

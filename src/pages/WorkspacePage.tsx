@@ -25,6 +25,7 @@ const [dataBorad, setDataBorad] = useState<any>();
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);
     const popupRef = useRef<HTMLDivElement>(null);
     const queryClient = useQueryClient();
+    const [select, setSelect] = useState<any>();
     // Click outside để đóng popup
     useEffect(() => {
       function handleClickOutside(event: MouseEvent) {
@@ -98,10 +99,10 @@ const [dataBorad, setDataBorad] = useState<any>();
     </Avatar></div> 
       <div onClick={()=>navigation(`/workspaces/${workspaceId}/boards/${data?._id}`)} className="flex flex-col w-full text-xs"><div className="font-semibold">{data?.name}</div><div>{data?.description}</div></div>
       <div>
-      <button onClick={()=>{setIsOpen(true)}} title="more" className="p-2">
+      <button onClick={()=>{setIsOpen(true);setSelect(index)}} title="more" className="p-2">
       <MdMoreVert className="w-6 h-6 text-gray-600" />
     </button>
-    {isOpen && (
+    {isOpen &&select===index&& (
         <div
           ref={popupRef}
           className="absolute z-50 w-40 bg-white border rounded-lg shadow-lg"
