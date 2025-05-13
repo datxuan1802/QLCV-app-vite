@@ -442,9 +442,9 @@ export const BoardHeader = () => {
   return (
     <>
       <Header className="fixed z-50 flex flex-row items-center justify-center w-full bg-white shadow-xl top-16">
-        <div className="flex flex-row items-center justify-start flex-1 space-x-4">
+        <div className="flex flex-row items-center justify-start flex-1 w-full space-x-4">
           <div>
-            <h2 className="text-2xl font-semibold text-bold">{data?.name}</h2>
+            <h2 className="text-2xl font-semibold text-bold max-w-[1/5] truncate">{data?.name}</h2>
           </div>
           <Button
             className="normal-case bg-blue-500 "

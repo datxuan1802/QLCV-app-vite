@@ -41,7 +41,7 @@ export const ReportLayout = () => {
   const [dueDate, setDueDate] = useState(dayjs().format("YYYY-MM-DD"));
   const [data, setData] = useState([]);
 
-  const { boardId } = useParams();
+  const { boardId,workspaceId } = useParams();
 
   const getTimeFormat = (str: string) => {
     const parts = str.split("/");
@@ -71,7 +71,7 @@ export const ReportLayout = () => {
   }, [startDate, dueDate]);
 
   return (
-    <MainLayout>
+    <MainLayout workspaceId={workspaceId}>
       <BoardHeader />
       <RangePicker
         size="large"
@@ -150,19 +150,19 @@ const TaskDoneLineChart = ({
     labels: getDaysInRange(startDate, dueDate),
     datasets: [
       {
-        label: "High",
+        label: "Cao",
         data: report?.high,
         borderColor: "rgba(255, 99, 132, 1)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
       {
-        label: "Medium",
+        label: "Trung bình",
         data: report?.medium,
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
       },
       {
-        label: "Low",
+        label: "Thấp",
         data: report?.low,
         borderColor: "rgb(75, 192, 192)",
         backgroundColor: "rgba(75, 192, 192, 0.5)",
@@ -182,7 +182,7 @@ const TaskDoneLineChart = ({
               },
               title: {
                 display: true,
-                text: "Tasks completed by priority",
+                text: "Nhiệm vụ được hoàn thành theo mức độ ưu tiên",
               },
             },
           }}
@@ -243,22 +243,22 @@ const TaskLineChartWithPriority = ({
   }, [data]);
 
   const TasksByPriority = {
-    labels: ["TODO", "IN PROGRESS", "DONE"],
+    labels: ["Việc cần làm", "Đang thực hiện", "Hoàn thành"],
     datasets: [
       {
-        label: "Low",
+        label: "Thấp",
         data: report?.low,
         borderColor: "rgb(75, 192, 192)",
         backgroundColor: "rgba(75, 192, 192, 0.5)",
       },
       {
-        label: "Medium",
+        label: "Trung bình",
         data: report?.medium,
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
       },
       {
-        label: "High",
+        label: "Cao",
         data: report?.high,
         borderColor: "rgba(255, 99, 132, 1)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
@@ -278,7 +278,7 @@ const TaskLineChartWithPriority = ({
               },
               title: {
                 display: true,
-                text: "Tasks by done date",
+                text: "Nhiệm vụ theo ngày hoàn thành",
               },
             },
           }}
@@ -385,7 +385,7 @@ const TeamPerformance = ({
   return (
     <ChartLayout className="col-span-2">
       <Bar
-        options={getOptions({ title: "Team performance" })}
+        options={getOptions({ title: "Hiệu suất của đội" })}
         data={taskDoneByTeam}
       />
     </ChartLayout>
@@ -514,7 +514,7 @@ const PriorityReport = ({
       {!isLoading && (
         <Doughnut
           data={dataDoughnutPriority}
-          options={getOptions({ title: "Tasks by priority" })}
+          options={getOptions({ title: "Nhiệm vụ theo mức độ ưu tiên" })}
         />
       )}
     </ChartLayout>
@@ -531,6 +531,7 @@ const TaskDoneBaseOnDueDate = ({
   const [report, setReport] = useState<any>([]);
   useEffect(() => {
     const doneTasks = data.filter((item: any) => item.status === "done");
+    console.log(doneTasks,'done');
     const counts = {
       soon: 0,
       onTime: 0,
@@ -542,7 +543,7 @@ const TaskDoneBaseOnDueDate = ({
     setReport(Object.values(counts));
   }, [data]);
   const taskDoneByDueDate = {
-    labels: ["Early", "On time", "Late"],
+    labels: ["Sớm", "Đúng ngày", "Muộn"],
     datasets: [
       {
         label: "# counts",
@@ -566,7 +567,7 @@ const TaskDoneBaseOnDueDate = ({
       <Pie
         data={taskDoneByDueDate}
         options={getOptions({
-          title: "Tasks by done date",
+          title: "Nhiệm vụ theo ngày hoàn thành",
         })}
       />
     </ChartLayout>
