@@ -6,6 +6,8 @@ import { useAtom } from "jotai";
 import { openWorkspaceModal } from "@/states/modal.state";
 import { useWorkspace } from "@/hooks/workspace.hook";
 import { useNavigate } from "react-router";
+import { AiFillLock, AiFillUnlock } from "react-icons/ai";
+import { MdAdminPanelSettings, MdPersonOutline } from "react-icons/md";
 const Home = () => {
   // useDefaultPage();
     const navigation = useNavigate();
@@ -54,18 +56,18 @@ console.log(workspaces,'ws');
         </div>
         <div className="flex items-center text-[15px] gap-x-2">
           <p className="w-20 font-semibold">Vai trò : </p>
-          <p className="font-normal">
-            {data?.owner === Users?._id ? "Người tạo" : "Thành viên"}
+          <p className="flex font-normal gap-x-2">
+            {data?.owner === Users?._id ? "Người tạo" : "Thành viên"}{data?.owner === Users?._id ? <MdAdminPanelSettings size={20} className="text-red-500" />: <MdPersonOutline size={20} className="text-gray-600" />}
           </p>
         </div>
         <div className="flex items-center text-[15px] gap-x-2">
           <p className="w-20 font-semibold">Dự án : </p>
-          <p className="font-normal">{data?.workspace?.boards?.length}</p>
+          <p className="font-bold">{data?.workspace?.boards?.length}</p>
         </div>
         <div className="flex items-center text-[15px] gap-x-2">
           <p className="w-20 font-semibold">Loại : </p>
-          <p className="font-normal">
-            {data?.workspace?.type === "private" ? "Riêng tư" : "Mở"}
+          <p className="flex font-normal gap-x-2">
+            {data?.workspace?.type === "private" ? "Riêng tư" : "Mở"} {data?.workspace?.type === "private"?<AiFillLock size={20} className="text-red-500" />:<AiFillUnlock size={20} className="text-green-500" />}
           </p>
         </div>
       </div>

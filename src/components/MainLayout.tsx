@@ -22,30 +22,31 @@ import { AiOutlineProject } from 'react-icons/ai';
 import { useWorkspace } from "@/hooks/workspace.hook";
 import { useAtom } from "jotai";
 import { userAtom } from "@/states/user.state";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { get } from "@/services/axios.service";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineDown } from 'react-icons/ai';
-import { MdFormatListBulleted } from "react-icons/md";
+import { MdFormatListBulleted, MdWorkspacesOutline } from "react-icons/md";
 
 
 
-const MainLayout = ({ children,workspaceId,type }: any) => {
+const MainLayout = ({ children,workspaceId }: any) => {
   const { workspaces }:any = useWorkspace();
+  const pathname=useLocation();
   const [user] = useAtom(userAtom);
   const SettingsTab = () => {
     const navigation = useNavigate();
     return <div onClick={() => navigation("/settings")} className={`flex items-center gap-x-2 hover:text-[#1922FF]`}> <FaUser size={20} color="gray" />Thông tin tài khoản</div>;
   };
-  
+  console.log(pathname,'dadsada');
   const HomeTab = () => {
     const navigation = useNavigate();
-    return <div onClick={() => navigation("/")} className={`flex items-center gap-x-2 hover:text-[#1922FF] ${workspaceId?'border-t':''} ${type==='home'?'text-{#1922FF]':''}`}><div><FaHome size={20} color="black" /></div>Trang chủ</div>;
+    return <div onClick={() => navigation("/")} className={`flex items-center gap-x-2 hover:text-[#1922FF] ${workspaceId?'border-t':''} `}><div><MdWorkspacesOutline size={20} className="text-black" /></div>Danh sách không gian làm việc</div>;
   };
   const WorkspaceName = () => {
     const navigation = useNavigate();
-    return <div  className="flex items-center gap-x-2 hover:text-[#1922FF] "><div><AiOutlineProject size={20} color="#007bff" /></div><div>{workspaces?.find((item:any)=>item?.workspace?._id===workspaceId)?.workspace?.name}</div><AiOutlineDown size={10} color="gray" className="ml-1" /> {/* Add the down arrow icon */}</div>;
+    return <div  className="flex items-center gap-x-2 hover:text-[#1922FF] "><div><AiOutlineProject size={20} color="#007bff" /></div><div>{workspaces?.find((item:any)=>item?.workspace?._id===workspaceId)?.workspace?.name}</div><AiOutlineDown size={10} color="gray" className="ml-1" /></div>;
   };
   const ListBoard = () => {
     const navigation = useNavigate();

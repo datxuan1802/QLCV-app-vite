@@ -118,6 +118,10 @@ const [dataBorad, setDataBorad] = useState<any>();
       </div>
     );
   })}
+  {workspaces.find((data:any)=>data?.workspace?._id===workspaceId)?.workspace?.boards?.length===0&&(<div  onClick={()=>{setOpen(true);setSelectWorkspaceId(workspaceId!)}} className="flex flex-col items-center justify-center w-full h-full pt-24 text-xl gap-y-4">
+    <div>Chưa có dự án nào trong không gian làm việc này tạo ngay thôi</div>
+    <div className=" bg-blue-300 text-3xl text-[#1922FF] rounded-lg p-4 cursor-pointer">+ Tạo dự án mới</div>
+    </div>)}
  
 </div>
       </div>
