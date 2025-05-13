@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // antd
 import { Button, Modal, Input, Select } from "antd";
 
 import { openBoardModal, selectWorkspaceIdAtom } from "@/states/modal.state";
 // network
-import { post } from "@/services/axios.service";
+import { patch, post } from "@/services/axios.service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { successToast } from "@/utils/toast";
@@ -15,8 +15,7 @@ import { path } from "@/utils/path";
 import { useBoard } from "@/hooks/board.hook";
 import { queryKey } from "@/utils/queryKey";
 
-const BoardModal: React.FC = () => {
-  const [open, setOpen] = useAtom(openBoardModal);
+const UpdateBoardModal= ({open,close,dataBoard}:{open:boolean,close:()=>void;dataBoard:any}) => {
   const [workspaceId] = useAtom(selectWorkspaceIdAtom);
   //   input field
   const [name, setName] = useState("");
@@ -28,10 +27,12 @@ const BoardModal: React.FC = () => {
   const navigation = useNavigate();
 
   const { setBoards } = useBoard();
-
+useEffect(()=>{setName(dataBoard?.name);
+     setDescription(dataBoard?.description);
+},[open,dataBoard])
   const { data, isLoading, isError, mutate } = useMutation({
     mutationFn: () => {
-      return post(`/board/create?workspaceId=${workspaceId}`, {
+      return patch(`/board/update?boardId=${dataBoard?._id}`, {
         name,
         description,
       });
@@ -40,29 +41,31 @@ const BoardModal: React.FC = () => {
       // setRefresh(true);
       queryClient.invalidateQueries({ queryKey: [queryKey.workspace] });
       setBoards((preBoards: any) => [...preBoards, data]);
-      successToast("cập nhật dự án thành công");
+      successToast("Tạo dự án mới thành công");
       setName('');
       setDescription('');
+      //   navigation(path.home);
     },
   });
 
   const handleOk = () => {
     mutate();
-    setOpen(false);
+   close();
   };
 
   const handleCancel = () => {
-    setOpen(false);
+    close()
   };
 
   if (isError) {
     return <div>error</div>;
   }
+  console.log(dataBoard,'dadgadva');
   return (
     <>
       <Modal
         open={open}
-        title="Tạo dự án mới"
+        title="Cập nhật dự án"
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[
@@ -73,7 +76,7 @@ const BoardModal: React.FC = () => {
             loading={isLoading}
             onClick={handleOk}
           >
-            Tạo
+            Cập nhật
           </Button>,
           <Button key="back" onClick={handleCancel}>
             Hủy
@@ -117,4 +120,4 @@ const BoardModal: React.FC = () => {
   );
 };
 
-export default BoardModal;
+export default UpdateBoardModal;

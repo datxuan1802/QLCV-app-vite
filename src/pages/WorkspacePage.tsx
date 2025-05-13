@@ -12,6 +12,7 @@ import { deleteBoard } from "@/services/axios.service";
 import { successToast } from "@/utils/toast";
 import { useBoard } from "@/hooks/board.hook";
 import { queryKey } from "@/utils/queryKey";
+import UpdateBoardModal from "@/components/updateBoardModal";
 const ProjectPage = () => {
     const {workspaceId } = useParams();
     const navigation = useNavigate();
@@ -20,6 +21,8 @@ const ProjectPage = () => {
     const { workspaces }:any = useWorkspace();
    const { setBoards } = useBoard();
     const [isOpen, setIsOpen] = useState(false);
+const [dataBorad, setDataBorad] = useState<any>();
+    const [isOpenUpdate, setIsOpenUpdate] = useState(false);
     const popupRef = useRef<HTMLDivElement>(null);
     const queryClient = useQueryClient();
     // Click outside để đóng popup
@@ -61,6 +64,7 @@ const ProjectPage = () => {
       };
   return (
     <>
+    <UpdateBoardModal open={isOpenUpdate} close={()=>{setIsOpenUpdate(false)} } dataBoard={dataBorad}/>
     <Modal
         title="Xóa dự án"
         open={isModalVisible}
@@ -103,7 +107,7 @@ const ProjectPage = () => {
           className="absolute z-50 w-40 bg-white border rounded-lg shadow-lg"
         >
           <ul className="text-sm text-gray-700">
-            <li className="px-4 py-2 cursor-pointer hover:bg-blue-200 hover:text-[#1922FF]">Sửa</li>
+            <li onClick={()=>{setIsOpenUpdate(true);setIsOpen(false);setDataBorad(data)}} className="px-4 py-2 cursor-pointer hover:bg-blue-200 hover:text-[#1922FF]">Sửa</li>
             <li onClick={()=>{setIsOpen(false);navigation(`/workspaces/${workspaceId}/boards/${data?._id}`)}} className="px-4 py-2 cursor-pointer hover:bg-blue-200 hover:text-[#1922FF]">Chi tiết</li>
             <li onClick={()=>{showModal();setSelectedId(data?._id)}} className="px-4 py-2 text-red-400 cursor-pointer hover:bg-red-100">Xoá</li>
           </ul>
