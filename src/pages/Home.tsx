@@ -15,8 +15,6 @@ const Home = () => {
   const [, setOpen] = useAtom(openWorkspaceModal);
     const { workspaces } = useWorkspace();
     const Users= JSON.parse(localStorage.getItem('user') as string);
-    console.log(Users,'user');
-console.log(workspaces,'ws');
   return (
     <MainLayout>
       {/* <div className="flex flex-col items-center justify-center h-full space-y-4">

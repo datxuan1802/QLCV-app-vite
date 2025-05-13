@@ -28,7 +28,6 @@ const Register = () => {
       // navigation(path.login);
       successToast("Đăng ký thành công");
     } catch (error) {
-      console.log(error);
       errorToast("Đăng ký thất bại");
     }
     setLoading(false);
