@@ -50,7 +50,7 @@ const MainLayout = ({ children,workspaceId }: any) => {
   };
   const ListBoard = () => {
     const navigation = useNavigate();
-    return <div onClick={() => navigation(`/workspaces/${workspaceId}`)} className={`flex items-center gap-x-2 hover:text-[#1922FF]`}> <MdFormatListBulleted size={20} className="text-black" />Danh sách dự án</div>;
+    return <div onClick={() => navigation(`/workspaces/${workspaceId}`)} className={`flex items-center gap-x-2 border-t hover:text-[#1922FF]`}> <MdFormatListBulleted size={20} className="text-black" />Danh sách dự án</div>;
   };
   const settings =  [
     {
