@@ -1,7 +1,10 @@
+import { get } from '@/services/axios.service';
 import { userAtom } from '@/states/user.state';
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useAtom } from 'jotai';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 
 interface DataType {
     key: React.Key;
@@ -11,12 +14,10 @@ interface DataType {
     description: string;
   }
   
-  const columns: ColumnsType<DataType> = [
-    { title: 'Name', dataIndex: 'name', key: 'name' },
-    Table.EXPAND_COLUMN,
-    { title: 'Age', dataIndex: 'age', key: 'age' },
-    Table.SELECTION_COLUMN,
-    { title: 'Address', dataIndex: 'address', key: 'address' },
+  const columns: ColumnsType<any> = [
+    { title: 'Tên', dataIndex: 'name', key: 'name' },
+    { title: 'Email', dataIndex: 'email', key: 'email' },
+    { title: 'Vai trò', dataIndex: 'role', key: 'role' },
   ];
   
   const data: DataType[] = [
@@ -50,17 +51,31 @@ interface DataType {
     },
   ];
 
+  const getRole=(role:string)=>{if(role==='MEMBER'){return 'Member'}else{
+    console.log(role,'role');
+    return 'Admin';
+  }}
 export const TableLayout = () => {
-    const [user] = useAtom(userAtom);
-    console.log(user,'user');
+ const { boardId, workspaceId } = useParams();
+ const [data, setData] = useState<any>();
+
+  const DoGetAvatars = async () => {
+    const res = await get(`/workspaces/getMembers?workspaceId=${workspaceId}`);
+    setData(res);
+    return res;
+  };
+  useEffect(() => {
+    DoGetAvatars();
+  }, [workspaceId]);
+  const datatable=[data?.map((data:any)=>{return{key:data?.user._id,name:data?.user?.name,email:data?.user?.email,role:getRole(data?.roles[0])}})]
+  console.log(datatable,'dahdas');
+console.log(data,'dasdad');
     return <>
+    <div className='py-6 text-3xl font-semibold px-9'>Danh sách nhân sự</div>
   <Table
     columns={columns}
-    rowSelection={{}}
-    expandable={{
-      expandedRowRender: (record) => <p style={{ margin: 0 }}>{record.description}</p>,
-    }}
-    dataSource={data}
+    className="custom-table"
+    dataSource={datatable[0]}
   />
     </>
         
