@@ -3,7 +3,6 @@ import { useSearchParams } from "react-router-dom";
 import { Button } from "antd";
 const ActiveAcc = () => {
   const [searchParams] = useSearchParams();
-  console.log(searchParams.get("invite"));
   return (
     <div className="flex flex-col items-center justify-center h-screen space-y-6 bg-slate-100">
       <div className="mt-5">

@@ -223,7 +223,6 @@ export const TaskModal = () => {
 
     post("/s3-upload/image?src=task-bg", formData)
       .then((data) => {
-        console.log(data);
         setBgUrl(data.url);
       })
       .catch((err) => {
@@ -828,7 +827,6 @@ export const TaskDetailModal = () => {
                 { value: EPriority.LOW, label: "Thấp" },
               ]}
               onChange={(value: any) => {
-                console.log(value);
                 setFormData((preState) => ({
                   ...preState,
                   priority: value,

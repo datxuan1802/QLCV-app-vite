@@ -35,7 +35,10 @@ const WorkspaceModal: React.FC = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [queryKey.workspace] });
       successToast("Tạo không gian làm việc mới thành công");
-      // navigation(path.home);
+      setName('');
+      setDescription('');
+      setType('private');
+      navigation(`/workspaces/${data?._id}`);
     },
     onError: (error: any) => {
       console.log(error);

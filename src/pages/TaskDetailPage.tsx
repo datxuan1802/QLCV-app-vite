@@ -30,11 +30,8 @@ const TaskDetailPage = () => {
   useEffect(() => {
     socket = io(`http://localhost:5556?task_id=${taskId}&user_id=${user?._id}`);
     socket.on("connect", () => {
-      console.log("Connected to server");
     });
     socket.on("receive-comment", (message: any) => {
-      console.log("receive-comment");
-      console.log(message);
       setMessages((prevMessages: any) => [...prevMessages, message]);
     });
     // Clean up the socket connection when component unmounts

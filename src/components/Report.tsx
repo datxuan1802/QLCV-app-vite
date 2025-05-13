@@ -531,7 +531,6 @@ const TaskDoneBaseOnDueDate = ({
   const [report, setReport] = useState<any>([]);
   useEffect(() => {
     const doneTasks = data.filter((item: any) => item.status === "done");
-    console.log(doneTasks,'done');
     const counts = {
       soon: 0,
       onTime: 0,

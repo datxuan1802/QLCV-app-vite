@@ -28,6 +28,7 @@ import { get } from "@/services/axios.service";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineDown } from 'react-icons/ai';
 import { MdBarChart, MdFormatListBulleted, MdVisibility, MdWorkspacesOutline } from "react-icons/md";
+import { openWorkspaceModal } from "@/states/modal.state";
 
 
 
@@ -35,18 +36,32 @@ const MainLayout = ({ children,workspaceId ,type}: any) => {
   const { workspaces,boardId }:any = useWorkspace();
   const pathname=useLocation();
   const [user] = useAtom(userAtom);
+  const [isOpen, setIsOpen] = useState(false);
+  const navigation = useNavigate();
+   const [, setOpen] = useAtom(openWorkspaceModal);
+  const popupRef = useRef<HTMLDivElement>(null);
+    // Click outside để đóng popup
+    useEffect(() => {
+      function handleClickOutside(event: MouseEvent) {
+        if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+          setIsOpen(false);
+        }
+      }
+  
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
   const SettingsTab = () => {
     const navigation = useNavigate();
     return <div onClick={() => navigation("/settings")} className={`flex items-center gap-x-2 hover:text-[#1922FF]`}> <FaUser size={20} color="gray" />Thông tin tài khoản</div>;
   };
-  console.log(pathname,'dadsada');
   const HomeTab = () => {
     const navigation = useNavigate();
     return <div onClick={() => navigation("/")} className={`flex items-center gap-x-2 hover:text-[#1922FF] ${workspaceId?'border-t':''} `}><div><MdWorkspacesOutline size={20} className="text-black" /></div>Danh sách không gian làm việc</div>;
   };
   const WorkspaceName = () => {
     const navigation = useNavigate();
-    return <div  className="flex items-center gap-x-2 hover:text-[#1922FF] "><div><AiOutlineProject size={25} color="#007bff" /></div><div className="text-xl font-semibold">{workspaces?.find((item:any)=>item?.workspace?._id===workspaceId)?.workspace?.name}</div><AiOutlineDown size={20} color="gray" className="ml-1" /></div>;
+    return <><div onClick={()=>{setIsOpen(true)}} className="flex items-center gap-x-2 hover:text-[#1922FF] "><div><AiOutlineProject size={25} color="#007bff" /></div><div className="text-xl font-semibold">{workspaces?.find((item:any)=>item?.workspace?._id===workspaceId)?.workspace?.name}</div><AiOutlineDown size={20} color="gray" className="ml-1" /></div></>;
   };
   const ListBoard = () => {
     const navigation = useNavigate();
@@ -140,8 +155,19 @@ const MainLayout = ({ children,workspaceId ,type}: any) => {
       ],
     };
   });
-
   return (
+    <>{isOpen&&<div ref={popupRef} className="flex flex-col justify-between fixed bg-red  bg-white  py-4 shadow-lg shadow-slate-600 rounded-lg w-[270px] max-h-[400px] overflow-y-auto z-50 left-6 top-28">
+      <div className="flex flex-col w-full h-[20%]">
+        <div className="px-2 pb-3 border-b border-b-slate-300"><WorkspaceName/></div>
+        <div className="px-2 pt-3 text-lg font-medium">Chuyển không gian làm việc</div>
+      </div>
+      <div className="max-h-[70%] overflow-y-auto p-2 flex flex-col gap-y-2   ">{workspaces?.filter((item:any)=>item?.workspace?._id!==workspaceId)?.map((data:any)=>{return(
+        <div onClick={()=>{navigation(`/workspaces/${data?.workspace?._id}`);setIsOpen(false)}} className="flex items-center px-2 py-2 rounded-lg cursor-pointer gap-x-2 hover:bg-blue-100"><Avatar shape='square' className={` bg-green-500`}>
+        {data?.workspace?.name?.charAt(0).toUpperCase()}
+      </Avatar><p className="text-sm">{data?.workspace?.name}</p></div>
+      )})}</div>
+      <div onClick={()=>{setIsOpen(false);setOpen(true)}} className="h-[10%] pt-2 flex items-center gap-x-2 px-4 cursor-pointer hover:text-[#1922FF]"><span className="h-[32px] w-[32px] bg-gray-400 rounded flex items-center text-center justify-center ">+</span><p>Tạo không gian làm việc</p></div>
+      </div>}
     <Layout className="min-h-screen ">
       <MainHeader />
       <Layout hasSider className="mt-16 ">
@@ -161,6 +187,7 @@ const MainLayout = ({ children,workspaceId ,type}: any) => {
       <TaskDetailModal />
       <AddMemberModal />
     </Layout>
+    </>
   );
 };
 

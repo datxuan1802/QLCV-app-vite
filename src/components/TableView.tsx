@@ -52,7 +52,6 @@ interface DataType {
   ];
 
   const getRole=(role:string)=>{if(role==='MEMBER'){return 'Member'}else{
-    console.log(role,'role');
     return 'Admin';
   }}
 export const TableLayout = () => {
@@ -68,8 +67,6 @@ export const TableLayout = () => {
     DoGetAvatars();
   }, [workspaceId]);
   const datatable=[data?.map((data:any)=>{return{key:data?.user._id,name:data?.user?.name,email:data?.user?.email,role:getRole(data?.roles[0])}})]
-  console.log(datatable,'dahdas');
-console.log(data,'dasdad');
     return <>
     <div className='py-6 text-3xl font-semibold px-9'>Danh sách nhân sự</div>
   <Table

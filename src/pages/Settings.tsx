@@ -33,16 +33,13 @@ const Settings = () => {
 
     post("/s3-upload/image?src=avatar", formData)
       .then((data) => {
-        console.log(data);
         patch(`/auth/update`, { avatar: data.url }).then((data) => {
-          console.log(data);
           queryClient.invalidateQueries({
             queryKey: ["profile"],
           });
         });
       })
       .catch((err) => {
-        console.log(err);
       });
     // if (info.file.status === "uploading") {
     //   // setLoading(true);
@@ -72,16 +69,13 @@ const Settings = () => {
 
     post("/s3-upload/image?src=user-bg", formData)
       .then((data) => {
-        console.log(data);
         patch(`/auth/update`, { background: data.url }).then((data) => {
-          console.log(data);
           queryClient.invalidateQueries({
             queryKey: ["profile"],
           });
         });
       })
       .catch((err) => {
-        console.log(err);
       });
   };
   const [userName, setUserName] = useState(data?.name!);
@@ -98,7 +92,6 @@ const Settings = () => {
       successToast("Cập nhật thành công.");
       return res;
     } catch (error) {
-      console.log(error);
       errorToast("Cập nhật thất bại.");
     }
   };
