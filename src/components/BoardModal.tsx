@@ -38,7 +38,6 @@ const BoardModal: React.FC = () => {
     },
     onSuccess: (data) => {
       // setRefresh(true);
-      console.log(data);
       queryClient.invalidateQueries({ queryKey: [queryKey.workspace] });
       setBoards((preBoards: any) => [...preBoards, data]);
       successToast("Tạo dự án mới thành công");
@@ -56,7 +55,6 @@ const BoardModal: React.FC = () => {
   };
 
   if (isError) {
-    console.log(isError);
     return <div>error</div>;
   }
   return (
