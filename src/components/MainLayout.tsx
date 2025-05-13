@@ -25,13 +25,13 @@ import { userAtom } from "@/states/user.state";
 import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { get } from "@/services/axios.service";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AiOutlineDown } from 'react-icons/ai';
+import { MdFormatListBulleted } from "react-icons/md";
 
 
 
-
-const MainLayout = ({ children,workspaceId }: any) => {
+const MainLayout = ({ children,workspaceId,type }: any) => {
   const { workspaces }:any = useWorkspace();
   const [user] = useAtom(userAtom);
   const SettingsTab = () => {
@@ -41,11 +41,15 @@ const MainLayout = ({ children,workspaceId }: any) => {
   
   const HomeTab = () => {
     const navigation = useNavigate();
-    return <div onClick={() => navigation("/")} className={`flex items-center gap-x-2 hover:text-[#1922FF] ${workspaceId?'border-t':''}`}><div><FaHome size={20} color="black" /></div>Trang chủ</div>;
+    return <div onClick={() => navigation("/")} className={`flex items-center gap-x-2 hover:text-[#1922FF] ${workspaceId?'border-t':''} ${type==='home'?'text-{#1922FF]':''}`}><div><FaHome size={20} color="black" /></div>Trang chủ</div>;
   };
   const WorkspaceName = () => {
     const navigation = useNavigate();
     return <div  className="flex items-center gap-x-2 hover:text-[#1922FF] "><div><AiOutlineProject size={20} color="#007bff" /></div><div>{workspaces?.find((item:any)=>item?.workspace?._id===workspaceId)?.workspace?.name}</div><AiOutlineDown size={10} color="gray" className="ml-1" /> {/* Add the down arrow icon */}</div>;
+  };
+  const ListBoard = () => {
+    const navigation = useNavigate();
+    return <div onClick={() => navigation(`/workspaces/${workspaceId}`)} className={`flex items-center gap-x-2 hover:text-[#1922FF]`}> <MdFormatListBulleted size={20} className="text-black" />Danh sách dự án</div>;
   };
   const settings =  [
     {
@@ -63,6 +67,10 @@ const MainLayout = ({ children,workspaceId }: any) => {
     {
       key: "12",
       label: <SettingsTab />,
+    },
+    {
+      key: "27  ",
+      label: <ListBoard />,
     },
     // {
     //   key: "13",
@@ -151,6 +159,7 @@ export const MainHeader = () => {
       });
     },
   });
+  const [isOpen, setIsOpen] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -159,13 +168,26 @@ export const MainHeader = () => {
 
   const handleOk = () => {
     localStorage.clear();
+    setIsOpen(false);
     navigation("/login");
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    setIsOpen(false);
   };
-
+const popupRef = useRef<HTMLDivElement>(null);
+    // Click outside để đóng popup
+    useEffect(() => {
+      function handleClickOutside(event: MouseEvent) {
+        if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+          setIsOpen(false);
+        }
+      }
+  
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
   return (
     <>
       <Modal
@@ -203,7 +225,7 @@ export const MainHeader = () => {
             enterButton
             className="w-56"
           /> */}
-          <div className="flex items-center gap-x-1">
+          <div className="flex items-center cursor-pointer gap-x-1 hover:text-white" onClick={()=>{setIsOpen(true)}}>
             {!isLoading && (
               <Avatar
                 style={{ backgroundColor: "#87d068" }}
@@ -212,11 +234,21 @@ export const MainHeader = () => {
               />
             )}
             {!isLoading && <div>{data?.name}</div>}
+            <AiOutlineDown size={10} color="white" className="ml-1" />
             {/* {user && <AvatarCus user={user} />} */}
           </div>
-          <Button type="text" onClick={showModal}>
-            Đăng xuất
-          </Button>
+          {isOpen && (
+        <div
+          ref={popupRef}
+          className="absolute z-50 w-40 bg-white border rounded-lg shadow-lg top-12 right-10"
+        >
+          <ul className="text-sm text-gray-700">
+            <li onClick={()=>{navigation('/settings');setIsOpen(false)}} className="px-4 py-2 hover:text-[#1922FF] cursor-pointer hover:bg-blue-200">Thông tin tài khoản</li>
+            <li onClick={()=>{setIsModalVisible(true);setIsOpen(false)}} className="px-4 py-2 text-red-400 cursor-pointer hover:bg-red-100">Đăng xuất</li>
+
+          </ul>
+        </div>
+      )}
         </div>
       </Header>
     </>
