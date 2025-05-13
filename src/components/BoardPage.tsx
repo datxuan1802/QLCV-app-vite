@@ -47,6 +47,7 @@ import { AvatarCus } from "@/components/";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
 
 import io from "socket.io-client";
+import { useWorkspace } from "@/hooks/workspace.hook";
 
 const { Header } = Layout;
 const { TextArea } = Input;
@@ -430,7 +431,10 @@ export const BoardHeader = () => {
   const [, setSelectWorkspaceId] = useAtom(selectWorkspaceIdAtom);
   const [, setSelectView] = useAtom(selectViewAtom);
   const navigation = useNavigate();
-
+ const { workspaces }:any = useWorkspace();
+ const Users =JSON.parse(localStorage.getItem('user') as string);
+ console.log(Users,'user');
+ console.log(workspaces,'ws');
   const { data, isLoading } = useQuery({
     queryKey: [`board/${boardId}`],
     queryFn: () =>
@@ -453,7 +457,7 @@ export const BoardHeader = () => {
           >
             Tạo nhiệm vụ mới
           </Button>
-          <Button
+          {workspaces?.find((data:any)=>data?.workspace?._id===workspaceId)?.owner===Users?._id&&<Button
             className="normal-case bg-blue-500 "
             onClick={() => {
               setOpenAddMemberModal(true);
@@ -462,7 +466,7 @@ export const BoardHeader = () => {
             type="primary"
           >
             Thêm nhân sự
-          </Button>
+          </Button>}
           <Select
             defaultValue="Board"
             style={{ width: 150 }}
