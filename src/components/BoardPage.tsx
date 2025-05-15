@@ -40,7 +40,7 @@ import {
   selectWorkspaceIdAtom,
 } from "@/states/modal.state";
 import { EPriority, EStatus } from "@/utils/type";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import dayjs from "dayjs";
 import { getBgPriorityColor, getBgStatusTask } from "@/utils/mapping";
 import { AvatarCus } from "@/components/";
@@ -425,6 +425,7 @@ export const TaskModal = () => {
 
 export const BoardHeader = () => {
   const [, setOpen] = useAtom(openTaskModal);
+  const path = useLocation();
   const [, setOpenAddMemberModal] = useAtom(openAddMemberModal);
   const { workspaceId, boardId } = useParams();
   const [, setSelectWorkspaceId] = useAtom(selectWorkspaceIdAtom);
@@ -464,7 +465,7 @@ export const BoardHeader = () => {
           >
             Thêm nhân sự
           </Button>}
-          <Select
+          {path.pathname.includes('/report')?'':<Select
             defaultValue="Board"
             style={{ width: 150 }}
             onChange={(value: string) => setSelectView(value)}
@@ -474,7 +475,7 @@ export const BoardHeader = () => {
               { value: "Table", label: "Danh sách nhân sự" },
               // { value: "Calendar", label: "Calender" },
             ]}
-          />
+          />}
           {/* <Button
             className="normal-case bg-blue-500 "
             onClick={() => {

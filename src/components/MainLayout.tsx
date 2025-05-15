@@ -22,7 +22,7 @@ import { AiOutlineProject } from 'react-icons/ai';
 import { useWorkspace } from "@/hooks/workspace.hook";
 import { useAtom } from "jotai";
 import { userAtom } from "@/states/user.state";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { get } from "@/services/axios.service";
 import { useEffect, useRef, useState } from "react";
@@ -33,7 +33,8 @@ import { openWorkspaceModal } from "@/states/modal.state";
 
 
 const MainLayout = ({ children,workspaceId ,type}: any) => {
-  const { workspaces,boardId }:any = useWorkspace();
+  const { workspaces }:any = useWorkspace();
+  const { boardId } = useParams();
   const pathname=useLocation();
   const [user] = useAtom(userAtom);
   const [isOpen, setIsOpen] = useState(false);

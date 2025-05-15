@@ -71,7 +71,7 @@ export const TableLayout = () => {
     <div className='py-6 text-3xl font-semibold px-9'>Danh sách nhân sự</div>
   <Table
     columns={columns}
-    className="custom-table"
+    className="custom-table px-9"
     dataSource={datatable[0]}
   />
     </>
