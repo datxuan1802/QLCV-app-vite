@@ -52,7 +52,7 @@ interface DataType {
   ];
 
   const getRole=(role:string)=>{if(role==='MEMBER'){return 'Member'}else{
-    return 'Admin';
+    return 'Owner';
   }}
 export const TableLayout = () => {
  const { boardId, workspaceId } = useParams();

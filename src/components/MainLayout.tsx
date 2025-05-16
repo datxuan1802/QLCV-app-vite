@@ -54,11 +54,11 @@ const MainLayout = ({ children,workspaceId ,type}: any) => {
     }, []);
   const SettingsTab = () => {
     const navigation = useNavigate();
-    return <div onClick={() => navigation("/settings")} className={`flex items-center gap-x-2 hover:text-[#1922FF]`}> <FaUser size={20} color="gray" />Thông tin tài khoản</div>;
+    return <div onClick={() => navigation("/settings")} className={`flex items-center gap-x-2  pl-2 hover:text-[#1922FF] ${pathname.pathname.includes('/settings')?'bg-blue-100 rounded':''}`}> <FaUser size={20} color="gray" />Thông tin tài khoản</div>;
   };
   const HomeTab = () => {
     const navigation = useNavigate();
-    return <div onClick={() => navigation("/")} className={`flex items-center gap-x-2 hover:text-[#1922FF] ${workspaceId?'border-t':''} `}><div><MdWorkspacesOutline size={20} className="text-black" /></div>Danh sách không gian làm việc</div>;
+    return <div onClick={() => navigation("/")} className={`flex items-center  pl-2 gap-x-2 hover:text-[#1922FF] ${workspaceId?'border-t':''} ${pathname.pathname===('/')?'bg-blue-100 rounded ':''}`}><div><MdWorkspacesOutline size={20} className="text-black" /></div>Danh sách không gian làm việc</div>;
   };
   const WorkspaceName = () => {
     const navigation = useNavigate();
@@ -66,15 +66,15 @@ const MainLayout = ({ children,workspaceId ,type}: any) => {
   };
   const ListBoard = () => {
     const navigation = useNavigate();
-    return <div onClick={() => navigation(`/workspaces/${workspaceId}`)} className={`flex items-center gap-x-2 border-t hover:text-[#1922FF]`}> <MdFormatListBulleted size={20} className="text-black" />Danh sách dự án</div>;
+    return <div onClick={() => navigation(`/workspaces/${workspaceId}`)} className={`flex  pl-2 items-center gap-x-2 border-t hover:text-[#1922FF] ${pathname.pathname.includes('workspaces')&&(!pathname.pathname.includes('boards')&&!pathname.pathname.includes('report'))?'bg-blue-100 rounded ':''}`}> <MdFormatListBulleted size={20} className="text-black" />Danh sách dự án</div>;
   };
   const Report = () => {
     const navigation = useNavigate();
-    return <>{type==='board'&&<div onClick={() => navigation(`/workspaces/${workspaceId}/boards/${boardId}/report`)} className={`flex items-center gap-x-2  hover:text-[#1922FF]`}>  <MdBarChart size={20} className="text-black"/>Báo cáo</div>}</>;
+    return <>{type==='board'&&<div onClick={() => navigation(`/workspaces/${workspaceId}/boards/${boardId}/report`)} className={`flex pl-2 items-center gap-x-2  hover:text-[#1922FF] ${pathname.pathname.includes('report')?'bg-blue-100 rounded ':''}`}>  <MdBarChart size={20} className="text-black"/>Báo cáo</div>}</>;
   };
   const Detail = () => {
     const navigation = useNavigate();
-    return <>{type==='board'&&<div onClick={() => navigation(`/workspaces/${workspaceId}/boards/${boardId}`)} className={`flex items-center gap-x-2  hover:text-[#1922FF]`}> <MdVisibility size={20} className="text-black"/>Chi tiết dự án</div>}</>;
+    return <>{type==='board'&&<div onClick={() => navigation(`/workspaces/${workspaceId}/boards/${boardId}`)} className={`flex pl-2 items-center gap-x-2  hover:text-[#1922FF] ${pathname.pathname.includes('workspaces')&&pathname.pathname.includes('boards')&&!pathname.pathname.includes('report')?'bg-blue-100 rounded ':''}`}> <MdVisibility size={20} className="text-black"/>Chi tiết dự án</div>}</>;
   };
   const settings =  [
     {
@@ -97,13 +97,14 @@ const MainLayout = ({ children,workspaceId ,type}: any) => {
       key: "27  ",
       label: <ListBoard />,
     },
+   
     {
-      key: "27  ",
-      label: <Report />,
+      key: "28  ",
+      label: <Detail />,
     },
     {
-      key: "27  ",
-      label: <Detail />,
+      key: "29  ",
+      label: <Report />,
     },
     // {
     //   key: "13",
