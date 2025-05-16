@@ -577,7 +577,7 @@ const TaskDoneBaseOnDueDate = ({
       <Pie
         data={taskDoneByDueDate}
         options={getOptions({
-          title: "Trạng thái hoàn thnahf nhiệm vụ",
+          title: "Trạng thái hoàn thành nhiệm vụ",
         })}
       />
     </ChartLayout>
