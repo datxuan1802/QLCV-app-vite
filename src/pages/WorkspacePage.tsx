@@ -26,6 +26,9 @@ const [dataBorad, setDataBorad] = useState<any>();
     const popupRef = useRef<HTMLDivElement>(null);
     const queryClient = useQueryClient();
     const [select, setSelect] = useState<any>();
+    const userId=JSON.parse(localStorage.getItem('user') as string);
+    const isOwnerBoards= workspaces.find((data:any)=>data?.workspace?._id===workspaceId)?.owner === userId?._id
+    console.log(workspaces,'dada');
     // Click outside để đóng popup
     useEffect(() => {
       function handleClickOutside(event: MouseEvent) {
@@ -89,7 +92,7 @@ const [dataBorad, setDataBorad] = useState<any>();
      
       <div className="flex flex-col p-6 px-48 h-fit">
         <div></div>
-        <div className="flex items-center justify-between pb-12"><div className="text-3xl font-semibold ">Danh sách dự án</div><button onClick={()=>{setOpen(true);setSelectWorkspaceId(workspaceId!)}} className="p-2 bg-blue-500 rounded cursor-pointer">+ Tạo dự án mới</button></div>
+        <div className="flex items-center justify-between pb-12"><div className="text-3xl font-semibold ">Danh sách dự án</div>{isOwnerBoards&&<button onClick={()=>{setOpen(true);setSelectWorkspaceId(workspaceId!)}} className="p-2 bg-blue-500 rounded cursor-pointer">+ Tạo dự án mới</button>}</div>
         <div className="flex flex-wrap justify-start w-full h-fit gap-x-6 gap-y-2">
   {workspaces.find((data:any)=>data?.workspace?._id===workspaceId)?.workspace?.boards?.map((data: any,index:number) => {
     return (
@@ -108,9 +111,9 @@ const [dataBorad, setDataBorad] = useState<any>();
           className="absolute z-50 w-40 bg-white border rounded-lg shadow-lg"
         >
           <ul className="text-sm text-gray-700">
-            <li onClick={()=>{setIsOpenUpdate(true);setIsOpen(false);setDataBorad(data)}} className="px-4 py-2 cursor-pointer hover:bg-blue-200 hover:text-[#1922FF]">Sửa</li>
+            {isOwnerBoards&&<li onClick={()=>{setIsOpenUpdate(true);setIsOpen(false);setDataBorad(data)}} className="px-4 py-2 cursor-pointer hover:bg-blue-200 hover:text-[#1922FF]">Sửa</li>}
             <li onClick={()=>{setIsOpen(false);navigation(`/workspaces/${workspaceId}/boards/${data?._id}`)}} className="px-4 py-2 cursor-pointer hover:bg-blue-200 hover:text-[#1922FF]">Chi tiết</li>
-            <li onClick={()=>{showModal();setSelectedId(data?._id)}} className="px-4 py-2 text-red-400 cursor-pointer hover:bg-red-100">Xoá</li>
+            {isOwnerBoards&&<li onClick={()=>{showModal();setSelectedId(data?._id)}} className="px-4 py-2 text-red-400 cursor-pointer hover:bg-red-100">Xoá</li>}
           </ul>
         </div>
       )}

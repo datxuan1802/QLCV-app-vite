@@ -158,7 +158,7 @@ const MainLayout = ({ children,workspaceId ,type}: any) => {
     };
   });
   return (
-    <>{isOpen&&<div ref={popupRef} className="flex flex-col justify-between fixed bg-red  bg-white  py-4 shadow-lg shadow-slate-600 rounded-lg w-[270px] max-h-[400px] overflow-y-auto z-50 left-6 top-28">
+    <>{isOpen&&<div ref={popupRef} className="flex flex-col justify-between fixed bg-red  bg-white max-w-[500px]  py-4 shadow-lg shadow-slate-600 rounded-lg w-fit max-h-[400px] overflow-y-auto z-50 left-6 top-28">
       <div className="flex flex-col w-full h-[20%]">
         <div className="px-2 pb-3 border-b border-b-slate-300"><WorkspaceName/></div>
         <div className="px-2 pt-3 text-lg font-medium">Chuyển không gian làm việc</div>
@@ -166,7 +166,7 @@ const MainLayout = ({ children,workspaceId ,type}: any) => {
       <div className="max-h-[70%] overflow-y-auto p-2 flex flex-col gap-y-2   ">{workspaces?.filter((item:any)=>item?.workspace?._id!==workspaceId)?.map((data:any)=>{return(
         <div onClick={()=>{navigation(`/workspaces/${data?.workspace?._id}`);setIsOpen(false)}} className="flex items-center px-2 py-2 rounded-lg cursor-pointer gap-x-2 hover:bg-blue-100"><Avatar shape='square' className={` bg-green-500`}>
         {data?.workspace?.name?.charAt(0).toUpperCase()}
-      </Avatar><p className="text-sm">{data?.workspace?.name}</p></div>
+      </Avatar><p className="text-sm max-w-[300px] truncate">{data?.workspace?.name}</p></div>
       )})}</div>
       <div onClick={()=>{setIsOpen(false);setOpen(true)}} className="h-[10%] pt-2 flex items-center gap-x-2 px-4 cursor-pointer hover:text-[#1922FF]"><span className="h-[32px] w-[32px] bg-gray-400 rounded flex items-center text-center justify-center ">+</span><p>Tạo không gian làm việc</p></div>
       </div>}
