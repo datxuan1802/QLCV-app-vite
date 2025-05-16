@@ -376,6 +376,7 @@ export const TaskModal = () => {
               </label>
               <Select
                 defaultValue={EPriority.HIGH}
+                value={priority}
                 style={{ width: 120 }}
                 onChange={(val: EPriority) => setPriority(val)}
                 options={[
@@ -397,6 +398,7 @@ export const TaskModal = () => {
             <Select
               // defaultValue={EPriority.HIGH}
               mode="multiple"
+              value={assignIds}
               allowClear
               placeholder="Assign user"
               className="w-full"
@@ -794,6 +796,7 @@ export const TaskDetailModal = () => {
             <ArrowRightOutlined />
             <Select
               defaultValue={EStatus.DONE}
+              value={formData.status}
               style={{ width: 120 }}
               options={[
                 { value: EStatus.DONE, label: "Hoàn thành" },
