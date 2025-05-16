@@ -469,7 +469,7 @@ export const BoardHeader = (selectView:any) => {
           </Button>}
           {path.pathname.includes('/report')?'':<Select
             defaultValue="Board"
-            value={selectView}
+            // value={selectView}
             style={{ width: 150 }}
             onChange={(value: string) => setSelectView(value)}
             options={[
