@@ -52,7 +52,7 @@ export const ReportLayout = () => {
     setStartDate(getTimeFormat(dateStrings[0]));
     setDueDate(getTimeFormat(dateStrings[1]));
   };
-
+console.log(data,'dtaa');
   const { isLoading, refetch } = useQuery({
     queryKey: ["task-report-week"],
     queryFn: () => {
@@ -81,7 +81,8 @@ export const ReportLayout = () => {
         onChange={DoSetDate}
       />
       <div className="grid min-h-screen grid-cols-3 px-6 pt-6 space-x-3">
-        <TaskDoneLineChart
+       
+        <TaskLineChartWithPriority
           data={data}
           startDate={startDate}
           dueDate={dueDate}
@@ -89,14 +90,23 @@ export const ReportLayout = () => {
         />
         <TaskInWeek />
         <PriorityReport data={data} isLoading={isLoading} />
-        <TeamPerformance startDate={startDate} dueDate={dueDate} />
-        <TaskDoneBaseOnDueDate data={data} isLoading={isLoading} />
-        <TaskLineChartWithPriority
+        <TaskDoneLineChart
           data={data}
           startDate={startDate}
           dueDate={dueDate}
           isLoading={isLoading}
         />
+        
+        <TaskDoneBaseOnDueDate data={data} isLoading={isLoading} />
+        <TeamPerformance startDate={startDate} dueDate={dueDate} />
+      {/* <TaskReport/>
+      <TaskLineChartWithPriority
+          data={data}
+          startDate={startDate}
+          dueDate={dueDate}
+          isLoading={isLoading}
+        /> */}
+      {/* <TaskDoneBaseOnPriority/> */}
       </div>
     </MainLayout>
   );
@@ -278,7 +288,7 @@ const TaskLineChartWithPriority = ({
               },
               title: {
                 display: true,
-                text: "Nhiệm vụ theo ngày hoàn thành",
+                text: "Tổng quan nhiệm vụ",
               },
             },
           }}
@@ -450,7 +460,7 @@ const TaskReport = () => {
         <Doughnut
           data={dataDoughnut}
           options={getOptions({
-            title: "Các nhiệm vụ theo trạng thái",
+            title: "Các nhiệm vụ hoàn thành",
           })}
         />
       )}
@@ -531,6 +541,7 @@ const TaskDoneBaseOnDueDate = ({
   const [report, setReport] = useState<any>([]);
   useEffect(() => {
     const doneTasks = data.filter((item: any) => item.status === "done");
+    console.log(doneTasks,'done tassk');
     const counts = {
       soon: 0,
       onTime: 0,
@@ -566,7 +577,7 @@ const TaskDoneBaseOnDueDate = ({
       <Pie
         data={taskDoneByDueDate}
         options={getOptions({
-          title: "Nhiệm vụ theo ngày hoàn thành",
+          title: "Trạng thái hoàn thnahf nhiệm vụ",
         })}
       />
     </ChartLayout>
