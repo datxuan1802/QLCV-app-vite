@@ -41,7 +41,7 @@ useEffect(()=>{setName(dataBoard?.name);
       // setRefresh(true);
       queryClient.invalidateQueries({ queryKey: [queryKey.workspace] });
       setBoards((preBoards: any) => [...preBoards, data]);
-      successToast("Tạo dự án mới thành công");
+      successToast("Cập nhật dự án thành công");
       setName('');
       setDescription('');
       //   navigation(path.home);
