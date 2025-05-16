@@ -28,7 +28,6 @@ const [dataBorad, setDataBorad] = useState<any>();
     const [select, setSelect] = useState<any>();
     const userId=JSON.parse(localStorage.getItem('user') as string);
     const isOwnerBoards= workspaces.find((data:any)=>data?.workspace?._id===workspaceId)?.owner === userId?._id
-    console.log(workspaces,'dada');
     // Click outside để đóng popup
     useEffect(() => {
       function handleClickOutside(event: MouseEvent) {
@@ -41,8 +40,8 @@ const [dataBorad, setDataBorad] = useState<any>();
       return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
     const { mutate:DelBoard} = useMutation({
-      mutationFn: async ({id}: any) => {
-        return await deleteBoard(`board/delete`,id);
+      mutationFn: async ({boardId}: any) => {
+        return await deleteBoard(`board/delete?boardId=${boardId}`,boardId);
       },
       onSuccess: (data) => {
         successToast("Xóa dự án thành công");
@@ -60,7 +59,7 @@ const [dataBorad, setDataBorad] = useState<any>();
         setIsOpen(false);
       };
       const handleOk = () => {
-        DelBoard(selectedId);
+        DelBoard({boardId:selectedId});
       };
     
       const handleCancel = () => {

@@ -423,7 +423,7 @@ export const TaskModal = () => {
   );
 };
 
-export const BoardHeader = () => {
+export const BoardHeader = (selectView:any) => {
   const [, setOpen] = useAtom(openTaskModal);
   const path = useLocation();
   const [, setOpenAddMemberModal] = useAtom(openAddMemberModal);
@@ -467,6 +467,7 @@ export const BoardHeader = () => {
           </Button>}
           {path.pathname.includes('/report')?'':<Select
             defaultValue="Board"
+            value={selectView}
             style={{ width: 150 }}
             onChange={(value: string) => setSelectView(value)}
             options={[
@@ -643,7 +644,7 @@ export const TaskDetailModal = () => {
   //delete task
   const { mutate:DelBoard} = useMutation({
     mutationFn: async ({taskId}: any) => {
-      return await deleteBoard(`task/delete`,taskId);
+      return await deleteBoard(`task/delete/${taskId}`,taskId);
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({

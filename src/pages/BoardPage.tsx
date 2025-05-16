@@ -185,7 +185,7 @@ const BoardPage = () => {
   };
   return (
     <MainLayout workspaceId={workspaceId} type='board'>
-      <BoardHeader />
+      <BoardHeader selectView={selectView}/>
       {selectView === "Board" && (
         <KanbanLayout handleOnDragEnd={handleOnDragEnd}>
           <Column droppableId={"todos"} columnName="Việc cần  làm">
