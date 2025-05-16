@@ -622,7 +622,7 @@ export const TaskDetailModal = () => {
 
   useEffect(()=>{if(task){
     setDataTask(task);
-  }},[open,task])
+  }},[open,task,selectTaskId])
 
 
   const { mutate, error } = useMutation({
